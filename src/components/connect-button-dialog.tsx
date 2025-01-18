@@ -160,16 +160,16 @@ const ConnectButtonDialog: React.FC = () => {
               <div className="mx-auto flex w-fit cursor-pointer items-center justify-center -space-x-16 rounded-lg bg-[#E3EFEC] py-2 pl-3 pr-5 font-medium text-[#17876D] hover:bg-[#E3EFEC]">
                 <Button className="z-0 flex w-fit items-center justify-start gap-3 rounded-xl bg-[#03624C]/50 text-[#03624C] hover:bg-[#03624C]/50">
                   <span className="rounded-full bg-[#03624C] p-1">
-                    <Icons.metamask />
+                    <Icons.braavos />
                   </span>
-                  {shortAddress(addressSource, 6, 6)}
+                  {shortAddress(addressDestination, 4, 4)}
                 </Button>
 
                 <Button className="z-20 flex w-fit scale-110 items-center justify-start gap-3 rounded-xl border-2 border-[#03624C] bg-[#E3EFEC] text-[#03624C] hover:bg-[#E3EFEC]">
                   <span className="rounded-full bg-[#03624C] p-1">
-                    <Icons.braavos />
+                    <Icons.metamask />
                   </span>
-                  {shortAddress(addressDestination, 6, 6)}
+                  {shortAddress(addressSource, 4, 4)}
                 </Button>
               </div>
             )}
