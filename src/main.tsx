@@ -1,24 +1,32 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
-import { defaultStarkpullConfig, StarkpullProvider } from '../lib/components/StarkpullProvider/index.tsx'
-import { connect } from 'starknetkit'
-import { WebWalletConnector } from 'starknetkit/webwallet'
-import { InjectedConnector } from '@starknet-react/core'
+import { InjectedConnector } from "@starknet-react/core";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { WebWalletConnector } from "starknetkit/webwallet";
 
-createRoot(document.getElementById('root')!).render(
+import {
+  defaultStarkpullConfig,
+  StarkpullProvider,
+} from "@/components/starkpull-provider/index.tsx";
+import { Toaster } from "@/components/ui/toaster.tsx";
+
+import App from "./App.tsx";
+import "./index.css";
+
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <StarkpullProvider starknetConfig={{
-      chains: defaultStarkpullConfig().starknetConfig.chains,
-      provider: defaultStarkpullConfig().starknetConfig.provider,
-      explorer: defaultStarkpullConfig().starknetConfig.explorer,
-      connectors: [
-        new WebWalletConnector(),
-        new InjectedConnector({ options: { id: "argentX" } })
-      ]
-      }}>
+    <StarkpullProvider
+      starknetConfig={{
+        chains: defaultStarkpullConfig().starknetConfig.chains,
+        provider: defaultStarkpullConfig().starknetConfig.provider,
+        explorer: defaultStarkpullConfig().starknetConfig.explorer,
+        connectors: [
+          new WebWalletConnector(),
+          new InjectedConnector({ options: { id: "argentX" } }),
+        ],
+      }}
+    >
       <App />
+      <Toaster />
     </StarkpullProvider>
   </StrictMode>,
-)
+);
