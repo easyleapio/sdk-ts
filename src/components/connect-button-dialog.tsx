@@ -23,10 +23,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { toast } from "@/hooks/use-toast";
 import { useAccount } from "@/hooks/useAccount";
 import { shortAddress } from "@/lib/utils";
 
-import { toast } from "@/hooks/use-toast";
 import { Icons } from "./Icons";
 
 const ConnectButtonDialog: React.FC = () => {
@@ -34,6 +34,8 @@ const ConnectButtonDialog: React.FC = () => {
 
   const { disconnect: disconnectSN } = useDisconnectSN();
   const { disconnect: disconnectWagmi } = useDisconnectWagmi();
+
+  const { connector } = useConnectSN();
 
   const getWalletIcon = (walletId: string) => {
     switch (walletId) {
@@ -87,6 +89,7 @@ const ConnectButtonDialog: React.FC = () => {
                     title: "Connect Starknet wallet first",
                   });
                 connect({ connector });
+                localStorage.setItem("STARKPULL_WALLET_EVM", connector.name);
               }}
               className="flex w-full items-center justify-between text-xs"
             >
@@ -136,6 +139,8 @@ const ConnectButtonDialog: React.FC = () => {
     }
   }, [addressSource, addressDestination]);
 
+  const connectedEvmWalletName = localStorage.getItem("STARKPULL_WALLET_EVM");
+
   return (
     <div>
       <Dialog>
@@ -149,25 +154,26 @@ const ConnectButtonDialog: React.FC = () => {
 
             {addressDestination && !addressSource && (
               <Button className="mx-auto mt-5 flex w-fit items-center justify-start gap-3 rounded-lg bg-[#E3EFEC] font-medium text-[#17876D] hover:bg-[#E3EFEC]">
-                <span className="rounded-full bg-[#03624C] p-1">
-                  <Icons.braavos />
+                <span className="rounded-full bg-[#fff] p-1">
+                  {getWalletIcon(connector?.id ?? "braavos")}
                 </span>
                 {shortAddress(addressDestination, 8, 8)}
               </Button>
             )}
 
             {addressSource && addressDestination && (
-              <div className="mx-auto flex w-fit cursor-pointer items-center justify-center -space-x-16 rounded-lg bg-[#E3EFEC] py-2 pl-3 pr-5 font-medium text-[#17876D] hover:bg-[#E3EFEC]">
+              <div className="mx-auto flex w-fit cursor-pointer items-center justify-center -space-x-12 rounded-lg bg-[#E3EFEC] py-2 pl-3 pr-5 font-medium text-[#17876D] hover:bg-[#E3EFEC]">
                 <Button className="z-0 flex w-fit items-center justify-start gap-3 rounded-xl bg-[#03624C]/50 text-[#03624C] hover:bg-[#03624C]/50">
-                  <span className="rounded-full bg-[#03624C] p-1">
-                    <Icons.braavos />
+                  <span className="rounded-full bg-[#fff] p-1">
+                    {getWalletIcon(connector?.id ?? "braavos")}
                   </span>
                   {shortAddress(addressDestination, 4, 4)}
                 </Button>
 
                 <Button className="z-20 flex w-fit scale-110 items-center justify-start gap-3 rounded-xl border-2 border-[#03624C] bg-[#E3EFEC] text-[#03624C] hover:bg-[#E3EFEC]">
                   <span className="rounded-full bg-[#03624C] p-1">
-                    <Icons.metamask />
+                    {connectedEvmWalletName &&
+                      getWalletIcon(connectedEvmWalletName.toLowerCase())}
                   </span>
                   {shortAddress(addressSource, 4, 4)}
                 </Button>
@@ -194,12 +200,12 @@ const ConnectButtonDialog: React.FC = () => {
               ) : (
                 <div className="mt-5 flex flex-col items-start gap-2">
                   <p className="text-xs font-medium text-muted-foreground">
-                    Connected to Braavos
+                    Connected to {connector?.name}
                   </p>
                   <Button className="flex w-full items-center justify-between rounded-lg bg-[#E3EFEC] !font-firaCode font-medium text-[#17876D] hover:bg-[#E3EFEC] [&_svg]:pointer-events-auto">
                     <div className="flex items-center justify-start gap-3">
-                      <span className="rounded-full bg-[#03624C] p-1">
-                        <Icons.braavos />
+                      <span className="rounded-full bg-[#fff] p-1">
+                        {getWalletIcon(connector?.id ?? "braavos")}
                       </span>
                       {shortAddress(addressDestination, 14, 14)}
                     </div>
@@ -258,12 +264,13 @@ const ConnectButtonDialog: React.FC = () => {
               ) : (
                 <div className="mt-7 flex flex-col items-start gap-2">
                   <p className="text-xs font-medium text-muted-foreground">
-                    Connected to MetaMask
+                    Connected to {connectedEvmWalletName}
                   </p>
                   <Button className="flex w-full items-center justify-between rounded-lg bg-[#E3EFEC] !font-firaCode font-medium text-[#17876D] hover:bg-[#E3EFEC] [&_svg]:pointer-events-auto">
                     <div className="flex items-center justify-start gap-3">
                       <span className="rounded-full bg-[#03624C] p-1">
-                        <Icons.metamask />
+                        {connectedEvmWalletName &&
+                          getWalletIcon(connectedEvmWalletName.toLowerCase())}
                       </span>
                       {shortAddress(addressSource, 14, 14)}
                     </div>
