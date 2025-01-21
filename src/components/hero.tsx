@@ -17,12 +17,13 @@ const Hero: React.FC = () => {
         alt="coins"
       />
 
-      <div className="z-10 flex flex-col items-start gap-3 text-[#DADADA]">
+      <div className="z-10 -mt-16 flex flex-col items-start gap-3 text-[#DADADA]">
         <h1 className="bg-gradient-to-r from-[#FFFFFF] to-[#EC796B] bg-clip-text text-[64.54px] font-semibold leading-[77.45px] text-transparent">
           The In-App bridge
           <br />
           for Starknet
         </h1>
+
         <p className="mt-2 text-[18px] font-semibold leading-[21.6px]">
           Seamlessly bridge your funds from other chains to Starknet dApps
           <br />
@@ -48,7 +49,7 @@ const Hero: React.FC = () => {
           </Button>
         </div>
 
-        <div className="mt-20 space-y-4">
+        <div className="mt-32 space-y-4">
           <p className="text-sm font-medium leading-[18.59px] text-[#DADADA]">
             DApps which already integrated us
           </p>
