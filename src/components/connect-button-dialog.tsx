@@ -137,17 +137,21 @@ const ConnectButtonDialog: React.FC = () => {
           "Starknet and EVM wallets are linked. move L1 funds to Endur.",
       });
     }
+
+    if (addressSource && !addressDestination) {
+      disconnectWagmi();
+    }
   }, [addressSource, addressDestination]);
 
   const connectedEvmWalletName = localStorage.getItem("STARKPULL_WALLET_EVM");
 
   return (
-    <div>
+    <div className="z-10">
       <Dialog>
         <DialogTrigger asChild>
           <div className="font-firaCode">
             {!addressSource && !addressDestination && (
-              <Button variant="outline" className="text-center">
+              <Button variant="outline" className="rounded-[20px] text-center">
                 Connect wallet
               </Button>
             )}
