@@ -166,20 +166,20 @@ const ConnectButtonDialog: React.FC = () => {
             )}
 
             {addressSource && addressDestination && (
-              <div className="mx-auto flex w-fit cursor-pointer items-center justify-center -space-x-[3.1rem] rounded-lg font-medium text-[#17876D]">
-                <Button className="z-0 flex w-fit items-center justify-start gap-3 rounded-xl bg-[#03624C]/50 text-white/70 hover:bg-[#03624C]/50">
-                  <span className="rounded-full bg-[#fff] p-1">
-                    {getWalletIcon(connector?.id ?? "braavos")}
-                  </span>
-                  {shortAddress(addressDestination, 4, 4)}
-                </Button>
-
+              <div className="mx-auto flex w-fit cursor-pointer items-center justify-center -space-x-[2.6rem] rounded-lg font-medium text-[#17876D]">
                 <Button className="z-20 flex w-fit scale-110 items-center justify-start gap-3 rounded-xl border-2 border-[#03624C] bg-[#E3EFEC] text-[#03624C] hover:bg-[#E3EFEC]">
                   <span className="rounded-full bg-[#03624C] p-1">
                     {connectedEvmWalletName &&
                       getWalletIcon(connectedEvmWalletName.toLowerCase())}
                   </span>
                   {shortAddress(addressSource, 4, 4)}
+                </Button>
+
+                <Button className="z-0 flex w-fit items-center justify-start gap-3 rounded-xl bg-[#03624C]/50 text-white/70 hover:bg-[#03624C]/50">
+                  {shortAddress(addressDestination, 4, 4)}
+                  <span className="rounded-full bg-[#fff] p-1">
+                    {getWalletIcon(connector?.id ?? "braavos")}
+                  </span>
                 </Button>
               </div>
             )}
@@ -289,9 +289,13 @@ const ConnectButtonDialog: React.FC = () => {
                 </div>
               )}
 
-              {/* <Button className="mt-8 w-full rounded-lg bg-[#b3d0c9] font-medium text-[#17876D] hover:bg-[#a2c4bc]">
-                Connect to Endur
-              </Button> */}
+              {(addressSource || addressDestination) && (
+                <DialogTrigger className="mt-8 w-full">
+                  <Button className="w-full rounded-lg bg-[#17876D] font-medium text-[#fff] hover:bg-[#17876D]/90">
+                    Done
+                  </Button>
+                </DialogTrigger>
+              )}
             </div>
           </div>
         </DialogContent>
