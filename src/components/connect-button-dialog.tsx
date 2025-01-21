@@ -157,7 +157,7 @@ const ConnectButtonDialog: React.FC = () => {
             )}
 
             {addressDestination && !addressSource && (
-              <Button className="mx-auto mt-5 flex w-fit items-center justify-start gap-3 rounded-lg bg-[#E3EFEC] font-medium text-[#17876D] hover:bg-[#E3EFEC]">
+              <Button className="mx-auto flex w-fit items-center justify-start gap-3 rounded-lg bg-[#E3EFEC] font-medium text-[#17876D] hover:bg-[#E3EFEC]">
                 <span className="rounded-full bg-[#fff] p-1">
                   {getWalletIcon(connector?.id ?? "braavos")}
                 </span>
@@ -166,8 +166,8 @@ const ConnectButtonDialog: React.FC = () => {
             )}
 
             {addressSource && addressDestination && (
-              <div className="mx-auto flex w-fit cursor-pointer items-center justify-center -space-x-12 rounded-lg bg-[#E3EFEC] py-2 pl-3 pr-5 font-medium text-[#17876D] hover:bg-[#E3EFEC]">
-                <Button className="z-0 flex w-fit items-center justify-start gap-3 rounded-xl bg-[#03624C]/50 text-[#03624C] hover:bg-[#03624C]/50">
+              <div className="mx-auto flex w-fit cursor-pointer items-center justify-center -space-x-[3.1rem] rounded-lg font-medium text-[#17876D]">
+                <Button className="z-0 flex w-fit items-center justify-start gap-3 rounded-xl bg-[#03624C]/50 text-white/70 hover:bg-[#03624C]/50">
                   <span className="rounded-full bg-[#fff] p-1">
                     {getWalletIcon(connector?.id ?? "braavos")}
                   </span>
