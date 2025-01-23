@@ -23,13 +23,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { toast } from "@/hooks/use-toast";
 import { useAccount } from "@/hooks/useAccount";
 import { shortAddress } from "@/lib/utils";
 
 import { Icons } from "./Icons";
+import { Switch } from "./ui/switch";
 
 const ConnectButtonDialog: React.FC = () => {
+  const [isBridgeMode, setIsBridgeMode] = React.useState(false);
+
   const { addressSource, addressDestination } = useAccount();
 
   const { disconnect: disconnectSN } = useDisconnectSN();
@@ -148,43 +157,77 @@ const ConnectButtonDialog: React.FC = () => {
   return (
     <div className="z-10">
       <Dialog>
-        <DialogTrigger asChild>
-          <div className="font-firaCode">
-            {!addressSource && !addressDestination && (
-              <Button variant="outline" className="rounded-[20px] text-center">
-                Connect wallet
-              </Button>
-            )}
-
-            {addressDestination && !addressSource && (
-              <Button className="mx-auto flex w-fit items-center justify-start gap-3 rounded-lg bg-[#E3EFEC] font-medium text-[#17876D] hover:bg-[#E3EFEC]">
-                <span className="rounded-full bg-[#fff] p-1">
-                  {getWalletIcon(connector?.id ?? "braavos")}
-                </span>
-                {shortAddress(addressDestination, 8, 8)}
-              </Button>
-            )}
-
-            {addressSource && addressDestination && (
-              <div className="mx-auto flex w-fit cursor-pointer items-center justify-center -space-x-[2.6rem] rounded-lg font-medium text-[#17876D]">
-                <Button className="z-20 flex w-fit scale-110 items-center justify-start gap-3 rounded-xl border-2 border-[#03624C] bg-[#E3EFEC] text-[#03624C] hover:bg-[#E3EFEC]">
-                  <span className="rounded-full bg-[#03624C] p-1">
-                    {connectedEvmWalletName &&
-                      getWalletIcon(connectedEvmWalletName.toLowerCase())}
-                  </span>
-                  {shortAddress(addressSource, 4, 4)}
+        <div className="flex items-center gap-4">
+          <DialogTrigger asChild>
+            <div className="font-firaCode">
+              {!addressSource && !addressDestination && (
+                <Button
+                  variant="outline"
+                  className="rounded-[20px] text-center"
+                >
+                  Connect wallet
                 </Button>
+              )}
 
-                <Button className="z-0 flex w-fit items-center justify-start gap-3 rounded-xl bg-[#03624C]/50 text-white/70 hover:bg-[#03624C]/50">
-                  {shortAddress(addressDestination, 4, 4)}
+              {addressDestination && !addressSource && (
+                <Button className="mx-auto flex w-fit items-center justify-start gap-3 rounded-lg bg-[#E3EFEC] font-medium text-[#17876D] hover:bg-[#E3EFEC]">
                   <span className="rounded-full bg-[#fff] p-1">
                     {getWalletIcon(connector?.id ?? "braavos")}
                   </span>
+                  {shortAddress(addressDestination, 8, 8)}
                 </Button>
-              </div>
-            )}
-          </div>
-        </DialogTrigger>
+              )}
+
+              {addressSource && addressDestination && (
+                <div className="mx-auto flex w-fit cursor-pointer items-center justify-center -space-x-[2.6rem] rounded-lg font-medium text-[#17876D]">
+                  <Button className="z-20 flex w-fit scale-110 items-center justify-start gap-3 rounded-xl border-2 border-[#03624C] bg-[#E3EFEC] text-[#03624C] hover:bg-[#E3EFEC]">
+                    <span className="rounded-full bg-[#03624C] p-1">
+                      {connectedEvmWalletName &&
+                        getWalletIcon(connectedEvmWalletName.toLowerCase())}
+                    </span>
+                    {shortAddress(addressSource, 4, 4)}
+                  </Button>
+
+                  <Button className="z-0 flex w-fit items-center justify-start gap-3 rounded-xl bg-[#03624C]/50 text-white/70 hover:bg-[#03624C]/50">
+                    {shortAddress(addressDestination, 4, 4)}
+                    <span className="rounded-full bg-[#fff] p-1">
+                      {getWalletIcon(connector?.id ?? "braavos")}
+                    </span>
+                  </Button>
+                </div>
+              )}
+            </div>
+          </DialogTrigger>
+
+          {(addressDestination || addressSource) && (
+            <TooltipProvider delayDuration={0}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Switch
+                    id="airplane-mode"
+                    checked={isBridgeMode}
+                    onCheckedChange={(value) => {
+                      if (!addressSource) {
+                        return toast({
+                          title: "Connect EVM wallet to enable bridge mode",
+                        });
+                      }
+                      setIsBridgeMode(value);
+                    }}
+                    className="h-9 w-28 border-2 border-[#17876D] !bg-[#E3EFEC] font-firaCode"
+                  />
+                </TooltipTrigger>
+                {!isBridgeMode && (
+                  <TooltipContent className="mr-5 mt-2 max-w-[20rem] border border-[#17876D] !bg-[#E3EFEC] px-4 py-2 text-[#17876D]">
+                    This dApp supports in-app bridge mode, powered by
+                    easyleap.io. Switch to Bridge mode to deposit directly from
+                    Eth Mainnet into your starknet wallet in a single step
+                  </TooltipContent>
+                )}
+              </Tooltip>
+            </TooltipProvider>
+          )}
+        </div>
 
         <DialogContent className="max-h-[100vh] overflow-y-auto overflow-x-hidden font-dmSans sm:max-w-[425px] lg:max-h-none">
           <DialogHeader>
