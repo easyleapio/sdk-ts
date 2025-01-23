@@ -152,6 +152,13 @@ const ConnectButtonDialog: React.FC = () => {
     }
   }, [addressSource, addressDestination]);
 
+  React.useEffect(() => {
+    if (isBridgeMode && !addressSource) {
+      setIsBridgeMode(false);
+    }
+    console.log("huehue");
+  }, [addressSource, isBridgeMode]);
+
   const connectedEvmWalletName = localStorage.getItem("STARKPULL_WALLET_EVM");
 
   return (
