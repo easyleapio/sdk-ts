@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/tooltip";
 import { toast } from "@/hooks/use-toast";
 import { useAccount } from "@/hooks/useAccount";
-import { shortAddress } from "@/lib/utils";
+import { cn, shortAddress } from "@/lib/utils";
 
 import { Icons } from "./Icons";
 import { Switch } from "./ui/switch";
@@ -161,7 +161,11 @@ const ConnectButtonDialog: React.FC = () => {
   const connectedEvmWalletName = localStorage.getItem("STARKPULL_WALLET_EVM");
 
   return (
-    <div className="z-10">
+    <div
+      className={cn("z-10 rounded-2xl", {
+        "bg-[#E2EFEC] py-2 pl-5 pr-3": addressSource || addressDestination,
+      })}
+    >
       <Dialog>
         <div className="flex items-center gap-4">
           <DialogTrigger asChild>
@@ -176,7 +180,7 @@ const ConnectButtonDialog: React.FC = () => {
               )}
 
               {addressDestination && !addressSource && (
-                <Button className="mx-auto flex w-fit items-center justify-start gap-3 rounded-lg bg-[#E3EFEC] font-medium text-[#17876D] hover:bg-[#E3EFEC]">
+                <Button className="mx-auto flex w-fit items-center justify-start gap-3 rounded-2xl border-2 border-[#17876D] bg-[#E3EFEC] font-medium text-[#17876D] hover:bg-[#E3EFEC]">
                   <span className="rounded-full bg-[#fff] p-1">
                     {getWalletIcon(connector?.id ?? "braavos")}
                   </span>
