@@ -87,7 +87,7 @@ const Hero: React.FC = () => {
       </div>
 
       <div className="pointer-events-none z-10 -mt-24 select-none">
-        <img src="/hero/starkpull-illustration.svg" alt="Hero Image" />
+        <img src="/hero/easyleap-illustration.svg" alt="Hero Image" />
       </div>
     </div>
   );

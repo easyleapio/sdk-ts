@@ -225,9 +225,11 @@ const ConnectButtonDialog: React.FC = () => {
                 </TooltipTrigger>
                 {!isBridgeMode && (
                   <TooltipContent className="mr-5 mt-2 max-w-[20rem] border border-[#17876D] !bg-[#E3EFEC] px-4 py-2 text-[#17876D]">
-                    This dApp supports in-app bridge mode, powered by
-                    easyleap.io. Switch to Bridge mode to deposit directly from
-                    Eth Mainnet into your starknet wallet in a single step
+                    <p>Switch to Bridge mode to deposit directly from
+                    ETH Mainnet into your starknet wallet in a single step.</p>
+                    <br/>
+                    <p>This dApp supports in-app bridge mode, powered by<span> </span>
+                    <a href="https://easyleap.io/" className="underline">easyleap.io.</a></p> 
                   </TooltipContent>
                 )}
               </Tooltip>

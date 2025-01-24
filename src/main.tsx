@@ -4,9 +4,9 @@ import { createRoot } from "react-dom/client";
 import { WebWalletConnector } from "starknetkit/webwallet";
 
 import {
-  defaultStarkpullConfig,
-  StarkpullProvider,
-} from "@/components/starkpull-provider/index.tsx";
+  defaultEasyleapConfig,
+  EasyleapProvider,
+} from "@/components/easyleap-provider/index.tsx";
 import { Toaster } from "@/components/ui/toaster.tsx";
 
 import App from "./App.tsx";
@@ -14,11 +14,11 @@ import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <StarkpullProvider
+    <EasyleapProvider
       starknetConfig={{
-        chains: defaultStarkpullConfig().starknetConfig.chains,
-        provider: defaultStarkpullConfig().starknetConfig.provider,
-        explorer: defaultStarkpullConfig().starknetConfig.explorer,
+        chains: defaultEasyleapConfig().starknetConfig.chains,
+        provider: defaultEasyleapConfig().starknetConfig.provider,
+        explorer: defaultEasyleapConfig().starknetConfig.explorer,
         connectors: [
           new WebWalletConnector(),
           new InjectedConnector({ options: { id: "argentX" } }),
@@ -27,6 +27,6 @@ createRoot(document.getElementById("root")!).render(
     >
       <App />
       <Toaster />
-    </StarkpullProvider>
+    </EasyleapProvider>
   </StrictMode>,
 );
