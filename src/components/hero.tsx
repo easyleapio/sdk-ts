@@ -1,6 +1,16 @@
 import React from "react";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 import { Icons } from "./Icons";
 import { Button } from "./ui/button";
+import VesuDeposit from "./vesu-deposit";
 
 const Hero: React.FC = () => {
   return (
@@ -38,15 +48,31 @@ const Hero: React.FC = () => {
         </div>
 
         <div className="mt-6">
-          <Button
-            style={{
-              background:
-                "linear-gradient(180deg, #7151EB 0%, #C078FF 100%), radial-gradient(29.19% 139.29% at 51.96% 8.93%, #80A6FC 0%, rgba(113, 81, 235, 0) 100%)",
-            }}
-            className="h-[49px] rounded-[40px] px-6 text-white"
-          >
-            Try it out now
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                style={{
+                  background:
+                    "linear-gradient(180deg, #7151EB 0%, #C078FF 100%), radial-gradient(29.19% 139.29% at 51.96% 8.93%, #80A6FC 0%, rgba(113, 81, 235, 0) 100%)",
+                }}
+                className="h-[49px] rounded-[40px] px-6 text-white"
+              >
+                Try it out now
+              </Button>
+            </DialogTrigger>
+            <DialogContent
+              closeClassName="text-white"
+              className="max-h-[100vh] overflow-y-auto overflow-x-hidden border border-indigo-400 bg-[#211D31] font-dmSans sm:max-w-[475px] lg:max-h-none"
+            >
+              <DialogHeader>
+                <DialogTitle className="flex flex-col items-center gap-2 text-center text-3xl font-normal text-white/80">
+                  <span className="">Deposit to</span>
+                  <Icons.vesuNamedLogo />
+                </DialogTitle>
+              </DialogHeader>
+              <VesuDeposit />
+            </DialogContent>
+          </Dialog>
         </div>
 
         <div className="mt-32 space-y-4">
