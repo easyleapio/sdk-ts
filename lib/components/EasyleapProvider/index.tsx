@@ -5,7 +5,7 @@ import React, { useMemo } from "react";
 import { sepolia as sepoliaEVM } from "viem/chains"
 import { createConfig, http, Config as WagmiConfig, WagmiProvider } from "wagmi"
 
-export interface StarkpullConfig {
+export interface EasyleapConfig {
     wagmiConfig?: WagmiConfig,
     starknetConfig?: StarknetConfigProps,
     children?: React.ReactNode
@@ -13,7 +13,7 @@ export interface StarkpullConfig {
 
 const WALLET_CONNECT_DEFAULT_PROJECT_ID = '242405a2808ac6e90831cb540f36617f'; // akira@strkfarm.xyz wallet connect account
 
-export function defaultStarkpullConfig() {
+export function defaultEasyleapConfig() {
     return {
         wagmiConfig: createConfig(
             getDefaultConfig({
@@ -30,12 +30,12 @@ export function defaultStarkpullConfig() {
               walletConnectProjectId: WALLET_CONNECT_DEFAULT_PROJECT_ID,
           
               // Required App Info
-              appName: "Starkpull",
+              appName: "Easyleap",
           
               // Optional App Info
               appDescription: "Bridge funds to Starknet dApps in a single click",
-              appUrl: "https://starkpull.com", // your app's url
-              appIcon: "https://starkpull.com/logo.png", // your app's icon, no bigger than 1024x1024px (max. 1MB)
+              appUrl: "https://easyleap.com", // your app's url
+              appIcon: "https://easyleap.com/logo.png", // your app's icon, no bigger than 1024x1024px (max. 1MB)
             }),
         ),
         starknetConfig: {
@@ -46,21 +46,21 @@ export function defaultStarkpullConfig() {
     }
 }
 
-export function StarkpullProvider(props: StarkpullConfig = {
-  starknetConfig: defaultStarkpullConfig().starknetConfig,
-  wagmiConfig: defaultStarkpullConfig().wagmiConfig,
+export function EasyleapProvider(props: EasyleapConfig = {
+  starknetConfig: defaultEasyleapConfig().starknetConfig,
+  wagmiConfig: defaultEasyleapConfig().wagmiConfig,
   children: null
 }) {
   const wagmiConfig = useMemo(() => {
     if (!props.wagmiConfig) {
-      return defaultStarkpullConfig().wagmiConfig
+      return defaultEasyleapConfig().wagmiConfig
     }
     return props.wagmiConfig
   }, [props.wagmiConfig])
 
   const starknetConfig: StarknetConfigProps = useMemo(() => {
     if (!props.starknetConfig) {
-      return defaultStarkpullConfig().starknetConfig
+      return defaultEasyleapConfig().starknetConfig
     }
     return props.starknetConfig
   }, [props.starknetConfig])

@@ -24,10 +24,14 @@ export function useBalance(props: UseBalanceProps): UseBalanceResult {
             if (!token.l2_token_address) return false;
             return standardise(token.l2_token_address) == standardise(l2TokenAddress);
         });
-        return tokenInfo.length ? tokenInfo[0].l1_token_address as `0x${string}` : '0x0';
+        const tokenAddr = tokenInfo.length ? tokenInfo[0].l1_token_address as `0x${string}` : '0x0';
+        if (tokenAddr != '0x0' && tokenInfo[0].name == 'Ether') {
+            return undefined
+        }
+        return tokenAddr;
     }, [chainIdSN, l2TokenAddress]);
 
-    const resultWagma = useBalanceWagmi({address: addressSource});
+    const resultWagma = useBalanceWagmi({address: addressSource, token: sourceTokenAddr});
    
     const result = useMemo(() => { 
         if (mode == InteractionMode.Starknet || mode == InteractionMode.None) {
