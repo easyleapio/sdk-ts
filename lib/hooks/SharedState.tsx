@@ -1,4 +1,6 @@
+import { Chain as ChainSN } from "@starknet-react/chains";
 import { useState, createContext, useContext, ReactNode } from "react";
+import { sepolia as sepoliaSN } from "@starknet-react/chains";
 
 /**
  * The mode of interaction with the Starknet DApp.
@@ -12,11 +14,17 @@ export enum InteractionMode {
   None = 'None'
 }
 
+export interface ChainsConfig {
+  starknet: ChainSN
+}
+
 interface SharedContext {
   mode: InteractionMode;
   setMode: (value: InteractionMode) => void;
   isModeSwitchedManually: boolean;
   setModeSwitchedManually: (value: boolean) => void;
+  chains: ChainsConfig,
+  setChains: (value: ChainsConfig) => void
 }
 
 const SharedStateContext = createContext({
@@ -24,14 +32,21 @@ const SharedStateContext = createContext({
   setMode: () => {},
   isModeSwitchedManually: false,
   setModeSwitchedManually: () => {},
+  chains: {
+    starknet: sepoliaSN
+  },
+  setChains: () => {}
 } as SharedContext);
 
 export const SharedStateProvider = ({ children }: { children: ReactNode }) => {
   const [mode, setMode] = useState(InteractionMode.None);
   const [isModeSwitchedManually, setModeSwitchedManually] = useState(false);
+  const [chains, setChains] = useState<ChainsConfig>({
+    starknet: sepoliaSN
+  });
 
   return (
-    <SharedStateContext.Provider value={{ mode, setMode, isModeSwitchedManually, setModeSwitchedManually }}>
+    <SharedStateContext.Provider value={{ mode, chains, setChains, setMode, isModeSwitchedManually, setModeSwitchedManually }}>
       {children}
     </SharedStateContext.Provider>
   );

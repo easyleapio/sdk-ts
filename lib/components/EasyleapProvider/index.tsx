@@ -1,8 +1,8 @@
-import { sepolia } from "@starknet-react/chains";
+import { mainnet, sepolia } from "@starknet-react/chains";
 import { StarknetConfig, StarknetConfigProps, publicProvider, voyager } from "@starknet-react/core"
 import { getDefaultConfig } from "connectkit";
-import { SharedStateProvider } from "../../../lib/hooks/SharedState";
-import React, { useMemo } from "react";
+import { SharedStateProvider, useSharedState } from "../../../lib/hooks/SharedState";
+import React, { useEffect, useMemo } from "react";
 import { sepolia as sepoliaEVM } from "viem/chains"
 import { createConfig, http, Config as WagmiConfig, WagmiProvider } from "wagmi"
 
@@ -64,13 +64,24 @@ export function EasyleapProvider(props: EasyleapConfig = {
       return defaultEasyleapConfig().starknetConfig
     }
     return props.starknetConfig
-  }, [props.starknetConfig])
+  }, [props.starknetConfig]);
+
+  const context = useSharedState();
+
+  useEffect(() => {
+    // todo need to ensure only one chain can be given
+    if (starknetConfig.chains && starknetConfig.chains.length > 0 ) {
+      context.setChains({
+        starknet: starknetConfig.chains[0]
+      })
+    }
+  }, [starknetConfig.chains])
 
   return (
     <SharedStateProvider>
       <WagmiProvider config={wagmiConfig}>
           <StarknetConfig 
-            chains={starknetConfig.chains} 
+            chains={[sepolia, mainnet]}
             provider={starknetConfig.provider} 
             explorer={starknetConfig.explorer}
             connectors={starknetConfig?.connectors || []}
