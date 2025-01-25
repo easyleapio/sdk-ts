@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Info } from "lucide-react";
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -14,12 +14,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "@/hooks/use-toast";
-import { useAccount } from "@/hooks/useAccount";
-import { useBalance } from "@/hooks/useBalance";
 
 import { Icons } from "./Icons";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { useAccount } from "../../lib/hooks/useAccount";
+import { useBalance } from "../../lib/hooks/useBalance";
+import { useAmountOut } from "../../lib/hooks/useAmountOut";
+import { Call, CallData } from "starknet";
+import { ADDRESSES } from "../../lib/utils/constants";
+import { useSendTransaction } from "../../lib/hooks/useSendTransaction";
 
 const formSchema = z.object({
   depositAmount: z.string().refine(
@@ -48,6 +52,11 @@ const VesuDeposit: React.FC = () => {
     },
     mode: "onChange",
   });
+
+  const rawAmount = useMemo(() => {
+    return BigInt(Math.round(Number(form.getValues("depositAmount")) * 1e18).toFixed(0))
+  }, [form.getValues("depositAmount")]);
+  const amountOutRes = useAmountOut(rawAmount);
 
   const handleQuickDepositPrice = (percentage: number) => {
     if (!addressSource || !addressDestination) {
@@ -83,6 +92,28 @@ const VesuDeposit: React.FC = () => {
     }
   };
 
+  const { send, error } = useSendTransaction({
+    calls: getCalls(amountOutRes.amountOut, addressDestination),
+    bridgeConfig: {
+      l2_token_address: "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+      amount: amountOutRes.amountOut,
+    }
+  }) 
+
+  useEffect(() => {
+    console.log("useSendTransaction error", error);
+    if (error) {
+      toast({
+        description: (
+          <div className="flex items-center gap-2">
+            <Info className="size-5" />
+            {error.message}
+          </div>
+        ),
+      });
+    }
+  }, [error]);
+
   const onSubmit = async (values: FormValues) => {
     if (Number(values.depositAmount) > Number(balanceInfo?.data?.formatted)) {
       return toast({
@@ -96,6 +127,7 @@ const VesuDeposit: React.FC = () => {
     }
 
     // Deposit calls
+    send();
   };
   return (
     <>
@@ -196,3 +228,42 @@ const VesuDeposit: React.FC = () => {
 };
 
 export default VesuDeposit;
+
+
+function getCalls(postBridgeFeeAmount: bigint, user: string | undefined): Call[] {
+  if (!user) {
+    return []
+  }
+  const SEPOLIA_SN_ETH = '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7'
+  const SEPOLIA_VESU_ETH = '0x07809bb63f557736e49ff0ae4a64bd8aa6ea60e3f77f26c520cb92c24e3700d3'
+  const SEPOLIA_vETH = '0x01ceb6db3ac889e2c0d2881eff602117c340316e55436f37699d91c193ee8aa0'
+
+  const call1: Call = {
+    contractAddress: SEPOLIA_SN_ETH,
+    entrypoint: 'transfer',
+    // receiver is some random address to simulate spend of bridged ETH
+    calldata: CallData.compile(["0x01BAe0e3cd91E0096bF2283d98390Bd29579B39C93964C1D2a3EEC8d5cf51C61", postBridgeFeeAmount, 0])
+  };
+
+  const call2: Call = {
+    contractAddress: SEPOLIA_VESU_ETH,
+    entrypoint: 'mint',
+    // actually no need to use executor anyway, just using for this hacky demo
+    // cause vesu supported ETH and bridge ETH are different
+    calldata: CallData.compile([ADDRESSES.STARKNET.EXECUTOR, postBridgeFeeAmount, 0]),
+  };
+
+  const call3: Call = {
+    contractAddress: SEPOLIA_VESU_ETH,
+    entrypoint: 'approve',
+    calldata: CallData.compile([SEPOLIA_vETH, postBridgeFeeAmount, 0])
+  };
+
+  const call4: Call = {
+    contractAddress: SEPOLIA_vETH,
+    entrypoint: 'deposit',
+    calldata: CallData.compile([postBridgeFeeAmount, 0, user])
+  };
+
+  return [call1, call2, call3, call4];
+}

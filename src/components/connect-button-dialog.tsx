@@ -3,7 +3,7 @@ import {
   useDisconnect as useDisconnectSN,
 } from "@starknet-react/core";
 import { MailIcon, X } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   useConnect as useConnectWagmi,
   useDisconnect as useDisconnectWagmi,
@@ -30,15 +30,17 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { toast } from "@/hooks/use-toast";
-import { useAccount } from "@/hooks/useAccount";
-import { cn, shortAddress } from "@/lib/utils";
+import { cn, shortAddress } from "../../lib/utils";
 
 import { Icons } from "./Icons";
 import { Switch } from "./ui/switch";
+import { useAccount } from "../../lib/hooks/useAccount";
+import useMode from "../../lib/hooks/useMode";
+import { InteractionMode, useSharedState } from "../../lib/hooks/SharedState";
 
 const ConnectButtonDialog: React.FC = () => {
-  const [isBridgeMode, setIsBridgeMode] = React.useState(false);
-
+  const mode = useMode();
+  const sharedState = useSharedState();
   const { addressSource, addressDestination } = useAccount();
 
   const { disconnect: disconnectSN } = useDisconnectSN();
@@ -46,6 +48,11 @@ const ConnectButtonDialog: React.FC = () => {
 
   const { connector } = useConnectSN();
 
+  useEffect(() => {
+    console.log("useAccount22 mode", mode)
+  }, [mode])
+
+  // todo need to figure out a way to make it generic
   const getWalletIcon = (walletId: string) => {
     switch (walletId) {
       // Starknet wallets
@@ -143,7 +150,7 @@ const ConnectButtonDialog: React.FC = () => {
       toast({
         title: "Wallets Connected!",
         description:
-          "Starknet and EVM wallets are linked. move L1 funds to Endur.",
+          "Starknet and EVM wallets are linked. move L1 funds to this dApp.",
       });
     }
 
@@ -151,12 +158,6 @@ const ConnectButtonDialog: React.FC = () => {
       disconnectWagmi();
     }
   }, [addressSource, addressDestination]);
-
-  React.useEffect(() => {
-    if (isBridgeMode && !addressSource) {
-      setIsBridgeMode(false);
-    }
-  }, [addressSource, isBridgeMode]);
 
   const connectedEvmWalletName = localStorage.getItem("STARKPULL_WALLET_EVM");
 
@@ -179,16 +180,16 @@ const ConnectButtonDialog: React.FC = () => {
                 </Button>
               )}
 
-              {addressDestination && !addressSource && (
+              {mode == InteractionMode.Starknet && (
                 <Button className="mx-auto flex w-fit items-center justify-start gap-3 rounded-2xl border-2 border-[#17876D] bg-[#E3EFEC] font-medium text-[#17876D] hover:bg-[#E3EFEC]">
                   <span className="rounded-full bg-[#fff] p-1">
                     {getWalletIcon(connector?.id ?? "braavos")}
                   </span>
-                  {shortAddress(addressDestination, 8, 8)}
+                  {shortAddress(addressDestination || '', 8, 8)}
                 </Button>
               )}
 
-              {addressSource && addressDestination && (
+              {mode == InteractionMode.Bridge && (
                 <div className="mx-auto flex w-fit cursor-pointer items-center justify-center -space-x-[2.6rem] rounded-lg font-medium text-[#17876D]">
                   <Button className="z-20 flex w-fit scale-110 items-center justify-start gap-3 rounded-xl border-2 border-[#03624C] bg-[#E3EFEC] text-[#03624C] hover:bg-[#E3EFEC]">
                     <span className="rounded-full bg-[#03624C] p-1">
@@ -215,19 +216,20 @@ const ConnectButtonDialog: React.FC = () => {
                 <TooltipTrigger asChild>
                   <Switch
                     id="airplane-mode"
-                    checked={isBridgeMode}
+                    checked={mode == InteractionMode.Bridge}
                     onCheckedChange={(value) => {
                       if (!addressSource) {
                         return toast({
                           title: "Connect EVM wallet to enable bridge mode",
                         });
                       }
-                      setIsBridgeMode(value);
+                      sharedState.setMode(value ? InteractionMode.Bridge : InteractionMode.Starknet);
+                      sharedState.setModeSwitchedManually(true);
                     }}
                     className="h-9 w-28 border-2 border-[#17876D] !bg-[#E3EFEC] font-firaCode"
                   />
                 </TooltipTrigger>
-                {!isBridgeMode && (
+                {
                   <TooltipContent className="mr-5 mt-2 max-w-[20rem] border border-[#17876D] !bg-[#E3EFEC] px-4 py-2 text-[#17876D]">
                     <p>Switch to Bridge mode to deposit directly from
                     ETH Mainnet into your starknet wallet in a single step.</p>
@@ -235,7 +237,7 @@ const ConnectButtonDialog: React.FC = () => {
                     <p>This dApp supports in-app bridge mode, powered by<span> </span>
                     <a href="https://easyleap.io/" className="underline">easyleap.io.</a></p> 
                   </TooltipContent>
-                )}
+                }
               </Tooltip>
             </TooltipProvider>
           )}
@@ -286,7 +288,7 @@ const ConnectButtonDialog: React.FC = () => {
                 Optional
               </h5>
               <p className="mt-1 text-center text-sm font-normal text-muted-foreground">
-                Link your EVM wallet to transfer L1 STRK tokens seamlessly into
+                Link your EVM wallet to transfer L1 tokens seamlessly into
                 the DApp!
               </p>
 

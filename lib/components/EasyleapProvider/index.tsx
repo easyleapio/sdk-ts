@@ -1,6 +1,7 @@
 import { sepolia } from "@starknet-react/chains";
 import { StarknetConfig, StarknetConfigProps, publicProvider, voyager } from "@starknet-react/core"
 import { getDefaultConfig } from "connectkit";
+import { SharedStateProvider } from "../../../lib/hooks/SharedState";
 import React, { useMemo } from "react";
 import { sepolia as sepoliaEVM } from "viem/chains"
 import { createConfig, http, Config as WagmiConfig, WagmiProvider } from "wagmi"
@@ -66,15 +67,17 @@ export function EasyleapProvider(props: EasyleapConfig = {
   }, [props.starknetConfig])
 
   return (
-    <WagmiProvider config={wagmiConfig}>
-        <StarknetConfig 
-          chains={starknetConfig.chains} 
-          provider={starknetConfig.provider} 
-          explorer={starknetConfig.explorer}
-          connectors={starknetConfig?.connectors || []}
-        >
-          {props.children}
-        </StarknetConfig>
-    </WagmiProvider>
+    <SharedStateProvider>
+      <WagmiProvider config={wagmiConfig}>
+          <StarknetConfig 
+            chains={starknetConfig.chains} 
+            provider={starknetConfig.provider} 
+            explorer={starknetConfig.explorer}
+            connectors={starknetConfig?.connectors || []}
+          >
+            {props.children}
+          </StarknetConfig>
+      </WagmiProvider>
+    </SharedStateProvider>
   );
 }

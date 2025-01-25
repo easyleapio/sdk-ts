@@ -1,12 +1,13 @@
 import * as Wagmi from "wagmi"
 import * as SNReact from "@starknet-react/core"
 import * as Dialog from "@radix-ui/react-dialog";
-import { DialogPortal, EVMWalletOptions } from "../../../utils/DialogPortal";
+import { DialogPortal } from "../../../utils/DialogPortal";
 
 export interface ComplexButtonProps {
+  dummy: string // remove later once there are props
 }
 
-export function ComplexButton(props: ComplexButtonProps) {
+export function ComplexButton() {
     function EVMButton() {
         const { address } = Wagmi.useAccount()
         const { disconnect } = Wagmi.useDisconnect()

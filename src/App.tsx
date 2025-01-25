@@ -1,9 +1,4 @@
-// import ConnectButtonDialog from "@/components/connect-button-dialog";
 import Hero from "@/components/hero";
-// import { useBalance } from "@/hooks/useBalance";
-
-// import { ComplexButton } from "../lib/components/connect/ComplexButton";
-// import { useBalance } from "../lib/hooks/useBalance";
 import MaxWidthWrapper from "./components/max-width-wrapper";
 import Navbar from "./components/navbar";
 

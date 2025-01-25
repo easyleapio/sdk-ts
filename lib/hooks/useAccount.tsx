@@ -1,18 +1,7 @@
 import { useAccount as useAccountWagmi } from 'wagmi';
 import { useAccount as useAccountSn } from '@starknet-react/core';
-import { useMemo } from 'react';
-
-/**
- * The mode of interaction with the Starknet DApp.
- * Bridge mode is used when the the action will be performed on source (e.g. L1) chain to bridge into Starknet
- * Starknet mode is used when the action will be performed on Starknet chain only
- * None mode is used when no action is being performed (happens when no account is connected)
- */
-export enum InteractionMode {
-    Bridge = 'Bridge',
-    Starknet = 'Starknet',
-    None = 'None'
-}
+import { useEffect, useMemo } from 'react';
+import { InteractionMode, useSharedState } from './SharedState';
 
 export enum Chains {
     ETH_MAINNET = 'ETH_MAINNET',
@@ -23,7 +12,6 @@ export enum Chains {
 export interface useAccountResult {
     addressSource: `0x${string}` | undefined,
     addressDestination: `0x${string}` | undefined,
-    mode: InteractionMode,
     source: Chains,
     destination: Chains,
     chainIdEVM: number | undefined,
@@ -37,14 +25,16 @@ export interface useAccountResult {
 export function useAccount(): useAccountResult {
     const { address: addressSource, chainId: chainIdEVM } = useAccountWagmi()
     const { address: addressDestination, chainId: chainIdSN } = useAccountSn()
-    const mode = useMemo(() => {
-        if (addressSource && addressDestination) {
-            return InteractionMode.Bridge
+    const sharedState = useSharedState();
+
+    useEffect(() => {
+        if (addressSource && addressDestination && !sharedState.isModeSwitchedManually) {
+            sharedState.setMode(InteractionMode.Bridge)
+        } else if (addressDestination && !addressSource) {
+            sharedState.setMode(InteractionMode.Starknet)
+        } else if (!addressSource && !addressDestination) {
+            sharedState.setMode(InteractionMode.None)
         }
-        if (addressDestination) {
-            return InteractionMode.Starknet
-        }
-        return InteractionMode.None
     }, [addressSource, addressDestination])
 
     const source = useMemo(() => {
@@ -57,6 +47,6 @@ export function useAccount(): useAccountResult {
     const destination = Chains.STARKNET
 
     return {
-        addressSource, addressDestination, mode, source, destination, chainIdEVM, chainIdSN
+        addressSource, addressDestination, source, destination, chainIdEVM, chainIdSN
     }
 }

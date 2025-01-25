@@ -43,7 +43,7 @@ const Hero: React.FC = () => {
         <div className="mt-4 flex items-center gap-2 text-[18px] font-medium leading-[23.91px]">
           Supporting chains:{" "}
           <p className="text-[#2FDB81]">
-            Ethereum <span className="text-sm">(more coming soon)</span>
+            Ethereum <span className="text-sm text-[grey]">(more coming soon)</span>
           </p>
         </div>
 
@@ -69,13 +69,14 @@ const Hero: React.FC = () => {
                   <span className="">Deposit to</span>
                   <Icons.vesuNamedLogo />
                 </DialogTitle>
+                <p className="text-[grey] mt-24">This popup showcases the option to perform a one-step ETH deposit into Vesu (Sepolia) using either Bridge Mode or Starknet Mode.</p>
               </DialogHeader>
               <VesuDeposit />
             </DialogContent>
           </Dialog>
         </div>
 
-        <div className="mt-32 space-y-4">
+        {/* <div className="mt-32 space-y-4">
           <p className="text-sm font-medium leading-[18.59px] text-[#DADADA]">
             DApps which already integrated us
           </p>
@@ -83,7 +84,7 @@ const Hero: React.FC = () => {
             <Icons.endurNamedLogo />
             <Icons.vesuNamedLogo />
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="pointer-events-none z-10 -mt-24 select-none">
