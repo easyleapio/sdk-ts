@@ -4,24 +4,28 @@ import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [
-    react(),
-    dts({ include: ["lib"] }), // export types on build
-  ],
+export default defineConfig(({command, mode}) => {
+  const isDemoMode = mode === 'demo'
+  console.log(`Running in ${isDemoMode ? 'demo' : 'production'} mode`)
+  return {
+    plugins: [
+      react(),
+      dts({ include: ["lib"] }), // export types on build
+    ],
 
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
+      },
     },
-  },
 
-  // activate library mode
-  build: {
-    copyPublicDir: false,
-    lib: {
-      entry: resolve(__dirname, "lib/main.ts"),
-      formats: ["es"],
+    // activate library mode
+    build: isDemoMode ? {} : {
+      copyPublicDir: false,
+      lib: {
+        entry: resolve(__dirname, "lib/main.ts"),
+        formats: ["es"],
+      },
     },
-  },
+  };
 });
