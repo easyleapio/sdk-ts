@@ -32,13 +32,6 @@ export function useAmountOut(amount_raw: bigint) {
     args: [amount_raw]
   });
 
-  useEffect(() => {
-    if (output.error) {
-      console.error("useAmountOut err", output.error);
-    }
-    console.log("useAmountOut", output.data, amount_raw);
-  }, [output.data, output.error, amount_raw]);
-
   const postFeeAmount = useMemo(() => {
     if (output.data) {
       return BigInt(amount_raw.toString()) - BigInt(output.data.toString());

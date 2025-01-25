@@ -96,7 +96,7 @@ const VesuDeposit: React.FC = () => {
     calls: getCalls(amountOutRes.amountOut, addressDestination),
     bridgeConfig: {
       l2_token_address: "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
-      amount: amountOutRes.amountOut,
+      amount: rawAmount,
     }
   }) 
 
@@ -223,6 +223,8 @@ const VesuDeposit: React.FC = () => {
           Deposit
         </Button>
       </div>
+      <div className="text-[grey]">Amount you get: {(Number(amountOutRes.amountOut) / 1e18).toFixed(8)} ETH</div>
+      <div className="text-[grey]">Service Fee: {(Number(amountOutRes.fee) / 1e18).toFixed(8)} ETH</div>
     </>
   );
 };

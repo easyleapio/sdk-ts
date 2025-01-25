@@ -96,7 +96,7 @@ const ConnectButtonDialog: React.FC = () => {
         {connectors.map((connector) => (
           <li
             key={connector.uid}
-            className="w-full rounded-xl border border-[#211d31] bg-[#E3EFEC] px-2 py-1"
+            className="w-full rounded-xl border border-[#211d31] bg-[#b5abdf] px-2 py-1"
           >
             <button
               onClick={() => {
@@ -128,7 +128,7 @@ const ConnectButtonDialog: React.FC = () => {
         {connectors.map((connector) => (
           <li
             key={connector.id}
-            className="w-full rounded-lg bg-[#E3EFEC] px-4 py-2"
+            className="w-full rounded-lg bg-[#b5abdf] px-4 py-2"
           >
             <button
               onClick={() => connect({ connector })}
@@ -296,7 +296,7 @@ const ConnectButtonDialog: React.FC = () => {
                 <Accordion type="single" collapsible className="mt-5 w-full">
                   <AccordionItem
                     value="evm-wallets"
-                    className="mt-2 rounded-lg bg-[#E3EFEC] px-4 py-3"
+                    className="mt-2 rounded-lg bg-[#f1f1f1] px-4 py-3"
                   >
                     <AccordionTrigger hideChevron className="w-full py-0">
                       <div className="flex w-full items-center justify-between">

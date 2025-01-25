@@ -1,6 +1,7 @@
 import Hero from "@/components/hero";
 import MaxWidthWrapper from "./components/max-width-wrapper";
 import Navbar from "./components/navbar";
+import { DemoSection } from "./components/demo-section";
 
 function App() {
   // const balanceInfo = useBalance({
@@ -13,6 +14,7 @@ function App() {
       <MaxWidthWrapper className="h-full">
         <Navbar />
         <Hero />
+        <DemoSection />
         {/* <h1>StarkPull</h1>
       <h3>Use Starknet dApps with funds on L1</h3>
 

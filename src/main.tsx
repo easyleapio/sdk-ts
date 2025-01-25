@@ -19,6 +19,7 @@ createRoot(document.getElementById("root")!).render(
         connectors: [
           new WebWalletConnector(),
           new InjectedConnector({ options: { id: "argentX" } }),
+          new InjectedConnector({ options: { id: "braavos" } }),
         ],
       }}
     >

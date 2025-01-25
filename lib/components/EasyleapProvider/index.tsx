@@ -12,7 +12,7 @@ export interface EasyleapConfig {
     children?: React.ReactNode
 }
 
-const WALLET_CONNECT_DEFAULT_PROJECT_ID = '242405a2808ac6e90831cb540f36617f'; // akira@strkfarm.xyz wallet connect account
+const WALLET_CONNECT_DEFAULT_PROJECT_ID = '242405a2808ac6e90831cb540f36617f'; // akira@unwraplabs.com wallet connect account
 
 export function defaultEasyleapConfig() {
     return {
