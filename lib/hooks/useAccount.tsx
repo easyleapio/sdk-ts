@@ -4,6 +4,7 @@ import { useEffect, useMemo } from 'react';
 import { InteractionMode, useSharedState } from './SharedState';
 import { mainnet, sepolia } from '@wagmi/core/chains'
 import { http, createConfig, switchChain as switchChainEVM } from '@wagmi/core';
+import { num } from 'starknet';
 
 export enum Chains {
     ETH_MAINNET = 'ETH_MAINNET',
@@ -47,27 +48,21 @@ export function useAccount(): useAccountResult {
 
     const result = useSwitchChain({
         params: {
-          chainId: sharedState.chains.starknet.id.toString(),
+          chainId: num.getHexString(sharedState.chains.starknet.id.toString()),
         },
     });
 
     useEffect(() => {
         if (addressDestination) {
-            console.log('Switching to starknet', chainIdSN, sharedState.chains.starknet.id)
             if (chainIdSN != sharedState.chains.starknet.id) {
-                console.log('Switching to starknett')
-                result.switchChainAsync().then(() => {
-                    console.log('switching done')
-                }).catch((e) => {
-                    console.log('switching error', e)
-                })
+                result.switchChain();
             }
         }
-        console.log('switching', result.error, result);
+        if (result.error)
+        console.error('switching', result.error);
     }, [addressDestination, chainIdSN, sharedState.chains.starknet, result.error])
 
     useEffect(() => {
-        console.log('useAccount', addressSource, addressDestination)
         if (addressSource && addressDestination && !sharedState.isModeSwitchedManually) {
             sharedState.setMode(InteractionMode.Bridge)
         } else if (addressDestination && !addressSource) {
