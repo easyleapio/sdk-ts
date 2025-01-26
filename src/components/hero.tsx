@@ -14,7 +14,7 @@ import VesuDeposit from "./vesu-deposit";
 
 const Hero: React.FC = () => {
   return (
-    <div className="flex h-full w-full items-center justify-between">
+    <div className="flex h-screen float-left w-full items-center justify-between">
       <img
         src="/hero/bg-grid-pattern.svg"
         className="pointer-events-none absolute right-0 top-0 z-0 select-none"

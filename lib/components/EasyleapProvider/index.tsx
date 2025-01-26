@@ -5,6 +5,7 @@ import { SharedStateProvider, useSharedState } from "../../../lib/hooks/SharedSt
 import React, { useEffect, useMemo } from "react";
 import { sepolia as sepoliaEVM } from "viem/chains"
 import { createConfig, http, Config as WagmiConfig, WagmiProvider } from "wagmi"
+import { ReviewModal } from "../connect/review-modal";
 
 export interface EasyleapConfig {
     wagmiConfig?: WagmiConfig,
@@ -87,6 +88,7 @@ export function EasyleapProvider(props: EasyleapConfig = {
             connectors={starknetConfig?.connectors || []}
           >
             {props.children}
+            <ReviewModal></ReviewModal>
           </StarknetConfig>
       </WagmiProvider>
     </SharedStateProvider>

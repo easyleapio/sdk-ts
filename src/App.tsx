@@ -11,9 +11,9 @@ function App() {
 
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center overflow-hidden bg-[#211D31] font-dmSans">
-      <MaxWidthWrapper className="h-full">
+      <MaxWidthWrapper className="min-h-screen">
         <Navbar />
-        <Hero />
+        {/* <Hero /> */}
         <DemoSection />
         {/* <h1>StarkPull</h1>
       <h3>Use Starknet dApps with funds on L1</h3>

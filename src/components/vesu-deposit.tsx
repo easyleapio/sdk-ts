@@ -24,6 +24,7 @@ import { useAmountOut } from "../../lib/hooks/useAmountOut";
 import { Call, CallData } from "starknet";
 import { ADDRESSES } from "../../lib/utils/constants";
 import { useSendTransaction } from "../../lib/hooks/useSendTransaction";
+import { TokenTransfer } from "@lib/components/connect/review-modal";
 
 const formSchema = z.object({
   depositAmount: z.string().refine(
@@ -127,11 +128,27 @@ const VesuDeposit: React.FC = () => {
     }
 
     // Deposit calls
-    send();
+    const tokensOut: TokenTransfer[] = [{
+      name: "ETH",
+      amount: (Number(rawAmount) / 1e18).toFixed(4),
+      logo: "https://app.strkfarm.com/zklend/icons/tokens/eth.svg?w=20"
+    }];
+    const tokensIn: TokenTransfer[] = [{
+      name: "vETH",
+      amount: (Number(amountOutRes.amountOut) / 1e18).toFixed(4),
+      logo: "https://app.strkfarm.com/zklend/icons/tokens/eth.svg?w=20"
+    }];
+    send(tokensIn, tokensOut);
   };
   return (
     <>
+      <div className="items-center flex flex-col gap-2">
+        <span className="text-3xl text-white/80">Deposit to</span>
+        <Icons.vesuNamedLogo />
+      </div>
+      <p className="text-[grey] mt-24">This popup showcases the option to perform a one-step ETH deposit into Vesu (Sepolia) using either Bridge Mode or Starknet Mode.</p>
       <div className="mt-5 flex w-full flex-col items-start rounded-md bg-[#3E3970] px-5 py-4 lg:gap-2">
+      
         <div className="flex flex-1 flex-col items-start">
           <p className="text-xs text-white/80">I will deposit</p>
           <Form {...form}>
@@ -223,6 +240,30 @@ const VesuDeposit: React.FC = () => {
           Deposit
         </Button>
       </div>
+      {/* <Dialog.Root>
+        <Dialog.Trigger>Open</Dialog.Trigger>
+        <Dialog.Portal>
+          <Dialog.Overlay className="DialogOverlay" />
+          <Dialog.Content className="DialogContent">
+            <Dialog.Title className="DialogTitle">Connect</Dialog.Title>
+                    <div>
+                        <div style={{width: '50%', float: 'left'}}>
+                            <h3>Connect Starknet</h3>
+                            <p>{addressDestination ? `Connected: ${addressDestination}` : "Not connected"}</p>
+                        </div>
+                        <div style={{width: '50%', float: 'left'}}>
+                            <h3>Connect EVM</h3>
+                            <p>{addressSource ? `Connected: ${addressSource}` : "Not connected"}</p>
+                        </div>
+                    </div>
+            <Dialog.Close asChild>
+              <button className="IconButton" aria-label="Close">
+                X
+              </button>
+            </Dialog.Close>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root> */}
       <div className="text-[grey]">Amount you get: {(Number(amountOutRes.amountOut) / 1e18).toFixed(8)} ETH</div>
       <div className="text-[grey]">Service Fee: {(Number(amountOutRes.fee) / 1e18).toFixed(8)} ETH</div>
     </>

@@ -1,6 +1,7 @@
 import { Chain as ChainSN } from "@starknet-react/chains";
 import { useState, createContext, useContext, ReactNode } from "react";
 import { sepolia as sepoliaSN } from "@starknet-react/chains";
+import { ReviewModalProps } from "@lib/components/connect/review-modal";
 
 /**
  * The mode of interaction with the Starknet DApp.
@@ -24,7 +25,9 @@ interface SharedContext {
   isModeSwitchedManually: boolean;
   setModeSwitchedManually: (value: boolean) => void;
   chains: ChainsConfig,
-  setChains: (value: ChainsConfig) => void
+  setChains: (value: ChainsConfig) => void,
+  reviewModalProps: ReviewModalProps;
+  setReviewModalProps: (value: ReviewModalProps) => void;
 }
 
 const SharedStateContext = createContext({
@@ -35,7 +38,14 @@ const SharedStateContext = createContext({
   chains: {
     starknet: sepoliaSN
   },
-  setChains: () => {}
+  setChains: () => {},
+  reviewModalProps: {
+    isOpen: false,
+    tokensIn: [],
+    tokensOut: [],
+    onContinue: () => {}
+  },
+  setReviewModalProps: () => {}
 } as SharedContext);
 
 export const SharedStateProvider = ({ children }: { children: ReactNode }) => {
@@ -44,9 +54,15 @@ export const SharedStateProvider = ({ children }: { children: ReactNode }) => {
   const [chains, setChains] = useState<ChainsConfig>({
     starknet: sepoliaSN
   });
+  const [reviewModalProps, setReviewModalProps] = useState<ReviewModalProps>({
+    isOpen: false,
+    tokensIn: [],
+    tokensOut: [],
+    onContinue: () => {}
+  });
 
   return (
-    <SharedStateContext.Provider value={{ mode, chains, setChains, setMode, isModeSwitchedManually, setModeSwitchedManually }}>
+    <SharedStateContext.Provider value={{ mode, chains, reviewModalProps, setReviewModalProps, setChains, setMode, isModeSwitchedManually, setModeSwitchedManually }}>
       {children}
     </SharedStateContext.Provider>
   );

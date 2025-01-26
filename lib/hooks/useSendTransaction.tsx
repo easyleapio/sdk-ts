@@ -2,12 +2,13 @@ import { useSendTransaction as useSendTransactionSN } from "@starknet-react/core
 import { Call, hash, num } from "starknet";
 import { useSendTransaction as useSendTransactionEVM } from "wagmi"; 
 import useMode from "./useMode";
-import { InteractionMode } from "./SharedState";
+import { InteractionMode, useSharedState } from "./SharedState";
 import { encodeFunctionData } from "viem";
 import { useSourceBridgeInfo } from "./useBalance";
 import { useAccount } from "./useAccount";
 import { useEffect, useMemo } from "react";
 import { ADDRESSES, ZERO_ADDRESS_EVM } from "../../lib/utils/constants";
+import { TokenTransfer } from "@lib/components/connect/review-modal";
 
 export interface UseSendTransactionArgs {
   calls?: Call[],
@@ -136,8 +137,21 @@ export function useSendTransaction(props: UseSendTransactionArgs) {
     }
   }
 
+  const context = useSharedState();
+  function openReviewMoal(tokensIn: TokenTransfer[], tokensOut: TokenTransfer[]) {
+    if (mode == InteractionMode.Bridge) {
+      context.setReviewModalProps({
+        isOpen: true,
+        tokensIn,
+        tokensOut,
+        onContinue: send
+      });
+    } else {
+      send();
+    }
+  }
   return {
-    send,
+    send: openReviewMoal,
     error: errorSN || errorEVM
   }
 }
