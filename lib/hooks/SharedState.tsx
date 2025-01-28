@@ -1,7 +1,6 @@
-import { Chain as ChainSN } from "@starknet-react/chains";
-import { useState, createContext, useContext, ReactNode } from "react";
-import { sepolia as sepoliaSN } from "@starknet-react/chains";
 import { ReviewModalProps } from "@lib/components/connect/review-modal";
+import { Chain as ChainSN, sepolia as sepoliaSN } from "@starknet-react/chains";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 /**
  * The mode of interaction with the Starknet DApp.
@@ -10,13 +9,13 @@ import { ReviewModalProps } from "@lib/components/connect/review-modal";
  * None mode is used when no action is being performed (happens when no account is connected)
  */
 export enum InteractionMode {
-  Bridge = 'Bridge',
-  Starknet = 'Starknet',
-  None = 'None'
+  Bridge = "Bridge",
+  Starknet = "Starknet",
+  None = "None",
 }
 
 export interface ChainsConfig {
-  starknet: ChainSN
+  starknet: ChainSN;
 }
 
 interface SharedContext {
@@ -24,10 +23,12 @@ interface SharedContext {
   setMode: (value: InteractionMode) => void;
   isModeSwitchedManually: boolean;
   setModeSwitchedManually: (value: boolean) => void;
-  chains: ChainsConfig,
-  setChains: (value: ChainsConfig) => void,
+  chains: ChainsConfig;
+  setChains: (value: ChainsConfig) => void;
   reviewModalProps: ReviewModalProps;
   setReviewModalProps: (value: ReviewModalProps) => void;
+  connectWalletModalOpen: boolean;
+  setConnectWalletModalOpen: (value: boolean) => void;
 }
 
 const SharedStateContext = createContext({
@@ -36,33 +37,49 @@ const SharedStateContext = createContext({
   isModeSwitchedManually: false,
   setModeSwitchedManually: () => {},
   chains: {
-    starknet: sepoliaSN
+    starknet: sepoliaSN,
   },
   setChains: () => {},
   reviewModalProps: {
     isOpen: false,
     tokensIn: [],
     tokensOut: [],
-    onContinue: () => {}
+    onContinue: () => {},
   },
-  setReviewModalProps: () => {}
+  setReviewModalProps: () => {},
+  connectWalletModalOpen: false,
+  setConnectWalletModalOpen: () => {},
 } as SharedContext);
 
 export const SharedStateProvider = ({ children }: { children: ReactNode }) => {
   const [mode, setMode] = useState(InteractionMode.None);
   const [isModeSwitchedManually, setModeSwitchedManually] = useState(false);
   const [chains, setChains] = useState<ChainsConfig>({
-    starknet: sepoliaSN
+    starknet: sepoliaSN,
   });
   const [reviewModalProps, setReviewModalProps] = useState<ReviewModalProps>({
     isOpen: false,
     tokensIn: [],
     tokensOut: [],
-    onContinue: () => {}
+    onContinue: () => {},
   });
+  const [connectWalletModalOpen, setConnectWalletModalOpen] = useState(false);
 
   return (
-    <SharedStateContext.Provider value={{ mode, chains, reviewModalProps, setReviewModalProps, setChains, setMode, isModeSwitchedManually, setModeSwitchedManually }}>
+    <SharedStateContext.Provider
+      value={{
+        mode,
+        chains,
+        reviewModalProps,
+        setReviewModalProps,
+        setChains,
+        setMode,
+        isModeSwitchedManually,
+        setModeSwitchedManually,
+        connectWalletModalOpen,
+        setConnectWalletModalOpen,
+      }}
+    >
       {children}
     </SharedStateContext.Provider>
   );
@@ -77,4 +94,3 @@ export const useSharedState = () => {
 
   return context;
 };
-
