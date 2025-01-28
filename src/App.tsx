@@ -1,7 +1,7 @@
 import Hero from "@/components/hero";
+import { DemoSection } from "./components/demo-section";
 import MaxWidthWrapper from "./components/max-width-wrapper";
 import Navbar from "./components/navbar";
-import { DemoSection } from "./components/demo-section";
 
 function App() {
   // const balanceInfo = useBalance({
@@ -10,10 +10,17 @@ function App() {
   // });
 
   return (
-    <div className="flex h-screen w-full flex-col items-center justify-center overflow-hidden bg-[#211D31] font-dmSans">
-      <MaxWidthWrapper className="min-h-screen">
-        <Navbar />
-        {/* <Hero /> */}
+    <div className="flex h-full w-full flex-col items-center justify-center bg-[#211D31] font-dmSans">
+      <img
+        src="/hero/bg-grid-pattern.svg"
+        className="pointer-events-none absolute right-0 top-0 z-0 select-none"
+        alt="bg-grid-pattern"
+      />
+
+      <Navbar />
+
+      <MaxWidthWrapper>
+        <Hero />
         <DemoSection />
         {/* <h1>StarkPull</h1>
       <h3>Use Starknet dApps with funds on L1</h3>

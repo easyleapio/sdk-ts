@@ -25,11 +25,11 @@ const Switch = React.forwardRef<
       <Icons.starknetLogo className="-ml-1.5 -mt-1.5 block size-10 group-data-[state=checked]:hidden" />
     </SwitchPrimitives.Thumb>
 
-    <span className="absolute left-[40%] hidden -translate-x-1/2 text-sm font-semibold text-[#211d31] peer-data-[state=checked]/thumb:block">
+    <span className="absolute left-[40%] hidden -translate-x-1/2 text-sm font-semibold text-[#b5abdf] peer-data-[state=checked]/thumb:block">
       Bridge
     </span>
 
-    <span className="absolute left-[63%] block -translate-x-1/2 text-sm font-semibold text-[#211d31] peer-data-[state=checked]/thumb:hidden">
+    <span className="absolute left-[63%] block -translate-x-1/2 text-sm font-semibold text-[#b5abdf] peer-data-[state=checked]/thumb:hidden">
       Starknet
     </span>
   </SwitchPrimitives.Root>
