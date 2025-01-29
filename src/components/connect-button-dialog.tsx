@@ -187,15 +187,18 @@ const ConnectButtonDialog: React.FC = () => {
 
   return (
     <div
-      className={cn("z-10 flex items-center gap-4 rounded-2xl", {
-        "bg-[#1C182B] py-2 pl-5 pr-3": addressSource || addressDestination,
-      })}
+      className={cn(
+        "z-10 flex flex-col items-center gap-4 rounded-2xl md:flex-row",
+        {
+          "bg-[#1C182B] py-2 pl-5 pr-3": addressSource || addressDestination,
+        },
+      )}
     >
       <Dialog
         open={sharedState.connectWalletModalOpen}
         onOpenChange={sharedState.setConnectWalletModalOpen}
       >
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col items-center gap-4 md:flex-row">
           <DialogTrigger asChild>
             <div className="w-full font-firaCode">
               {!addressSource && !addressDestination && (
@@ -285,7 +288,7 @@ const ConnectButtonDialog: React.FC = () => {
         </div>
 
         <DialogContent
-          className="max-h-[100vh] overflow-y-auto overflow-x-hidden border border-[#675E99] bg-[#211D31] font-dmSans sm:max-w-[425px] lg:max-h-none"
+          className="max-h-[100vh] overflow-y-auto overflow-x-hidden border border-[#675E99] bg-[#211D31] p-2 py-4 font-dmSans sm:max-w-[425px] md:p-6 lg:max-h-none"
           closeClassName="text-[#B9AFF1]"
         >
           <DialogHeader>
@@ -305,7 +308,7 @@ const ConnectButtonDialog: React.FC = () => {
                   <p className="text-xs font-medium text-[#EDDFFDCC]/60">
                     Connected to {connector?.name}
                   </p>
-                  <Button className="flex w-full items-center justify-between rounded-lg bg-[#b5abdf] !font-firaCode font-semibold text-black hover:bg-[#9489c2] [&_svg]:pointer-events-auto">
+                  <Button className="flex w-[98.2%] items-center rounded-lg bg-[#b5abdf] !font-firaCode font-semibold text-black hover:bg-[#9489c2] md:w-full md:justify-between [&_svg]:pointer-events-auto">
                     <div className="flex items-center justify-start gap-3">
                       <span
                         className={cn("rounded-full bg-black p-1", {
@@ -374,7 +377,7 @@ const ConnectButtonDialog: React.FC = () => {
                     Connected to {connectedEvmWalletName}
                   </p>
 
-                  <Button className="flex w-full items-center justify-between rounded-lg bg-[#b5abdf] !font-firaCode font-semibold text-black hover:bg-[#9489c2] [&_svg]:pointer-events-auto">
+                  <Button className="flex w-[98.2%] items-center justify-between rounded-lg bg-[#b5abdf] !font-firaCode font-semibold text-black hover:bg-[#9489c2] md:w-full [&_svg]:pointer-events-auto">
                     <div className="flex items-center justify-start gap-3">
                       <span className="rounded-full bg-black p-1">
                         {connectedEvmWalletName &&
@@ -394,7 +397,7 @@ const ConnectButtonDialog: React.FC = () => {
               )}
 
               {(addressSource || addressDestination) && (
-                <DialogTrigger className="mt-8 w-full">
+                <DialogTrigger className="mt-8 w-[98.2%] md:w-full">
                   <Button className="w-full rounded-lg bg-[#b5abdf] font-semibold text-black hover:bg-[#9489c2]">
                     Done
                   </Button>

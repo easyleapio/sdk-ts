@@ -20,11 +20,12 @@ const Navbar: React.FC = () => {
 
   return (
     <header
-      className={cn("sticky top-0 z-50 w-full px-3 py-4", {
-        "border-b border-b-[#0E0A1E] shadow-sm backdrop-blur-2xl": isScrolled,
+      className={cn("top-0 z-50 w-full px-3 py-4 md:sticky", {
+        "md:border-b md:border-b-[#0E0A1E] md:shadow-sm md:backdrop-blur-2xl":
+          isScrolled,
       })}
     >
-      <div className="mx-auto flex w-[min(83rem,_100%-2rem)] items-center justify-between">
+      <div className="mx-auto flex w-[min(83rem,_100%-2rem)] flex-col items-center justify-between gap-4 md:flex-row md:gap-0">
         <Icons.namedLogo />
 
         <ConnectButtonDialog />

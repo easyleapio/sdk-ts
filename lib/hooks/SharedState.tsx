@@ -29,8 +29,6 @@ interface SharedContext {
   setReviewModalProps: (value: ReviewModalProps) => void;
   connectWalletModalOpen: boolean;
   setConnectWalletModalOpen: (value: boolean) => void;
-  isReviewModalOpen: boolean;
-  setIsReviewModalOpen: (value: boolean) => void;
 
   isTxnPopoverOpen: boolean;
   setIsTxnPopoverOpen: (value: boolean) => void;
@@ -54,8 +52,6 @@ const SharedStateContext = createContext({
   setReviewModalProps: () => {},
   connectWalletModalOpen: false,
   setConnectWalletModalOpen: () => {},
-  isReviewModalOpen: false,
-  setIsReviewModalOpen: () => {},
 
   isTxnPopoverOpen: false,
   setIsTxnPopoverOpen: () => {},
@@ -82,7 +78,6 @@ export const SharedStateProvider = ({
 
   const [connectWalletModalOpen, setConnectWalletModalOpen] =
     React.useState(false);
-  const [isReviewModalOpen, setIsReviewModalOpen] = React.useState(false);
 
   const [isTxnPopoverOpen, setIsTxnPopoverOpen] = React.useState(false);
 
@@ -99,8 +94,6 @@ export const SharedStateProvider = ({
         setModeSwitchedManually,
         connectWalletModalOpen,
         setConnectWalletModalOpen,
-        isReviewModalOpen,
-        setIsReviewModalOpen,
         isTxnPopoverOpen,
         setIsTxnPopoverOpen,
       }}
