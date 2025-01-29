@@ -1,6 +1,6 @@
 import { ReviewModalProps } from "@lib/components/connect/review-modal";
 import { Chain as ChainSN, sepolia as sepoliaSN } from "@starknet-react/chains";
-import { createContext, ReactNode, useContext, useState } from "react";
+import React, { createContext } from "react";
 
 /**
  * The mode of interaction with the Starknet DApp.
@@ -29,6 +29,8 @@ interface SharedContext {
   setReviewModalProps: (value: ReviewModalProps) => void;
   connectWalletModalOpen: boolean;
   setConnectWalletModalOpen: (value: boolean) => void;
+  isReviewModalOpen: boolean;
+  setIsReviewModalOpen: (value: boolean) => void;
 }
 
 const SharedStateContext = createContext({
@@ -49,21 +51,32 @@ const SharedStateContext = createContext({
   setReviewModalProps: () => {},
   connectWalletModalOpen: false,
   setConnectWalletModalOpen: () => {},
+  isReviewModalOpen: false,
+  setIsReviewModalOpen: () => {},
 } as SharedContext);
 
-export const SharedStateProvider = ({ children }: { children: ReactNode }) => {
-  const [mode, setMode] = useState(InteractionMode.None);
-  const [isModeSwitchedManually, setModeSwitchedManually] = useState(false);
-  const [chains, setChains] = useState<ChainsConfig>({
+export const SharedStateProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [mode, setMode] = React.useState(InteractionMode.None);
+  const [isModeSwitchedManually, setModeSwitchedManually] =
+    React.useState(false);
+  const [chains, setChains] = React.useState<ChainsConfig>({
     starknet: sepoliaSN,
   });
-  const [reviewModalProps, setReviewModalProps] = useState<ReviewModalProps>({
-    isOpen: false,
-    tokensIn: [],
-    tokensOut: [],
-    onContinue: () => {},
-  });
-  const [connectWalletModalOpen, setConnectWalletModalOpen] = useState(false);
+  const [reviewModalProps, setReviewModalProps] =
+    React.useState<ReviewModalProps>({
+      isOpen: false,
+      tokensIn: [],
+      tokensOut: [],
+      onContinue: () => {},
+    });
+
+  const [connectWalletModalOpen, setConnectWalletModalOpen] =
+    React.useState(false);
+  const [isReviewModalOpen, setIsReviewModalOpen] = React.useState(false);
 
   return (
     <SharedStateContext.Provider
@@ -78,6 +91,8 @@ export const SharedStateProvider = ({ children }: { children: ReactNode }) => {
         setModeSwitchedManually,
         connectWalletModalOpen,
         setConnectWalletModalOpen,
+        isReviewModalOpen,
+        setIsReviewModalOpen,
       }}
     >
       {children}
@@ -86,7 +101,7 @@ export const SharedStateProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useSharedState = () => {
-  const context = useContext(SharedStateContext);
+  const context = React.useContext(SharedStateContext);
 
   if (!context) {
     throw new Error("useSharedState must be used within a SharedStateProvider");

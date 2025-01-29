@@ -1,4 +1,5 @@
 import Hero from "@/components/hero";
+import { ReviewModal } from "../lib/components/connect/review-modal";
 import { DemoSection } from "./components/demo-section";
 import MaxWidthWrapper from "./components/max-width-wrapper";
 import Navbar from "./components/navbar";
@@ -18,10 +19,12 @@ function App() {
       />
 
       <Navbar />
+      <ReviewModal />
 
       <MaxWidthWrapper>
         <Hero />
         <DemoSection />
+
         {/* <h1>StarkPull</h1>
       <h3>Use Starknet dApps with funds on L1</h3>
 
