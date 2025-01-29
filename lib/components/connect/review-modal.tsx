@@ -49,8 +49,13 @@ export function ReviewModal() {
       //     isOpen: !value,
       //   });
       // }}
-      open={context.isReviewModalOpen}
-      onOpenChange={context.setIsReviewModalOpen}
+      open={context.reviewModalProps.isOpen}
+      onOpenChange={(value) => {
+        context.setReviewModalProps({
+          ...context.reviewModalProps,
+          isOpen: value,
+        });
+      }}
     >
       <DialogTrigger className="invisible"></DialogTrigger>
 
