@@ -151,7 +151,18 @@ const VesuDeposit: React.FC = () => {
         logo: "https://app.strkfarm.com/zklend/icons/tokens/eth.svg?w=20",
       },
     ];
-    send(tokensIn, tokensOut);
+
+    sharedState.setIsReviewModalOpen(true);
+
+    sharedState.setReviewModalProps({
+      isOpen: true,
+      tokensIn,
+      tokensOut,
+      onContinue: () => {
+        send(tokensIn, tokensOut);
+        sharedState.setIsReviewModalOpen(false);
+      },
+    });
   };
 
   return (
@@ -249,7 +260,7 @@ const VesuDeposit: React.FC = () => {
         </div>
 
         <div className="mt-5 w-full">
-          {addressDestination && addressSource ? (
+          {addressDestination || addressSource ? (
             <Button
               type="submit"
               disabled={

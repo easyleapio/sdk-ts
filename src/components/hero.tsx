@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Icons } from "./Icons";
+// import { Icons } from "./Icons";
 import { Button } from "./ui/button";
 
 const Hero: React.FC = () => {
@@ -33,7 +33,7 @@ const Hero: React.FC = () => {
           </p>
         </div>
 
-        <div className="mt-6">
+        <a className="mt-6" href="#tryit">
           <Button
             style={{
               background:
@@ -43,9 +43,9 @@ const Hero: React.FC = () => {
           >
             Try it out now
           </Button>
-        </div>
+        </a>
 
-        <div className="mt-32 space-y-4">
+        {/* <div className="mt-32 space-y-4">
           <p className="text-sm font-medium leading-[18.59px] text-[#DADADA]">
             DApps which already integrated us
           </p>
@@ -53,7 +53,7 @@ const Hero: React.FC = () => {
             <Icons.endurNamedLogo />
             <Icons.vesuNamedLogo />
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="pointer-events-none z-10 -mt-32 select-none">

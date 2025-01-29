@@ -29,7 +29,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { toast } from "@/hooks/use-toast";
+import { toast, useToast } from "@/hooks/use-toast";
 import { cn, shortAddress } from "../../lib/utils";
 
 import { InteractionMode, useSharedState } from "../../lib/hooks/SharedState";
@@ -45,6 +45,8 @@ const ConnectButtonDialog: React.FC = () => {
 
   const { disconnect: disconnectSN } = useDisconnectSN();
   const { disconnect: disconnectWagmi } = useDisconnectWagmi();
+
+  const { dismiss } = useToast();
 
   const { connector } = useConnectSN();
 
@@ -164,7 +166,16 @@ const ConnectButtonDialog: React.FC = () => {
     if (addressSource && !addressDestination) {
       disconnectWagmi();
     }
-  }, [addressSource, addressDestination]);
+
+    if (mode === InteractionMode.Bridge) {
+      dismiss();
+      toast({
+        title: "Bridge mode is enabled",
+      });
+    } else {
+      dismiss();
+    }
+  }, [addressSource, addressDestination, mode]);
 
   const connectedEvmWalletName = localStorage.getItem("STARKPULL_WALLET_EVM");
 
@@ -191,7 +202,7 @@ const ConnectButtonDialog: React.FC = () => {
               )}
 
               {mode == InteractionMode.Starknet && (
-                <Button className="mx-auto flex w-fit items-center justify-start gap-3 rounded-xl border-2 border-[#B9AFF1] bg-transparent font-medium text-[#B9AFF1] hover:bg-transparent">
+                <Button className="mx-auto flex w-fit items-center justify-start gap-3 rounded-xl border-2 border-[#443f54] bg-transparent font-medium text-[#B9AFF1] hover:bg-transparent">
                   <span className="rounded-full bg-[#fff] p-1">
                     {getWalletIcon(connector?.id ?? "braavos")}
                   </span>
@@ -240,7 +251,12 @@ const ConnectButtonDialog: React.FC = () => {
                       );
                       sharedState.setModeSwitchedManually(true);
                     }}
-                    className="h-9 w-28 border-2 border-[#b5abdf] font-firaCode"
+                    className={cn(
+                      "h-9 w-28 border-2 border-[#b5abdf] font-firaCode",
+                      {
+                        "border-[#443f54]": mode == InteractionMode.Starknet,
+                      },
+                    )}
                   />
                 </TooltipTrigger>
                 <TooltipContent className="mr-5 mt-2 max-w-[20rem] border border-[#211d31] !bg-[#b5abdf] px-4 py-2 text-[#211d31]">

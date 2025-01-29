@@ -2,7 +2,10 @@ import VesuDeposit from "./vesu-deposit";
 
 export const DemoSection: React.FC = () => {
   return (
-    <div className="flex h-full min-h-screen w-full items-center justify-between">
+    <div
+      className="flex h-full min-h-screen w-full items-center justify-between"
+      id="tryit"
+    >
       <div className="relative z-10 flex flex-col items-center gap-3">
         <h1 className="text-[24px] font-bold leading-[28.8px] text-[#DADADA]">
           Benefits

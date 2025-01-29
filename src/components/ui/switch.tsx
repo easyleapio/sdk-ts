@@ -22,7 +22,7 @@ const Switch = React.forwardRef<
       )}
     >
       <Icons.ethereumLogo className="hidden size-7 group-data-[state=checked]:block" />
-      <Icons.starknetLogo className="-ml-1.5 -mt-1.5 block size-10 group-data-[state=checked]:hidden" />
+      <Icons.starknetLogo className="-ml-px -mt-px block size-[30px] group-data-[state=checked]:hidden" />
     </SwitchPrimitives.Thumb>
 
     <span className="absolute left-[40%] hidden -translate-x-1/2 text-sm font-semibold text-[#b5abdf] peer-data-[state=checked]/thumb:block">
