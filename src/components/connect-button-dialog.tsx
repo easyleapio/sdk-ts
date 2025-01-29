@@ -2,8 +2,8 @@ import {
   useConnect as useConnectSN,
   useDisconnect as useDisconnectSN,
 } from "@starknet-react/core";
-import { MailIcon, X } from "lucide-react";
-import React, { useEffect } from "react";
+import { Loader2, MailIcon, X } from "lucide-react";
+import React from "react";
 import {
   useConnect as useConnectWagmi,
   useDisconnect as useDisconnectWagmi,
@@ -24,18 +24,24 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { toast, useToast } from "@/hooks/use-toast";
-import { cn, shortAddress } from "../../lib/utils";
 
 import { InteractionMode, useSharedState } from "../../lib/hooks/SharedState";
 import { useAccount } from "../../lib/hooks/useAccount";
 import useMode from "../../lib/hooks/useMode";
+import { cn, shortAddress } from "../../lib/utils";
 import { Icons } from "./Icons";
+import { ScrollArea } from "./ui/scroll-area";
 import { Switch } from "./ui/switch";
 
 const ConnectButtonDialog: React.FC = () => {
@@ -50,7 +56,7 @@ const ConnectButtonDialog: React.FC = () => {
 
   const { connector } = useConnectSN();
 
-  useEffect(() => {
+  React.useEffect(() => {
     console.log("useAccount22 mode", mode);
   }, [mode]);
 
@@ -181,7 +187,7 @@ const ConnectButtonDialog: React.FC = () => {
 
   return (
     <div
-      className={cn("z-10 rounded-2xl", {
+      className={cn("z-10 flex items-center gap-4 rounded-2xl", {
         "bg-[#1C182B] py-2 pl-5 pr-3": addressSource || addressDestination,
       })}
     >
@@ -398,6 +404,435 @@ const ConnectButtonDialog: React.FC = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {(addressDestination || addressDestination) && (
+        <Popover
+          open={sharedState.isTxnPopoverOpen}
+          onOpenChange={sharedState.setIsTxnPopoverOpen}
+        >
+          <PopoverTrigger>
+            <div className="rounded-full bg-[#35314F] p-2">
+              <Icons.historyIcon className="shrink-0" />
+            </div>
+          </PopoverTrigger>
+          <PopoverContent className="mr-[5.37rem] mt-4 w-[484px] border border-[#675E99] bg-[#1C182B] px-8 py-6 font-dmSans">
+            <h4 className="flex w-full items-center justify-between text-lg font-bold text-[#DADADA]">
+              Transfering{" "}
+              <Icons.crossIcon
+                className="cursor-pointer"
+                onClick={() => sharedState.setIsTxnPopoverOpen(false)}
+              />
+            </h4>
+
+            <ScrollArea className="mt-5 h-[40vh]">
+              <Accordion type="single" collapsible>
+                <AccordionItem
+                  value="txn-1"
+                  className="mt-2 rounded-xl border-0 bg-[#B9AFF108] px-4 py-2 text-[#B9AFF1]"
+                >
+                  <AccordionTrigger
+                    className="w-full items-start px-2.5 py-1 hover:no-underline"
+                    customChevron={<Icons.chevronIcon className="size-5" />}
+                  >
+                    <div className="flex w-full flex-col items-center gap-6">
+                      <div className="flex w-full items-center gap-8">
+                        <div className="flex flex-col items-start gap-0.5">
+                          <p className="flex items-center gap-1 text-base text-[#B9AFF1]">
+                            <img
+                              src="/tokens/eth.svg"
+                              alt="eth logo"
+                              className="size-5 shrink-0"
+                            />
+                            Ethereum
+                          </p>
+                          <span className="text-xs text-[#EDDFFDCC]">
+                            Sepolia
+                          </span>
+                        </div>
+
+                        <Icons.arrowRight className="!rotate-0" />
+
+                        <div className="flex flex-col items-start gap-0.5">
+                          <p className="flex items-center gap-1 text-base text-[#B9AFF1]">
+                            <img
+                              src="/tokens/strk.svg"
+                              alt="strk logo"
+                              className="size-5 shrink-0"
+                            />
+                            Starknet
+                          </p>
+                          <span className="text-xs text-[#EDDFFDCC]">
+                            Sepolia
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex w-full items-center justify-between text-xs text-[#EDDFFDCC]">
+                        27Jan,2025 2:30 PM
+                        <div className="-mr-5 text-nowrap rounded-full bg-[#261A8DCC] p-1 px-2 text-[10px] text-[#B9AFF1]">
+                          Pending Submission
+                        </div>
+                      </div>
+                    </div>
+                  </AccordionTrigger>
+
+                  <AccordionContent className="mx-5 mt-4 border-t border-[#675E9933]">
+                    <div className="mt-5 flex items-center justify-start gap-3">
+                      <div className="flex flex-col items-center justify-center gap-3">
+                        <Icons.checkIcon className="size-6" />
+                        <div className="h-6 w-px rounded-full bg-[#675E9933]" />
+                        <Icons.checkIcon className="size-6" />
+                        <div className="h-6 w-px rounded-full bg-[#675E9933]" />
+                        <Loader2 className="size-6 animate-spin" />
+                      </div>
+
+                      <div className="flex flex-col items-start gap-6">
+                        <div className="group flex cursor-pointer flex-col items-start gap-1">
+                          <p className="flex items-center gap-2 text-base font-bold text-[#FFFFFF]">
+                            Initiated transfer from EVM wallet{" "}
+                            <Icons.externalLinkIcon className="transition-all group-hover:brightness-125" />
+                          </p>
+                          <span className="text-xs text-[#EDDFFDCC]">
+                            The deposit was submitted on Ethereum.
+                          </span>
+                        </div>
+
+                        <div className="group flex cursor-pointer flex-col items-start gap-1">
+                          <p className="flex items-center gap-2 text-base font-bold text-[#FFFFFF]">
+                            Bridging to Starknet
+                            <Icons.externalLinkIcon className="transition-all group-hover:brightness-125" />
+                          </p>
+                          <span className="flex items-center gap-2 text-xs text-[#EDDFFDCC]">
+                            Bridged 1.02{" "}
+                            <Icons.ethereumLogo className="size-4" />
+                          </span>
+                        </div>
+
+                        <div className="group flex cursor-pointer flex-col items-start gap-1">
+                          <p className="flex items-center gap-2 text-base text-[#B9AFF1]">
+                            Transaction Completed
+                            <Icons.externalLinkIcon className="transition-all group-hover:brightness-125" />
+                          </p>
+                          <span className="flex items-center gap-2 text-xs text-[#EDDFFDCC]">
+                            Received 1.02{" "}
+                            <Icons.ethereumLogo className="size-4" />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem
+                  value="txn-2"
+                  className="mt-2 rounded-xl border-0 bg-[#B9AFF108] px-4 py-2 text-[#B9AFF1]"
+                >
+                  <AccordionTrigger
+                    className="w-full items-start px-2.5 py-1 hover:no-underline"
+                    customChevron={<Icons.chevronIcon className="size-5" />}
+                  >
+                    <div className="flex w-full flex-col items-center gap-6">
+                      <div className="flex w-full items-center gap-8">
+                        <div className="flex flex-col items-start gap-0.5">
+                          <p className="flex items-center gap-1 text-base text-[#B9AFF1]">
+                            <img
+                              src="/tokens/eth.svg"
+                              alt="eth logo"
+                              className="size-5 shrink-0"
+                            />
+                            Ethereum
+                          </p>
+                          <span className="text-xs text-[#EDDFFDCC]">
+                            Sepolia
+                          </span>
+                        </div>
+
+                        <Icons.arrowRight className="!rotate-0" />
+
+                        <div className="flex flex-col items-start gap-0.5">
+                          <p className="flex items-center gap-1 text-base text-[#B9AFF1]">
+                            <img
+                              src="/tokens/strk.svg"
+                              alt="strk logo"
+                              className="size-5 shrink-0"
+                            />
+                            Starknet
+                          </p>
+                          <span className="text-xs text-[#EDDFFDCC]">
+                            Sepolia
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex w-full items-center justify-between text-xs text-[#EDDFFDCC]">
+                        27Jan,2025 2:30 PM
+                        <div className="-mr-5 flex items-center gap-2">
+                          <div className="text-nowrap rounded-full bg-[#38EF7D80] p-1 px-2 text-[10px] text-[#000]">
+                            Success
+                          </div>
+                          <div className="rounded-3xl bg-[#35314F] p-1">
+                            <Icons.externalLinkIcon className="size-4" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </AccordionTrigger>
+
+                  <AccordionContent className="mx-5 mt-4 border-t border-[#675E9933]">
+                    <div className="mt-5 flex items-center justify-start gap-3">
+                      <div className="flex flex-col items-center justify-center gap-3">
+                        <Icons.checkIcon className="size-6" />
+                        <div className="h-6 w-px rounded-full bg-[#675E9933]" />
+                        <Icons.checkIcon className="size-6" />
+                        <div className="h-6 w-px rounded-full bg-[#675E9933]" />
+                        <Icons.checkIcon className="size-6" />
+                      </div>
+
+                      <div className="flex flex-col items-start gap-6">
+                        <div className="group flex cursor-pointer flex-col items-start gap-1">
+                          <p className="flex items-center gap-2 text-base font-bold text-[#FFFFFF]">
+                            Initiated transfer from EVM wallet{" "}
+                            <Icons.externalLinkIcon className="transition-all group-hover:brightness-125" />
+                          </p>
+                          <span className="text-xs text-[#EDDFFDCC]">
+                            The deposit was submitted on Ethereum.
+                          </span>
+                        </div>
+
+                        <div className="group flex cursor-pointer flex-col items-start gap-1">
+                          <p className="flex items-center gap-2 text-base font-bold text-[#FFFFFF]">
+                            Bridging to Starknet
+                            <Icons.externalLinkIcon className="transition-all group-hover:brightness-125" />
+                          </p>
+                          <span className="flex items-center gap-2 text-xs text-[#EDDFFDCC]">
+                            Bridged 1.02{" "}
+                            <Icons.ethereumLogo className="size-4" />
+                          </span>
+                        </div>
+
+                        <div className="group flex cursor-pointer flex-col items-start gap-1">
+                          <p className="flex items-center gap-2 text-base font-bold text-[#FFFFFF]">
+                            Transaction Completed
+                            <Icons.externalLinkIcon className="transition-all group-hover:brightness-125" />
+                          </p>
+                          <span className="flex items-center gap-2 text-xs text-[#EDDFFDCC]">
+                            Received 1.02{" "}
+                            <Icons.ethereumLogo className="size-4" />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem
+                  value="txn-3"
+                  className="mt-2 rounded-xl border-0 bg-[#B9AFF108] px-4 py-2 text-[#B9AFF1]"
+                >
+                  <AccordionTrigger
+                    className="w-full items-start px-2.5 py-1 hover:no-underline"
+                    customChevron={<Icons.chevronIcon className="size-5" />}
+                  >
+                    <div className="flex w-full flex-col items-center gap-6">
+                      <div className="flex w-full items-center gap-8">
+                        <div className="flex flex-col items-start gap-0.5">
+                          <p className="flex items-center gap-1 text-base text-[#B9AFF1]">
+                            <img
+                              src="/tokens/eth.svg"
+                              alt="eth logo"
+                              className="size-5 shrink-0"
+                            />
+                            Ethereum
+                          </p>
+                          <span className="text-xs text-[#EDDFFDCC]">
+                            Sepolia
+                          </span>
+                        </div>
+
+                        <Icons.arrowRight className="!rotate-0" />
+
+                        <div className="flex flex-col items-start gap-0.5">
+                          <p className="flex items-center gap-1 text-base text-[#B9AFF1]">
+                            <img
+                              src="/tokens/strk.svg"
+                              alt="strk logo"
+                              className="size-5 shrink-0"
+                            />
+                            Starknet
+                          </p>
+                          <span className="text-xs text-[#EDDFFDCC]">
+                            Sepolia
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex w-full items-center justify-between text-xs text-[#EDDFFDCC]">
+                        27Jan,2025 2:30 PM
+                        <div className="-mr-5 flex items-center gap-2">
+                          <div className="text-nowrap rounded-full bg-[#38EF7D80] p-1 px-2 text-[10px] text-[#000]">
+                            Success
+                          </div>
+                          <div className="rounded-3xl bg-[#35314F] p-1">
+                            <Icons.externalLinkIcon className="size-4" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </AccordionTrigger>
+
+                  <AccordionContent className="mx-5 mt-4 border-t border-[#675E9933]">
+                    <div className="mt-5 flex items-center justify-start gap-3">
+                      <div className="flex flex-col items-center justify-center gap-3">
+                        <Icons.checkIcon className="size-6" />
+                        <div className="h-6 w-px rounded-full bg-[#675E9933]" />
+                        <Icons.checkIcon className="size-6" />
+                        <div className="h-6 w-px rounded-full bg-[#675E9933]" />
+                        <Icons.checkIcon className="size-6" />
+                      </div>
+
+                      <div className="flex flex-col items-start gap-6">
+                        <div className="group flex cursor-pointer flex-col items-start gap-1">
+                          <p className="flex items-center gap-2 text-base font-bold text-[#FFFFFF]">
+                            Initiated transfer from EVM wallet{" "}
+                            <Icons.externalLinkIcon className="transition-all group-hover:brightness-125" />
+                          </p>
+                          <span className="text-xs text-[#EDDFFDCC]">
+                            The deposit was submitted on Ethereum.
+                          </span>
+                        </div>
+
+                        <div className="group flex cursor-pointer flex-col items-start gap-1">
+                          <p className="flex items-center gap-2 text-base font-bold text-[#FFFFFF]">
+                            Bridging to Starknet
+                            <Icons.externalLinkIcon className="transition-all group-hover:brightness-125" />
+                          </p>
+                          <span className="flex items-center gap-2 text-xs text-[#EDDFFDCC]">
+                            Bridged 1.02{" "}
+                            <Icons.ethereumLogo className="size-4" />
+                          </span>
+                        </div>
+
+                        <div className="group flex cursor-pointer flex-col items-start gap-1">
+                          <p className="flex items-center gap-2 text-base font-bold text-[#FFFFFF]">
+                            Transaction Completed
+                            <Icons.externalLinkIcon className="transition-all group-hover:brightness-125" />
+                          </p>
+                          <span className="flex items-center gap-2 text-xs text-[#EDDFFDCC]">
+                            Received 1.02{" "}
+                            <Icons.ethereumLogo className="size-4" />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem
+                  value="txn-4"
+                  className="mt-2 rounded-xl border-0 bg-[#B9AFF108] px-4 py-2 text-[#B9AFF1]"
+                >
+                  <AccordionTrigger
+                    className="w-full items-start px-2.5 py-1 hover:no-underline"
+                    customChevron={<Icons.chevronIcon className="size-5" />}
+                  >
+                    <div className="flex w-full flex-col items-center gap-6">
+                      <div className="flex w-full items-center gap-8">
+                        <div className="flex flex-col items-start gap-0.5">
+                          <p className="flex items-center gap-1 text-base text-[#B9AFF1]">
+                            <img
+                              src="/tokens/eth.svg"
+                              alt="eth logo"
+                              className="size-5 shrink-0"
+                            />
+                            Ethereum
+                          </p>
+                          <span className="text-xs text-[#EDDFFDCC]">
+                            Sepolia
+                          </span>
+                        </div>
+
+                        <Icons.arrowRight className="!rotate-0" />
+
+                        <div className="flex flex-col items-start gap-0.5">
+                          <p className="flex items-center gap-1 text-base text-[#B9AFF1]">
+                            <img
+                              src="/tokens/strk.svg"
+                              alt="strk logo"
+                              className="size-5 shrink-0"
+                            />
+                            Starknet
+                          </p>
+                          <span className="text-xs text-[#EDDFFDCC]">
+                            Sepolia
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex w-full items-center justify-between text-xs text-[#EDDFFDCC]">
+                        27Jan,2025 2:30 PM
+                        <div className="-mr-5 flex items-center gap-2">
+                          <div className="text-nowrap rounded-full bg-[#38EF7D80] p-1 px-2 text-[10px] text-[#000]">
+                            Success
+                          </div>
+                          <div className="rounded-3xl bg-[#35314F] p-1">
+                            <Icons.externalLinkIcon className="size-4" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </AccordionTrigger>
+
+                  <AccordionContent className="mx-5 mt-4 border-t border-[#675E9933]">
+                    <div className="mt-5 flex items-center justify-start gap-3">
+                      <div className="flex flex-col items-center justify-center gap-3">
+                        <Icons.checkIcon className="size-6" />
+                        <div className="h-6 w-px rounded-full bg-[#675E9933]" />
+                        <Icons.checkIcon className="size-6" />
+                        <div className="h-6 w-px rounded-full bg-[#675E9933]" />
+                        <Icons.checkIcon className="size-6" />
+                      </div>
+
+                      <div className="flex flex-col items-start gap-6">
+                        <div className="group flex cursor-pointer flex-col items-start gap-1">
+                          <p className="flex items-center gap-2 text-base font-bold text-[#FFFFFF]">
+                            Initiated transfer from EVM wallet{" "}
+                            <Icons.externalLinkIcon className="transition-all group-hover:brightness-125" />
+                          </p>
+                          <span className="text-xs text-[#EDDFFDCC]">
+                            The deposit was submitted on Ethereum.
+                          </span>
+                        </div>
+
+                        <div className="group flex cursor-pointer flex-col items-start gap-1">
+                          <p className="flex items-center gap-2 text-base font-bold text-[#FFFFFF]">
+                            Bridging to Starknet
+                            <Icons.externalLinkIcon className="transition-all group-hover:brightness-125" />
+                          </p>
+                          <span className="flex items-center gap-2 text-xs text-[#EDDFFDCC]">
+                            Bridged 1.02{" "}
+                            <Icons.ethereumLogo className="size-4" />
+                          </span>
+                        </div>
+
+                        <div className="group flex cursor-pointer flex-col items-start gap-1">
+                          <p className="flex items-center gap-2 text-base font-bold text-[#FFFFFF]">
+                            Transaction Completed
+                            <Icons.externalLinkIcon className="transition-all group-hover:brightness-125" />
+                          </p>
+                          <span className="flex items-center gap-2 text-xs text-[#EDDFFDCC]">
+                            Received 1.02{" "}
+                            <Icons.ethereumLogo className="size-4" />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </ScrollArea>
+          </PopoverContent>
+        </Popover>
+      )}
     </div>
   );
 };

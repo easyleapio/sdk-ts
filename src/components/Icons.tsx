@@ -816,6 +816,132 @@ export const Icons = {
       />
     </svg>
   ),
+  historyIcon: (props: LucideProps) => (
+    <svg
+      {...props}
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M8 12.2002H15"
+        stroke="#B9AFF1"
+        stroke-miterlimit="10"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M8 16.2002H12.38"
+        stroke="#B9AFF1"
+        stroke-miterlimit="10"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M10 6H14C16 6 16 5 16 4C16 2 15 2 14 2H10C9 2 8 2 8 4C8 6 9 6 10 6Z"
+        stroke="#B9AFF1"
+        stroke-miterlimit="10"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M16 4.02002C19.33 4.20002 21 5.43002 21 10V16C21 20 20 22 15 22H9C4 22 3 20 3 16V10C3 5.44002 4.67 4.20002 8 4.02002"
+        stroke="#B9AFF1"
+        stroke-miterlimit="10"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  ),
+  chevronIcon: (props: LucideProps) => (
+    <svg
+      {...props}
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="18" height="18" rx="9" fill="#1C182B" />
+      <path
+        d="M12.96 7.4751L9.70004 10.7351C9.31504 11.1201 8.68504 11.1201 8.30004 10.7351L5.04004 7.4751"
+        stroke="#B9AFF1"
+        stroke-width="1.5"
+        stroke-miterlimit="10"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  ),
+  externalLinkIcon: (props: LucideProps) => (
+    <svg
+      {...props}
+      width="12"
+      height="13"
+      viewBox="0 0 12 13"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M6.5 5.9999L10.6 1.8999"
+        stroke="#B9AFF1"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M11.0001 3.9V1.5H8.6001"
+        stroke="#B9AFF1"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M5.5 1.5H4.5C2 1.5 1 2.5 1 5V8C1 10.5 2 11.5 4.5 11.5H7.5C10 11.5 11 10.5 11 8V7"
+        stroke="#B9AFF1"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  ),
+  checkIcon: (props: LucideProps) => (
+    <svg
+      {...props}
+      width="24"
+      height="25"
+      viewBox="0 0 24 25"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 22.5C17.5 22.5 22 18 22 12.5C22 7 17.5 2.5 12 2.5C6.5 2.5 2 7 2 12.5C2 18 6.5 22.5 12 22.5Z"
+        stroke="#38EF7D"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M7.75 12.4999L10.58 15.3299L16.25 9.66992"
+        stroke="#38EF7D"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  ),
+  crossIcon: (props: LucideProps) => (
+    <svg
+      {...props}
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M11.4731 9.99993L15.4505 13.9774L13.9774 15.4505L9.99993 11.4731L6.02246 15.4505L4.54932 13.9774L8.52679 9.99993L4.54932 6.02246L6.02246 4.54932L9.99993 8.52679L13.9774 4.54932L15.4505 6.02246L11.4731 9.99993Z"
+        fill="#B9AFF1"
+      />
+    </svg>
+  ),
 
   // starknet wallet icons
   braavos: (props: LucideProps) => (
