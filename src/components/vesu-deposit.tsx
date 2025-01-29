@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Info } from "lucide-react";
-import React, { useEffect, useMemo } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { Call, CallData } from "starknet";
 import * as z from "zod";
@@ -16,7 +16,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "@/hooks/use-toast";
-import { TokenTransfer } from "@lib/components/connect/review-modal";
+import {
+  ReviewModal,
+  TokenTransfer,
+} from "../../lib/components/connect/review-modal";
 
 import { useSharedState } from "../../lib/hooks";
 import { useAccount } from "../../lib/hooks/useAccount";
@@ -67,7 +70,7 @@ const VesuDeposit: React.FC = () => {
   const amountOutRes = useAmountOut(rawAmount);
 
   const handleQuickDepositPrice = (percentage: number) => {
-    if (!addressSource || !addressDestination) {
+    if (!addressDestination) {
       return toast({
         description: (
           <div className="flex items-center gap-2">
@@ -100,11 +103,18 @@ const VesuDeposit: React.FC = () => {
     }
   };
 
-  const { send, error } = useSendTransaction({
+  const {
+    send,
+    error,
+    isPending,
+    dataSN,
+    dataEVM: _,
+    isSuccess,
+  } = useSendTransaction({
     calls: getCalls(amountOutRes.amountOut, addressDestination),
     bridgeConfig: {
       l2_token_address:
-        "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+        "0x54d159fa98b0f67b3d3b287aae0340bf595d8f2a96ed99532785aeef08c1ede",
       amount: rawAmount,
     },
   });
@@ -112,20 +122,59 @@ const VesuDeposit: React.FC = () => {
   React.useEffect(() => {
     console.log("useSendTransaction error", error);
 
-    if (error) {
-      toast({
-        description: (
-          <div className="flex items-center gap-2">
-            <Info className="size-5" />
-            {error.message}
-          </div>
-        ),
-      });
-    }
-  }, [error]);
+    (async () => {
+      if (isPending) {
+        toast({
+          description: (
+            <div className="flex items-center gap-2 font-semibold">
+              <Info className="size-5" />
+              Transaction pending...
+            </div>
+          ),
+        });
+      }
+
+      if (error && error.message.toLowerCase().includes("user rejected")) {
+        toast({
+          description: (
+            <div className="flex items-center gap-2 font-semibold">
+              <Info className="size-5" />
+              Transaction declined!
+            </div>
+          ),
+        });
+      } else if (error) {
+        toast({
+          description: (
+            <div className="flex items-center gap-2 font-semibold">
+              <Info className="size-5" />
+              {error.message}
+            </div>
+          ),
+        });
+      }
+
+      if (isSuccess) {
+        toast({
+          itemID: "stake",
+          variant: "complete",
+          duration: 3000,
+          description: (
+            <div className="flex items-center gap-2 bg-[#b5abdf] text-[#1C182B]">
+              <div className="flex flex-col items-start gap-2 text-sm font-medium">
+                <span className="text-[18px] font-semibold">Success 🎉</span>
+                Deposited {form.getValues("depositAmount")} ETH
+              </div>
+            </div>
+          ),
+        });
+        form.reset();
+      }
+    })();
+  }, [dataSN, error, form, isPending, isSuccess]);
 
   // Deposit calls
-  const tokensOut: TokenTransfer[] = useMemo(() => {
+  const tokensOut: TokenTransfer[] = React.useMemo(() => {
     return [
       {
         name: "ETH",
@@ -135,7 +184,7 @@ const VesuDeposit: React.FC = () => {
     ];
   }, [rawAmount]);
 
-  const tokensIn: TokenTransfer[] = useMemo(() => {
+  const tokensIn: TokenTransfer[] = React.useMemo(() => {
     return [
       {
         name: "vETH",
@@ -157,18 +206,29 @@ const VesuDeposit: React.FC = () => {
       });
     }
 
-    send(tokensIn, tokensOut);
+    sharedState.setReviewModalProps({
+      isOpen: true,
+      tokensIn,
+      tokensOut,
+      onContinue: () => {
+        send(tokensIn, tokensOut);
+      },
+    });
+
+    // send(tokensIn, tokensOut);
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full pb-5 md:pb-0">
+      <ReviewModal />
+
       <h2 className="bg-gradient-to-r from-[#FFFFFF] to-[#EC796B] bg-clip-text text-center text-[32px] font-extrabold leading-[38.4px] text-transparent">
         Try it
       </h2>
 
-      <div className="mt-8 flex w-full flex-col items-start rounded-lg border border-[#675E99] bg-[#1C182B] px-12 py-10 shadow-lg lg:gap-2">
+      <div className="mt-8 flex w-full flex-col items-start rounded-lg border border-[#675E99] bg-[#1C182B] px-4 py-3 shadow-lg md:px-12 md:py-10 lg:gap-2">
         <div className="flex flex-1 flex-col items-center">
-          <p className="text-center text-lg font-medium text-[#DADADA]">
+          <p className="text-center text-sm font-medium text-[#DADADA] md:text-lg">
             Perform a one-step ETH deposit from L1 to L2 using either Bridge{" "}
             <br />
             Mode or Starknet Mode.
@@ -209,10 +269,10 @@ const VesuDeposit: React.FC = () => {
 
                 <div className="flex flex-col items-end gap-0.5 text-xs font-medium text-white/60 lg:text-sm">
                   <div className="mt-1.5 flex flex-row-reverse items-center gap-1 text-[#EDDFFD]">
-                    <span className="hidden text-start md:block">Balance</span>
+                    <span className="text-start">Balance</span>
                     <Icons.wallet className="size-3" />
                   </div>
-                  <span className="text-sm font-extrabold text-[#C078FF]">
+                  <span className="text-xs font-extrabold text-[#C078FF] md:text-sm">
                     {balanceInfo?.data?.formatted
                       ? Number(balanceInfo?.data?.formatted).toFixed(2)
                       : "0"}{" "}

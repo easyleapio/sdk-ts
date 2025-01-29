@@ -41,14 +41,6 @@ export function ReviewModal() {
 
   return (
     <Dialog
-      // reviewModalProps state wasn't updating this way so had to create a new separate state
-      // open={context.reviewModalProps.isOpen}
-      // onOpenChange={(value) => {
-      //   context.setReviewModalProps({
-      //     ...context.reviewModalProps,
-      //     isOpen: !value,
-      //   });
-      // }}
       open={context.reviewModalProps.isOpen}
       onOpenChange={(value) => {
         context.setReviewModalProps({
@@ -57,7 +49,7 @@ export function ReviewModal() {
         });
       }}
     >
-      <DialogTrigger className="invisible"></DialogTrigger>
+      <DialogTrigger className=""></DialogTrigger>
 
       <DialogContent
         className="max-h-[100vh] overflow-y-auto overflow-x-hidden border border-[#675E99] bg-[#1C182B] font-dmSans sm:max-w-[425px] lg:max-h-none"
@@ -68,13 +60,17 @@ export function ReviewModal() {
         </h4>
 
         <p className="-mt-2 text-center text-sm font-normal text-[#EDDFFDCC]">
-          You are about to perform the deposit with bridge mode. <br /> Funds
-          are automatically bridged from L1 to L2 and sent to <br />{" "}
+          You are about to perform the deposit with bridge mode.{" "}
+          <br className="hidden md:block" /> Funds are automatically bridged
+          from L1 to L2 and sent to <br className="hidden md:block" />{" "}
           <b className="text-white">Vesu</b> on your behalf.
         </p>
 
-        <div className="flex items-center justify-between">
-          <div className="mt-5 flex flex-col items-start gap-0.5">
+        <div
+          className="mt-5 flex flex-col items-center justify-between md:mt-0 md:flex-row md:!gap-0"
+          style={{ gap: "1rem" }}
+        >
+          <div className="flex flex-col items-start gap-0.5 md:mt-5">
             <p className="flex items-center gap-1 text-base text-[#B9AFF1]">
               <img
                 src="/tokens/eth.svg"
@@ -86,9 +82,10 @@ export function ReviewModal() {
             <span className="text-xs text-[#EDDFFDCC]">Sepolia</span>
           </div>
 
-          <Icons.arrowRight />
+          <Icons.arrowRight className="hidden md:block" />
+          <Icons.arrowRight className="md:hidden" style={{ rotate: "90deg" }} />
 
-          <div className="mt-5 flex flex-col items-start gap-0.5">
+          <div className="flex flex-col items-start gap-0.5 md:mt-5">
             <p className="flex items-center gap-1 text-base text-[#B9AFF1]">
               <img
                 src="/tokens/strk.svg"
@@ -100,7 +97,8 @@ export function ReviewModal() {
             <span className="text-xs text-[#EDDFFDCC]">Sepolia</span>
           </div>
 
-          <Icons.arrowRight />
+          <Icons.arrowRight className="hidden md:block" />
+          <Icons.arrowRight className="md:hidden" style={{ rotate: "90deg" }} />
 
           <div className="flex items-center justify-center">
             <Icons.vesuNamedLogo />

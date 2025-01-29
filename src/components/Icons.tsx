@@ -295,7 +295,7 @@ export const Icons = {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_58_85)">
+      <g clipPath="url(#clip0_58_85)">
         <mask
           id="mask0_58_85"
           maskUnits="userSpaceOnUse"
@@ -308,32 +308,32 @@ export const Icons = {
         </mask>
         <g mask="url(#mask0_58_85)">
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M0 16.3402C0 25.3583 7.32204 32.6803 16.3402 32.6803C25.3583 32.6803 32.6803 25.3583 32.6803 16.3402C32.6803 7.32204 25.3583 0 16.3402 0C7.32204 0 0 7.32204 0 16.3402Z"
             fill="url(#paint0_linear_58_85)"
           />
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M9.14225 12.4928L9.55592 11.2518C9.63866 11.0036 9.84549 10.7968 10.0937 10.714L11.3554 10.321C11.5209 10.259 11.5209 10.0315 11.3554 9.9694L10.1144 9.55573C9.86618 9.47299 9.65934 9.26616 9.5766 9.01795L9.18361 7.75624C9.12156 7.59077 8.89404 7.59077 8.83199 7.75624L8.41832 8.99727C8.33558 9.24547 8.12874 9.45231 7.88054 9.53504L6.61883 9.94872C6.45336 10.0108 6.45336 10.2383 6.61883 10.3003L7.85985 10.714C8.10806 10.7968 8.3149 11.0036 8.39763 11.2518L8.79062 12.5135C8.83199 12.6583 9.0802 12.6583 9.14225 12.4928Z"
             fill="#FAFAFA"
           />
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M29.3709 12.3065C28.8538 11.8308 28.0471 11.5619 27.2612 11.4378C26.4752 11.3343 25.6478 11.3343 24.8618 11.4584C23.2899 11.686 21.842 12.2237 20.601 12.8856C19.9598 13.2166 19.4013 13.5889 18.8222 13.9819C18.5533 14.168 18.2844 14.3955 18.0362 14.6024L17.3123 15.2022C16.5263 15.8848 15.761 16.5053 15.0164 17.0017C14.2718 17.5188 13.5685 17.8911 12.886 18.16C12.2034 18.4289 11.4588 18.5943 10.5073 18.615C9.55587 18.6357 8.43895 18.4909 7.21861 18.2634C5.99827 18.0359 4.73656 17.7049 3.30938 17.4154C3.80579 18.553 4.5504 19.5665 5.50186 20.4972C6.47399 21.4073 7.67365 22.2347 9.24561 22.7725C10.7762 23.3309 12.6998 23.5171 14.4993 23.2275C16.2988 22.9379 17.8914 22.2347 19.1738 21.4487C20.4562 20.642 21.4904 19.7113 22.3798 18.7598C22.628 18.4909 22.7521 18.3461 22.9176 18.1393L23.3933 17.5395C23.7242 17.1672 24.0345 16.7535 24.3654 16.3812C25.0273 15.6159 25.6685 14.8506 26.4131 14.1473C26.7854 13.7957 27.1784 13.4441 27.6541 13.1131C27.8817 12.9477 28.1299 12.8029 28.4194 12.6581C28.709 12.5133 28.9986 12.4099 29.3709 12.3065Z"
             fill="white"
           />
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M29.3709 12.3892C28.8124 11.3137 27.7782 10.3829 26.3924 9.72104C25.0066 9.05916 23.1037 8.70753 21.2008 8.99711C20.27 9.14189 19.36 9.41078 18.5533 9.7624C17.7673 10.114 17.0434 10.5484 16.4436 11.0034C16.1333 11.2309 15.8644 11.4792 15.5748 11.7274L14.8509 12.4306L13.734 13.5682C12.3482 15.0368 10.8176 16.7535 8.31485 17.2706C5.85348 17.767 4.79861 17.3327 3.30938 17.1465C3.57827 17.6843 3.92989 18.2221 4.38493 18.6978C4.83998 19.1735 5.37775 19.6285 6.03963 20.0009C6.37057 20.187 6.7222 20.3732 7.11519 20.5179C7.50818 20.6627 7.92185 20.8075 8.3769 20.8903C9.2663 21.0764 10.2798 21.1385 11.2519 21.035C12.2241 20.9316 13.1548 20.7041 13.9822 20.3732C14.8095 20.0629 15.5128 19.6699 16.154 19.2769C17.4157 18.4703 18.4085 17.5809 19.2359 16.6708C19.6495 16.2157 20.0425 15.7607 20.3942 15.285L20.8078 14.7265C20.9319 14.561 21.056 14.3956 21.2008 14.2508C21.7179 13.6509 22.235 13.1545 22.8555 12.7822C23.476 12.4099 24.3241 12.1204 25.4824 12.0583C26.5993 12.0169 27.923 12.141 29.3709 12.3892Z"
             fill="#DCDCDC"
           />
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M22.7728 23.3931C22.7728 24.4273 23.6001 25.2546 24.6343 25.2546C25.6685 25.2546 26.4959 24.4273 26.4959 23.3931C26.4959 22.3589 25.6685 21.5316 24.6343 21.5316C23.6001 21.5316 22.7728 22.3589 22.7728 23.3931Z"
             fill="white"
           />
@@ -368,8 +368,8 @@ export const Icons = {
           y2="28.285"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#38EF7D" />
-          <stop offset="1" stop-color="#11998E" />
+          <stop stopColor="#38EF7D" />
+          <stop offset="1" stopColor="#11998E" />
         </linearGradient>
         <clipPath id="clip0_58_85">
           <rect width="32.6803" height="32.6803" fill="white" />
@@ -391,14 +391,14 @@ export const Icons = {
         fill="white"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M44.8519 18.8835C46.3293 19.6829 48.697 20.0826 51.9552 20.0826C55.2134 20.0826 57.5053 19.7082 58.8313 18.9594C60.1562 18.2006 60.8186 16.8396 60.8186 14.8765C60.8186 12.7617 60.0497 11.426 58.5118 10.8696C56.9842 10.3029 55.1173 9.92851 52.9114 9.7464C51.0597 9.57429 49.5115 9.35179 48.267 9.0785C47.0325 8.80534 46.4153 8.07677 46.4153 6.89293C46.4153 5.72923 46.815 5.00572 47.6143 4.72243C48.4238 4.43913 49.638 4.29742 51.257 4.29742C53.0986 4.29742 54.5355 4.4846 55.5676 4.85908C56.6097 5.23343 57.1309 6.14917 57.1309 7.6063H60.7732C60.7732 5.35994 60.0497 3.84215 58.6027 3.05292C57.1562 2.25344 54.748 1.85376 51.3785 1.85376C48.4743 1.85376 46.304 2.21304 44.8671 2.93148C43.4302 3.64991 42.7118 4.94 42.7118 6.80187C42.7118 8.88625 43.501 10.2523 45.0796 10.8998C46.658 11.5475 48.5554 11.9624 50.7713 12.1445C52.6635 12.2963 54.1965 12.4936 55.3703 12.7364C56.5541 12.9793 57.1461 13.7584 57.1461 15.0738C57.1461 16.1566 56.716 16.8548 55.856 17.1684C54.9958 17.472 53.7564 17.6237 52.1373 17.6237C50.3565 17.6237 48.9399 17.4213 47.8875 17.0166C46.8455 16.6159 46.3194 15.6547 46.3092 14.1329H42.6511C42.6605 16.5057 43.394 18.0893 44.8519 18.8835Z"
         fill="white"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M40.1359 14.1329C39.9103 15.6048 39.4641 16.7533 38.7971 17.5783C38.0281 18.5193 37.0769 19.177 35.9436 19.5513C34.8103 19.9258 33.0749 20.113 30.7375 20.113C26.933 20.113 24.3628 19.4047 23.0271 17.9881C21.6914 16.5816 21.0237 14.2391 21.0237 10.9606C21.0237 7.64162 21.7016 5.29421 23.0575 3.918C24.4133 2.53179 26.9481 1.83868 30.6617 1.83868C34.4056 1.83868 36.9352 2.54192 38.2506 3.94839C39.566 5.34473 40.2238 7.55056 40.2238 10.566L40.2086 11.5829H24.727C24.8081 14.0114 25.2279 15.6051 25.9869 16.364C26.8469 17.2342 28.4305 17.6693 30.7375 17.6693C32.1643 17.6693 33.1812 17.5681 33.7883 17.3657C34.3954 17.1634 34.9368 16.7434 35.4124 16.1059C35.7863 15.6047 36.0696 14.947 36.2621 14.1329H40.1359ZM35.1392 5.39032C35.9689 6.12889 36.394 7.49497 36.4141 9.4883H24.7422C24.8535 7.51523 25.2836 6.17955 26.0324 5.48138C26.9127 4.6719 28.4609 4.26715 30.6769 4.26715C32.822 4.26715 34.3094 4.64149 35.1392 5.39032Z"
         fill="white"
       />
@@ -446,11 +446,11 @@ export const Icons = {
       <path
         d="M13.6485 19.2236C13.295 20.1897 11.9286 20.1897 11.5749 19.2236L6.35988 4.97529C5.86357 3.61922 6.54277 2.18274 7.79208 2.18274H17.4315C18.6808 2.18274 19.3599 3.61922 18.8636 4.97529L13.6485 19.2236Z"
         fill="url(#paint7_linear_58_202)"
-        fill-opacity="0.8"
+        fillOpacity="0.8"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M11.3919 19.2905L6.17699 5.04233C5.91188 4.31792 5.95734 3.56377 6.247 2.98354C6.53848 2.39967 7.08207 1.98792 7.79193 1.98792H17.4315C18.1414 1.98792 18.685 2.39967 18.9764 2.98354C19.2662 3.56377 19.3117 4.31792 19.0466 5.04233L13.8315 19.2905C13.4155 20.4272 11.8079 20.4272 11.3919 19.2905ZM11.5749 19.2236C11.9285 20.1897 13.295 20.1897 13.6485 19.2236L18.8636 4.97531C19.3599 3.61923 18.6808 2.18275 17.4315 2.18275H7.79193C6.54276 2.18275 5.86356 3.61923 6.35988 4.97531L11.5749 19.2236Z"
         fill="url(#paint8_linear_58_202)"
       />
@@ -468,9 +468,9 @@ export const Icons = {
           width="14.7189"
           height="22.926"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -489,9 +489,9 @@ export const Icons = {
           width="16.5973"
           height="21.5323"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -511,23 +511,15 @@ export const Icons = {
           y2="20.6924"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.0214678" stop-color="#C8C8C8" stop-opacity="0" />
-          <stop offset="0.0256676" stop-color="#C8C8C8" />
-          <stop
-            offset="0.0693822"
-            stop-color="#C9C9C9"
-            stop-opacity="0.927973"
-          />
-          <stop offset="0.111865" stop-color="#CBCBCB" stop-opacity="0.42" />
-          <stop offset="0.142556" stop-color="#CBCBCB" stop-opacity="0.2" />
-          <stop offset="0.171366" stop-color="#1FADD5" />
-          <stop
-            offset="0.185193"
-            stop-color="#B2ECFD"
-            stop-opacity="0.938703"
-          />
-          <stop offset="0.959939" stop-color="white" />
-          <stop offset="0.969541" stop-color="#D9D9D9" stop-opacity="0" />
+          <stop offset="0.0214678" stopColor="#C8C8C8" stopOpacity="0" />
+          <stop offset="0.0256676" stopColor="#C8C8C8" />
+          <stop offset="0.0693822" stopColor="#C9C9C9" stopOpacity="0.927973" />
+          <stop offset="0.111865" stopColor="#CBCBCB" stopOpacity="0.42" />
+          <stop offset="0.142556" stopColor="#CBCBCB" stopOpacity="0.2" />
+          <stop offset="0.171366" stopColor="#1FADD5" />
+          <stop offset="0.185193" stopColor="#B2ECFD" stopOpacity="0.938703" />
+          <stop offset="0.959939" stopColor="white" />
+          <stop offset="0.969541" stopColor="#D9D9D9" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_58_202"
@@ -537,8 +529,8 @@ export const Icons = {
           y2="21.147"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.173679" stop-color="#D9D9D9" stop-opacity="0" />
-          <stop offset="0.811109" stop-color="#D9D9D9" />
+          <stop offset="0.173679" stopColor="#D9D9D9" stopOpacity="0" />
+          <stop offset="0.811109" stopColor="#D9D9D9" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_58_202"
@@ -548,23 +540,15 @@ export const Icons = {
           y2="20.6924"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.0214678" stop-color="#C8C8C8" stop-opacity="0" />
-          <stop offset="0.0256676" stop-color="#C8C8C8" />
-          <stop
-            offset="0.0693822"
-            stop-color="#C9C9C9"
-            stop-opacity="0.927973"
-          />
-          <stop offset="0.111865" stop-color="#CBCBCB" stop-opacity="0.42" />
-          <stop offset="0.142556" stop-color="#CBCBCB" stop-opacity="0.2" />
-          <stop offset="0.171366" stop-color="#1FADD5" />
-          <stop
-            offset="0.185193"
-            stop-color="#B2ECFD"
-            stop-opacity="0.938703"
-          />
-          <stop offset="0.959939" stop-color="white" />
-          <stop offset="0.969541" stop-color="#D9D9D9" stop-opacity="0" />
+          <stop offset="0.0214678" stopColor="#C8C8C8" stopOpacity="0" />
+          <stop offset="0.0256676" stopColor="#C8C8C8" />
+          <stop offset="0.0693822" stopColor="#C9C9C9" stopOpacity="0.927973" />
+          <stop offset="0.111865" stopColor="#CBCBCB" stopOpacity="0.42" />
+          <stop offset="0.142556" stopColor="#CBCBCB" stopOpacity="0.2" />
+          <stop offset="0.171366" stopColor="#1FADD5" />
+          <stop offset="0.185193" stopColor="#B2ECFD" stopOpacity="0.938703" />
+          <stop offset="0.959939" stopColor="white" />
+          <stop offset="0.969541" stopColor="#D9D9D9" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_58_202"
@@ -574,8 +558,8 @@ export const Icons = {
           y2="2.66984"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#E7CC38" />
-          <stop offset="1" stop-color="#E7CC38" stop-opacity="0" />
+          <stop stopColor="#E7CC38" />
+          <stop offset="1" stopColor="#E7CC38" stopOpacity="0" />
         </linearGradient>
         <radialGradient
           id="paint4_radial_58_202"
@@ -585,8 +569,8 @@ export const Icons = {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(9.68915 2.18274) rotate(75.277) scale(9.19969 9.19968)"
         >
-          <stop stop-color="#5DAF3D" />
-          <stop offset="1" stop-color="#C7E606" stop-opacity="0" />
+          <stop stopColor="#5DAF3D" />
+          <stop offset="1" stopColor="#C7E606" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint5_radial_58_202"
@@ -596,8 +580,8 @@ export const Icons = {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(8.84485 11.6324) rotate(70.0452) scale(33.6835 10.3886)"
         >
-          <stop offset="0.0505218" stop-color="#D55401" />
-          <stop offset="0.651601" stop-color="#E7CC38" stop-opacity="0" />
+          <stop offset="0.0505218" stopColor="#D55401" />
+          <stop offset="0.651601" stopColor="#E7CC38" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint6_radial_58_202"
@@ -607,8 +591,8 @@ export const Icons = {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(16.8332 2.18274) rotate(99.6503) scale(8.13597 8.13598)"
         >
-          <stop stop-color="#62FAD2" />
-          <stop offset="1" stop-color="#62FA83" stop-opacity="0" />
+          <stop stopColor="#62FAD2" />
+          <stop offset="1" stopColor="#62FA83" stopOpacity="0" />
         </radialGradient>
         <linearGradient
           id="paint7_linear_58_202"
@@ -618,9 +602,9 @@ export const Icons = {
           y2="9.55413"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="0.46419" stop-color="white" stop-opacity="0.41" />
-          <stop offset="1" stop-color="white" stop-opacity="0" />
+          <stop stopColor="white" />
+          <stop offset="0.46419" stopColor="white" stopOpacity="0.41" />
+          <stop offset="1" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint8_linear_58_202"
@@ -630,8 +614,8 @@ export const Icons = {
           y2="11.0804"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="white" />
-          <stop offset="1" stop-color="white" stop-opacity="0" />
+          <stop stopColor="white" />
+          <stop offset="1" stopColor="white" stopOpacity="0" />
         </linearGradient>
         <radialGradient
           id="paint9_radial_58_202"
@@ -641,8 +625,8 @@ export const Icons = {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(10.4036 9.13198) rotate(105.771) scale(11.7089 7.5261)"
         >
-          <stop offset="0.890927" stop-color="white" stop-opacity="0" />
-          <stop offset="1" stop-color="white" />
+          <stop offset="0.890927" stopColor="white" stopOpacity="0" />
+          <stop offset="1" stopColor="white" />
         </radialGradient>
       </defs>
     </svg>
@@ -697,29 +681,29 @@ export const Icons = {
         d="M1.20239 9.00047C1.20239 13.3069 4.69334 16.7979 8.99974 16.7979C13.3062 16.7979 16.7973 13.3068 16.7973 9.00047C16.7973 4.69408 13.3062 1.20312 8.99974 1.20312C4.69334 1.20312 1.20239 4.69407 1.20239 9.00047Z"
         fill="#0C0C4F"
         stroke="url(#paint0_linear_153_36064)"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M5.47133 7.11552L5.66881 6.50542C5.70895 6.38132 5.80689 6.28477 5.93143 6.24669L6.54453 6.05815C6.62939 6.03223 6.63007 5.9125 6.5459 5.88521L5.93556 5.68772C5.81171 5.64759 5.71514 5.54965 5.67684 5.4251L5.48853 4.81202C5.46261 4.72738 5.34289 4.72646 5.31558 4.81086L5.11811 5.42098C5.07796 5.54483 4.98003 5.64139 4.85548 5.6797L4.24239 5.86801C4.15753 5.89415 4.15661 6.01366 4.24101 6.04095L4.85135 6.23843C4.97521 6.27857 5.07178 6.37674 5.11008 6.50128L5.29839 7.11414C5.3243 7.19901 5.44403 7.19993 5.47133 7.11552Z"
         fill="#FAFAFA"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M15.1617 6.76064C14.9089 6.47801 14.5145 6.31888 14.131 6.25362C13.7445 6.19095 13.3391 6.19676 12.9575 6.26456C12.1854 6.39517 11.4839 6.71489 10.8721 7.10931C10.5543 7.30288 10.2834 7.52686 10.0027 7.75497C9.86743 7.87033 9.74412 7.99319 9.61569 8.11428L9.26479 8.46342C8.88349 8.86197 8.50767 9.22499 8.14405 9.52588C7.77896 9.82539 7.43762 10.0529 7.10123 10.2117C6.76506 10.3714 6.40535 10.4653 5.9365 10.4803C5.47178 10.4967 4.92194 10.4128 4.33381 10.2744C3.74252 10.1366 3.1216 9.9401 2.42773 9.77105C2.66984 10.4427 3.03442 11.0363 3.5025 11.5789C3.97607 12.112 4.56741 12.5979 5.32708 12.9175C6.07576 13.2442 7.01663 13.3614 7.89636 13.1845C8.77843 13.0147 9.55248 12.6066 10.1782 12.1345C10.8055 11.6577 11.313 11.1144 11.7408 10.5497C11.8589 10.3937 11.9214 10.3063 12.0068 10.1844L12.2431 9.83447C12.4072 9.61803 12.5567 9.37159 12.7191 9.15713C13.0377 8.708 13.3518 8.25938 13.7168 7.84608C13.9005 7.63645 14.0942 7.43593 14.3229 7.24323C14.4369 7.14917 14.5601 7.05712 14.6967 6.97421C14.8352 6.88477 14.9815 6.81476 15.1617 6.76064Z"
         fill="url(#paint1_linear_153_36064)"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M15.1617 6.76056C14.8902 6.0754 14.3854 5.49865 13.7078 5.07306C13.0344 4.65214 12.0991 4.43733 11.1722 4.62044C10.7143 4.709 10.2707 4.87949 9.88146 5.10652C9.49393 5.33266 9.14667 5.60488 8.84604 5.89693C8.69597 6.04344 8.55974 6.19627 8.42441 6.34997L8.07365 6.79717L7.53189 7.51706C6.84122 8.44327 6.09748 9.52874 4.87694 9.85037C3.67873 10.1661 3.15905 9.88648 2.42773 9.77096C2.56146 10.1162 2.72709 10.4515 2.95163 10.7464C3.172 11.0473 3.43229 11.3299 3.7559 11.5722C3.91943 11.6886 4.09209 11.8034 4.28385 11.9008C4.47474 11.9949 4.6806 12.0777 4.90032 12.14C5.33739 12.2598 5.82945 12.3018 6.30587 12.2373C6.78252 12.1737 7.23811 12.0228 7.63635 11.8222C8.03753 11.6234 8.387 11.3813 8.69905 11.126C9.31935 10.6108 9.80184 10.0416 10.2094 9.4663C10.4144 9.17865 10.6005 8.88556 10.7726 8.5924L10.9752 8.24338C11.0371 8.14135 11.0997 8.0387 11.1633 7.9431C11.42 7.559 11.671 7.25102 11.9759 7.01985C12.2766 6.78271 12.6953 6.6075 13.2548 6.5668C13.812 6.5256 14.4552 6.60169 15.1617 6.76056Z"
         fill="#FAFAFA"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M12.1475 12.4534C12.1475 12.9567 12.5557 13.3648 13.0589 13.3648C13.5621 13.3648 13.9697 12.9567 13.9697 12.4534C13.9697 11.9502 13.5621 11.542 13.0589 11.542C12.5557 11.542 12.1475 11.9502 12.1475 12.4534Z"
         fill="url(#paint2_linear_153_36064)"
       />
@@ -732,8 +716,8 @@ export const Icons = {
           y2="7.79623"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#EC796B" />
-          <stop offset="1" stop-color="#E175B1" />
+          <stop stopColor="#EC796B" />
+          <stop offset="1" stopColor="#E175B1" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_153_36064"
@@ -743,8 +727,8 @@ export const Icons = {
           y2="12.7476"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#EC796B" />
-          <stop offset="1" stop-color="#E175B1" />
+          <stop stopColor="#EC796B" />
+          <stop offset="1" stopColor="#E175B1" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_153_36064"
@@ -754,8 +738,8 @@ export const Icons = {
           y2="12.0069"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#EC796B" />
-          <stop offset="1" stop-color="#E175B1" />
+          <stop stopColor="#EC796B" />
+          <stop offset="1" stopColor="#E175B1" />
         </linearGradient>
       </defs>
     </svg>
@@ -801,18 +785,164 @@ export const Icons = {
       <path
         d="M9.62012 3.95312L13.6668 7.99979L9.62012 12.0465"
         stroke="#DFDFEC"
-        stroke-width="1.5"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M2.33325 8H13.5533"
         stroke="#DFDFEC"
-        stroke-width="1.5"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+  historyIcon: (props: LucideProps) => (
+    <svg
+      {...props}
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M8 12.2002H15"
+        stroke="#B9AFF1"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M8 16.2002H12.38"
+        stroke="#B9AFF1"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M10 6H14C16 6 16 5 16 4C16 2 15 2 14 2H10C9 2 8 2 8 4C8 6 9 6 10 6Z"
+        stroke="#B9AFF1"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M16 4.02002C19.33 4.20002 21 5.43002 21 10V16C21 20 20 22 15 22H9C4 22 3 20 3 16V10C3 5.44002 4.67 4.20002 8 4.02002"
+        stroke="#B9AFF1"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+  chevronIcon: (props: LucideProps) => (
+    <svg
+      {...props}
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="18" height="18" rx="9" fill="#1C182B" />
+      <path
+        d="M12.96 7.4751L9.70004 10.7351C9.31504 11.1201 8.68504 11.1201 8.30004 10.7351L5.04004 7.4751"
+        stroke="#B9AFF1"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+  externalLinkIcon: (props: LucideProps) => (
+    <svg
+      {...props}
+      width="12"
+      height="13"
+      viewBox="0 0 12 13"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M6.5 5.9999L10.6 1.8999"
+        stroke="#B9AFF1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M11.0001 3.9V1.5H8.6001"
+        stroke="#B9AFF1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M5.5 1.5H4.5C2 1.5 1 2.5 1 5V8C1 10.5 2 11.5 4.5 11.5H7.5C10 11.5 11 10.5 11 8V7"
+        stroke="#B9AFF1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+  checkIcon: (props: LucideProps) => (
+    <svg
+      {...props}
+      width="24"
+      height="25"
+      viewBox="0 0 24 25"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 22.5C17.5 22.5 22 18 22 12.5C22 7 17.5 2.5 12 2.5C6.5 2.5 2 7 2 12.5C2 18 6.5 22.5 12 22.5Z"
+        stroke="#38EF7D"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M7.75 12.4999L10.58 15.3299L16.25 9.66992"
+        stroke="#38EF7D"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+  crossIcon: (props: LucideProps) => (
+    <svg
+      {...props}
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M11.4731 9.99993L15.4505 13.9774L13.9774 15.4505L9.99993 11.4731L6.02246 15.4505L4.54932 13.9774L8.52679 9.99993L4.54932 6.02246L6.02246 4.54932L9.99993 8.52679L13.9774 4.54932L15.4505 6.02246L11.4731 9.99993Z"
+        fill="#B9AFF1"
+      />
+    </svg>
+  ),
+  toastSuccess: (props: LucideProps) => (
+    <svg
+      {...props}
+      width="74"
+      height="74"
+      viewBox="0 0 74 74"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle cx="37" cy="37" r="25" fill="#0AA658" />
+      <circle cx="37" cy="37" r="30.5" stroke="white" />
+      <circle cx="37" cy="37" r="36.75" stroke="white" strokeWidth="0.5" />
+      <path
+        d="M29.5 37.5L34 42L44.5 32"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
       />
     </svg>
   ),
@@ -848,8 +978,8 @@ export const Icons = {
           y2="16.2251"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#F5D45E" />
-          <stop offset="1" stop-color="#FF9600" />
+          <stop stopColor="#F5D45E" />
+          <stop offset="1" stopColor="#FF9600" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_894_2932"
@@ -859,8 +989,8 @@ export const Icons = {
           y2="16.2249"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#F5D45E" />
-          <stop offset="1" stop-color="#FF9600" />
+          <stop stopColor="#F5D45E" />
+          <stop offset="1" stopColor="#FF9600" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_894_2932"
@@ -870,8 +1000,8 @@ export const Icons = {
           y2="16.2273"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#F5D45E" />
-          <stop offset="1" stop-color="#FF9600" />
+          <stop stopColor="#F5D45E" />
+          <stop offset="1" stopColor="#FF9600" />
         </linearGradient>
       </defs>
     </svg>
@@ -946,8 +1076,8 @@ export const Icons = {
           y2="16.5"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#1FD1FF" />
-          <stop offset="1" stop-color="#1BB8FF" />
+          <stop stopColor="#1FD1FF" />
+          <stop offset="1" stopColor="#1BB8FF" />
         </linearGradient>
         <radialGradient
           id="paint1_radial_894_2947"
@@ -957,8 +1087,8 @@ export const Icons = {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(2.21651 15.9317) rotate(-45.1556) scale(24.0553 24.4152)"
         >
-          <stop stop-color="#232DE3" />
-          <stop offset="1" stop-color="#232DE3" stop-opacity="0" />
+          <stop stopColor="#232DE3" />
+          <stop offset="1" stopColor="#232DE3" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint2_radial_894_2947"
@@ -968,8 +1098,8 @@ export const Icons = {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(15.6921 16.4144) rotate(-138.45) scale(15.0406 22.9327)"
         >
-          <stop stop-color="#8B4DFF" />
-          <stop offset="1" stop-color="#8B4DFF" stop-opacity="0" />
+          <stop stopColor="#8B4DFF" />
+          <stop offset="1" stopColor="#8B4DFF" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint3_radial_894_2947"
@@ -979,8 +1109,8 @@ export const Icons = {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(8.87505 1.61125) rotate(90) scale(11.8262 28.6937)"
         >
-          <stop stop-color="#24D5FF" />
-          <stop offset="1" stop-color="#1BB8FF" stop-opacity="0" />
+          <stop stopColor="#24D5FF" />
+          <stop offset="1" stopColor="#1BB8FF" stopOpacity="0" />
         </radialGradient>
       </defs>
     </svg>
@@ -1011,102 +1141,102 @@ export const Icons = {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_894_3006)">
+      <g clipPath="url(#clip0_894_3006)">
         <path
           d="M15.486 2.00586L9.8645 6.181L10.904 3.71772L15.486 2.00586Z"
           fill="#E2761B"
           stroke="#E2761B"
-          stroke-width="0.0502197"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="0.0502197"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M2.5085 2.00586L8.08477 6.22055L7.09607 3.71772L2.5085 2.00586ZM13.4633 11.6838L11.9661 13.9776L15.1695 14.859L16.0904 11.7347L13.4633 11.6838ZM1.91528 11.7347L2.83054 14.859L6.03393 13.9776L4.53675 11.6838L1.91528 11.7347Z"
           fill="#E4761B"
           stroke="#E4761B"
-          stroke-width="0.0502197"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="0.0502197"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M5.8531 7.8079L4.96045 9.15818L8.14124 9.29942L8.02825 5.88134L5.8531 7.8079ZM12.1412 7.8079L9.93785 5.8418L9.8644 9.29942L13.0395 9.15818L12.1412 7.8079ZM6.0339 13.9774L7.9435 13.0452L6.29378 11.7571L6.0339 13.9774ZM10.0508 13.0452L11.9661 13.9774L11.7006 11.7571L10.0508 13.0452Z"
           fill="#E4761B"
           stroke="#E4761B"
-          stroke-width="0.0502197"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="0.0502197"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M11.9661 13.9771L10.0509 13.0449L10.2034 14.2935L10.1865 14.8189L11.9661 13.9771ZM6.03394 13.9771L7.8136 14.8189L7.8023 14.2935L7.94354 13.0449L6.03394 13.9771Z"
           fill="#D7C1B3"
           stroke="#D7C1B3"
-          stroke-width="0.0502197"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="0.0502197"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M7.84176 10.9323L6.24854 10.4633L7.37283 9.94922L7.84176 10.9323ZM10.1525 10.9323L10.6214 9.94922L11.7514 10.4633L10.1525 10.9323Z"
           fill="#233447"
           stroke="#233447"
-          stroke-width="0.0502197"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="0.0502197"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M6.0338 13.9774L6.30498 11.6836L4.53662 11.7345L6.0338 13.9774ZM11.6948 11.6836L11.966 13.9774L13.4632 11.7345L11.6948 11.6836ZM13.0394 9.1582L9.8643 9.29945L10.1581 10.9322L10.627 9.94916L11.757 10.4633L13.0394 9.1582ZM6.24848 10.4633L7.37843 9.94916L7.84171 10.9322L8.14114 9.29945L4.96035 9.1582L6.24848 10.4633Z"
           fill="#CD6116"
           stroke="#CD6116"
-          stroke-width="0.0502197"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="0.0502197"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M4.96045 9.1582L6.29378 11.7571L6.24858 10.4633L4.96045 9.1582ZM11.7571 10.4633L11.7006 11.7571L13.0395 9.1582L11.7571 10.4633ZM8.14124 9.29945L7.8418 10.9322L8.21469 12.8588L8.29943 10.322L8.14124 9.29945ZM9.8644 9.29945L9.71186 10.3164L9.77966 12.8588L10.1582 10.9322L9.8644 9.29945Z"
           fill="#E4751F"
           stroke="#E4751F"
-          stroke-width="0.0502197"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="0.0502197"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M10.1581 10.9318L9.77961 12.8584L10.0508 13.0448L11.7005 11.7567L11.757 10.4629L10.1581 10.9318ZM6.24854 10.4629L6.29373 11.7567L7.94345 13.0448L8.21464 12.8584L7.84176 10.9318L6.24854 10.4629Z"
           fill="#F6851B"
           stroke="#F6851B"
-          stroke-width="0.0502197"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="0.0502197"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M10.1865 14.8193L10.2034 14.2939L10.0622 14.1696H7.93224L7.8023 14.2939L7.8136 14.8193L6.03394 13.9775L6.6554 14.486L7.91529 15.3617H10.0791L11.3447 14.486L11.9661 13.9775L10.1865 14.8193Z"
           fill="#C0AD9E"
           stroke="#C0AD9E"
-          stroke-width="0.0502197"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="0.0502197"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M10.0508 13.0448L9.77965 12.8584H8.21467L7.94349 13.0448L7.80225 14.2934L7.93219 14.1691H10.0621L10.2034 14.2934L10.0508 13.0448Z"
           fill="#161616"
           stroke="#161616"
-          stroke-width="0.0502197"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="0.0502197"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M15.7232 6.45219L16.2034 4.1471L15.4859 2.00586L10.0509 6.03976L12.1413 7.80812L15.0961 8.67253L15.7514 7.90981L15.4689 7.70642L15.9209 7.29399L15.5706 7.02281L16.0226 6.67818L15.7232 6.45219ZM1.79663 4.1471L2.27686 6.45219L1.97177 6.67818L2.42375 7.02281L2.07912 7.29399L2.53109 7.70642L2.24861 7.90981L2.89833 8.67253L5.85313 7.80812L7.94352 6.03976L2.5085 2.00586L1.79663 4.1471Z"
           fill="#763D16"
           stroke="#763D16"
-          stroke-width="0.0502197"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="0.0502197"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M15.0961 8.67258L12.1413 7.80817L13.0396 9.15845L11.7006 11.7573L13.4633 11.7347H16.0904L15.0961 8.67258ZM5.85314 7.80817L2.89833 8.67258L1.91528 11.7347H4.53675L6.29381 11.7573L4.96048 9.15845L5.85314 7.80817ZM9.86444 9.29969L10.0509 6.03981L10.9096 3.71777H7.09607L7.94353 6.03981L8.14127 9.29969L8.20907 10.3279L8.21472 12.859H9.77969L9.79099 10.3279L9.86444 9.29969Z"
           fill="#F6851B"
           stroke="#F6851B"
-          stroke-width="0.0502197"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="0.0502197"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </g>
       <defs>
@@ -1142,12 +1272,12 @@ export const Icons = {
           y2="15.5656"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.02" stop-color="#0000FF" />
-          <stop offset="0.08" stop-color="#0094FF" />
-          <stop offset="0.16" stop-color="#48FF91" />
-          <stop offset="0.42" stop-color="#0094FF" />
-          <stop offset="0.68" stop-color="#0038FF" />
-          <stop offset="0.9" stop-color="#0500FF" />
+          <stop offset="0.02" stopColor="#0000FF" />
+          <stop offset="0.08" stopColor="#0094FF" />
+          <stop offset="0.16" stopColor="#48FF91" />
+          <stop offset="0.42" stopColor="#0094FF" />
+          <stop offset="0.68" stopColor="#0038FF" />
+          <stop offset="0.9" stopColor="#0500FF" />
         </linearGradient>
       </defs>
     </svg>
@@ -1225,8 +1355,8 @@ export const Icons = {
           y2="16.5"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#174299" />
-          <stop offset="1" stop-color="#001E59" />
+          <stop stopColor="#174299" />
+          <stop offset="1" stopColor="#001E59" />
         </linearGradient>
         <radialGradient
           id="paint1_radial_894_2981"
@@ -1236,8 +1366,8 @@ export const Icons = {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(5.45825 12.5413) rotate(-90) scale(7.70833)"
         >
-          <stop offset="0.770277" stop-color="#FF4000" />
-          <stop offset="1" stop-color="#8754C9" />
+          <stop offset="0.770277" stopColor="#FF4000" />
+          <stop offset="1" stopColor="#8754C9" />
         </radialGradient>
         <linearGradient
           id="paint2_linear_894_2981"
@@ -1247,8 +1377,8 @@ export const Icons = {
           y2="12.8545"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FF4000" />
-          <stop offset="1" stop-color="#8754C9" />
+          <stop stopColor="#FF4000" />
+          <stop offset="1" stopColor="#8754C9" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_894_2981"
@@ -1258,8 +1388,8 @@ export const Icons = {
           y2="6.60384"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#8754C9" />
-          <stop offset="1" stop-color="#FF4000" />
+          <stop stopColor="#8754C9" />
+          <stop offset="1" stopColor="#FF4000" />
         </linearGradient>
         <radialGradient
           id="paint4_radial_894_2981"
@@ -1269,8 +1399,8 @@ export const Icons = {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(5.45825 12.5417) rotate(-90) scale(6.04167)"
         >
-          <stop offset="0.723929" stop-color="#FFF700" />
-          <stop offset="1" stop-color="#FF9901" />
+          <stop offset="0.723929" stopColor="#FFF700" />
+          <stop offset="1" stopColor="#FF9901" />
         </radialGradient>
         <linearGradient
           id="paint5_linear_894_2981"
@@ -1280,8 +1410,8 @@ export const Icons = {
           y2="12.8535"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFF700" />
-          <stop offset="1" stop-color="#FF9901" />
+          <stop stopColor="#FFF700" />
+          <stop offset="1" stopColor="#FF9901" />
         </linearGradient>
         <linearGradient
           id="paint6_linear_894_2981"
@@ -1291,8 +1421,8 @@ export const Icons = {
           y2="6.5"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFF700" />
-          <stop offset="1" stop-color="#FF9901" />
+          <stop stopColor="#FFF700" />
+          <stop offset="1" stopColor="#FF9901" />
         </linearGradient>
         <radialGradient
           id="paint7_radial_894_2981"
@@ -1302,8 +1432,8 @@ export const Icons = {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(5.45825 12.541) rotate(-90) scale(4.375)"
         >
-          <stop offset="0.59513" stop-color="#00AAFF" />
-          <stop offset="1" stop-color="#01DA40" />
+          <stop offset="0.59513" stopColor="#00AAFF" />
+          <stop offset="1" stopColor="#01DA40" />
         </radialGradient>
         <radialGradient
           id="paint8_radial_894_2981"
@@ -1313,8 +1443,8 @@ export const Icons = {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(8.06234 12.8535) scale(1.77083 4.72222)"
         >
-          <stop stop-color="#00AAFF" />
-          <stop offset="1" stop-color="#01DA40" />
+          <stop stopColor="#00AAFF" />
+          <stop offset="1" stopColor="#01DA40" />
         </radialGradient>
         <radialGradient
           id="paint9_radial_894_2981"
@@ -1324,8 +1454,8 @@ export const Icons = {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(5.14575 9.93685) rotate(-90) scale(1.77083 33.5802)"
         >
-          <stop stop-color="#00AAFF" />
-          <stop offset="1" stop-color="#01DA40" />
+          <stop stopColor="#00AAFF" />
+          <stop offset="1" stopColor="#01DA40" />
         </radialGradient>
       </defs>
     </svg>
@@ -1355,8 +1485,8 @@ export const Icons = {
           fill="#AB9FF2"
         />
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M8.06871 11.0229C7.53865 11.8351 6.65041 12.863 5.46851 12.863C4.90979 12.863 4.37256 12.633 4.37256 11.6339C4.37256 9.08935 7.84665 5.15039 11.07 5.15039C12.9038 5.15039 13.6344 6.42264 13.6344 7.86741C13.6344 9.72188 12.431 11.8423 11.2348 11.8423C10.8551 11.8423 10.6689 11.6339 10.6689 11.3032C10.6689 11.217 10.6832 11.1235 10.7119 11.0229C10.3036 11.7201 9.51565 12.367 8.77786 12.367C8.24062 12.367 7.96843 12.0292 7.96843 11.5548C7.96843 11.3823 8.00424 11.2026 8.06871 11.0229ZM12.4241 7.81727C12.4241 8.23827 12.1757 8.44877 11.8978 8.44877C11.6158 8.44877 11.3716 8.23827 11.3716 7.81727C11.3716 7.39628 11.6158 7.18579 11.8978 7.18579C12.1757 7.18579 12.4241 7.39628 12.4241 7.81727ZM10.8453 7.81729C10.8453 8.23829 10.597 8.44879 10.3191 8.44879C10.037 8.44879 9.79286 8.23829 9.79286 7.81729C9.79286 7.3963 10.037 7.18581 10.3191 7.18581C10.597 7.18581 10.8453 7.3963 10.8453 7.81729Z"
           fill="#FFFDF8"
         />

@@ -5,30 +5,29 @@ import { Button } from "./ui/button";
 
 const Hero: React.FC = () => {
   return (
-    <div className="relative flex h-full min-h-screen w-full items-center justify-between">
+    <div className="relative flex h-full min-h-screen w-full flex-col items-center md:flex-row md:justify-between">
       <img
         src="/hero/coins.svg"
-        className="pointer-events-none absolute bottom-5 left-[46%] z-0 -translate-x-1/2 select-none"
+        className="pointer-events-none absolute bottom-5 left-[46%] z-0 hidden -translate-x-1/2 select-none md:block"
         alt="coins"
       />
 
-      <div className="z-10 -mt-32 flex flex-col items-start gap-3 text-[#DADADA]">
-        <h1 className="bg-gradient-to-r from-[#FFFFFF] to-[#EC796B] bg-clip-text text-[64.54px] font-semibold leading-[77.45px] text-transparent">
+      <div className="z-10 mt-10 flex flex-col items-center gap-3 text-[#DADADA] md:-mt-32 md:items-start">
+        <h1 className="bg-gradient-to-r from-[#FFFFFF] to-[#EC796B] bg-clip-text text-center text-2xl font-semibold text-transparent md:text-start md:text-[64.54px] md:leading-[77.45px]">
           The In-App bridge
-          <br />
-          for Starknet
+          <br className="hidden md:block" /> for Starknet
         </h1>
 
-        <p className="mt-2 text-[18px] font-semibold leading-[21.6px]">
+        <p className="mt-2 text-center font-semibold md:text-start md:text-[18px] md:leading-[21.6px]">
           Seamlessly bridge your funds from other chains to Starknet dApps
-          <br />
+          <br className="hidden md:block" />
           in a single step
         </p>
 
-        <div className="mt-4 flex items-center gap-2 text-[18px] font-medium leading-[23.91px]">
+        <div className="mt-4 flex flex-col items-center gap-0 font-medium md:flex-row md:gap-2 md:text-[18px] md:leading-[23.91px]">
           Supporting chains:{" "}
           <p className="text-[#2FDB81]">
-            Ethereum{" "}
+            Ethereum
             <span className="text-sm text-[grey]">(more coming soon)</span>
           </p>
         </div>
@@ -56,7 +55,7 @@ const Hero: React.FC = () => {
         </div> */}
       </div>
 
-      <div className="pointer-events-none z-10 -mt-32 select-none">
+      <div className="pointer-events-none z-10 mt-7 select-none md:-mt-32">
         <img src="/hero/easyleap-illustration.svg" alt="Hero Image" />
       </div>
     </div>
