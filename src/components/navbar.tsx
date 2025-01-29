@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
   return (
     <header
       className={cn("sticky top-0 z-50 w-full px-3 py-4", {
-        "border-b border-b-[#0E0A1E] backdrop-blur-2xl": isScrolled,
+        "border-b border-b-[#0E0A1E] shadow-sm backdrop-blur-2xl": isScrolled,
       })}
     >
       <div className="mx-auto flex w-[min(83rem,_100%-2rem)] items-center justify-between">
