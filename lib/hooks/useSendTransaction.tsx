@@ -1,5 +1,5 @@
 import { useSendTransaction as useSendTransactionSN } from "@starknet-react/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { Call, hash, num } from "starknet";
 import { encodeFunctionData } from "viem";
 import { useSendTransaction as useSendTransactionEVM } from "wagmi";
@@ -145,7 +145,7 @@ export function useSendTransaction(props: UseSendTransactionArgs) {
       return props.bridgeConfig.amount + mySourceFee + msgFee;
     }
     return mySourceFee + msgFee;
-  }, [sourceTokenInfo, props.bridgeConfig.amount, mySourceFee, msgFee]);
+  }, [sourceTokenInfo, props.bridgeConfig.amount, props.bridgeConfig, props, mySourceFee, msgFee]);
 
   const send = async () => {
     if (!props.calls || !props.calls.length) {

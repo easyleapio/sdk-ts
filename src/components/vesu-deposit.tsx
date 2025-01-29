@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Info } from "lucide-react";
-import React from "react";
+import React, { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { Call, CallData } from "starknet";
 import * as z from "zod";
@@ -21,7 +21,7 @@ import {
   TokenTransfer,
 } from "../../lib/components/connect/review-modal";
 
-import { useSharedState } from "../../lib/hooks";
+import { InteractionMode, useSharedState } from "../../lib/hooks";
 import { useAccount } from "../../lib/hooks/useAccount";
 import { useAmountOut } from "../../lib/hooks/useAmountOut";
 import { useBalance } from "../../lib/hooks/useBalance";
@@ -30,6 +30,7 @@ import { ADDRESSES } from "../../lib/utils/constants";
 import { Icons } from "./Icons";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import useMode from "../../lib/hooks/useMode";
 
 const formSchema = z.object({
   depositAmount: z.string().refine(
@@ -103,6 +104,12 @@ const VesuDeposit: React.FC = () => {
     }
   };
 
+  const mode = useMode();
+
+  const calls = useMemo(() => {
+    return getCalls(amountOutRes.amountOut, addressDestination, mode);
+  }, [amountOutRes, amountOutRes.amountOut, addressDestination, mode]);
+
   const {
     send,
     error,
@@ -111,10 +118,11 @@ const VesuDeposit: React.FC = () => {
     dataEVM: _,
     isSuccess,
   } = useSendTransaction({
-    calls: getCalls(amountOutRes.amountOut, addressDestination),
+    calls: calls,
     bridgeConfig: {
+      // ! This is L2 ETH address. Dont change
       l2_token_address:
-        "0x54d159fa98b0f67b3d3b287aae0340bf595d8f2a96ed99532785aeef08c1ede",
+        "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
       amount: rawAmount,
     },
   });
@@ -364,6 +372,7 @@ export default VesuDeposit;
 function getCalls(
   postBridgeFeeAmount: bigint,
   user: string | undefined,
+  mode: InteractionMode,
 ): Call[] {
   if (!user) {
     return [];
@@ -392,7 +401,7 @@ function getCalls(
     // actually no need to use executor anyway, just using for this hacky demo
     // cause vesu supported ETH and bridge ETH are different
     calldata: CallData.compile([
-      ADDRESSES.STARKNET.EXECUTOR,
+      mode == InteractionMode.Bridge ? ADDRESSES.STARKNET.EXECUTOR : user,
       postBridgeFeeAmount,
       0,
     ]),
