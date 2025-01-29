@@ -47,7 +47,7 @@ export function useBalance(props: UseBalanceProps): UseBalanceResult {
     // Find corresponding EVM token address
     const sourceTokenInfo = useSourceBridgeInfo(l2TokenAddress);
 
-    const resultWagma = useBalanceWagmi({address: addressSource, token: (sourceTokenInfo?.l1_token_address as `0x${string}`) || undefined});
+    const resultWagma = useBalanceWagmi({address: addressSource});
    
     const result = useMemo(() => { 
         if (mode == InteractionMode.Starknet || mode == InteractionMode.None) {
@@ -56,7 +56,7 @@ export function useBalance(props: UseBalanceProps): UseBalanceResult {
         
         if (mode == InteractionMode.Bridge && source == Chains.ETH_MAINNET) {
             // If token is not found in the tokens.json file, return the Starknet balance
-            if (sourceTokenInfo?.l1_token_address == ZERO_ADDRESS_EVM) {
+            if (!sourceTokenInfo) {
                 // todo return error
                 return resultSN;
             }

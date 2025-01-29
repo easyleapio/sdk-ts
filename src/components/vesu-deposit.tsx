@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Info } from "lucide-react";
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { Call, CallData } from "starknet";
 import * as z from "zod";
@@ -62,7 +62,7 @@ const VesuDeposit: React.FC = () => {
     return BigInt(
       Math.round(Number(form.getValues("depositAmount")) * 1e18).toFixed(0),
     );
-  }, [form]);
+  }, [form.getValues("depositAmount")]);
 
   const amountOutRes = useAmountOut(rawAmount);
 
@@ -124,6 +124,27 @@ const VesuDeposit: React.FC = () => {
     }
   }, [error]);
 
+  // Deposit calls
+  const tokensOut: TokenTransfer[] = useMemo(() => {
+    return [
+      {
+        name: "ETH",
+        amount: (Number(rawAmount) / 1e18).toFixed(4),
+        logo: "https://app.strkfarm.com/zklend/icons/tokens/eth.svg?w=20",
+      },
+    ];
+  }, [rawAmount]);
+
+  const tokensIn: TokenTransfer[] = useMemo(() => {
+    return [
+      {
+        name: "vETH",
+        amount: (Number(amountOutRes.amountOut) / 1e18).toFixed(4),
+        logo: "https://app.strkfarm.com/zklend/icons/tokens/eth.svg?w=20",
+      },
+    ];
+  }, [amountOutRes.amountOut]);
+
   const onSubmit = async (values: FormValues) => {
     if (Number(values.depositAmount) > Number(balanceInfo?.data?.formatted)) {
       return toast({
@@ -136,33 +157,7 @@ const VesuDeposit: React.FC = () => {
       });
     }
 
-    // Deposit calls
-    const tokensOut: TokenTransfer[] = [
-      {
-        name: "ETH",
-        amount: (Number(rawAmount) / 1e18).toFixed(4),
-        logo: "https://app.strkfarm.com/zklend/icons/tokens/eth.svg?w=20",
-      },
-    ];
-    const tokensIn: TokenTransfer[] = [
-      {
-        name: "vETH",
-        amount: (Number(amountOutRes.amountOut) / 1e18).toFixed(4),
-        logo: "https://app.strkfarm.com/zklend/icons/tokens/eth.svg?w=20",
-      },
-    ];
-
-    sharedState.setIsReviewModalOpen(true);
-
-    sharedState.setReviewModalProps({
-      isOpen: true,
-      tokensIn,
-      tokensOut,
-      onContinue: () => {
-        send(tokensIn, tokensOut);
-        sharedState.setIsReviewModalOpen(false);
-      },
-    });
+    send(tokensIn, tokensOut);
   };
 
   return (
