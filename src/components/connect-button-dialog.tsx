@@ -467,7 +467,11 @@ const ConnectButtonDialog: React.FC = () => {
           open={sharedState.isTxnPopoverOpen}
           onOpenChange={sharedState.setIsTxnPopoverOpen}
         >
-          <PopoverTrigger>
+          <PopoverTrigger
+            className={cn("rounded-full", {
+              "animate-pulse bg-green-500 p-px": !sharedState.isSuccessEVM,
+            })}
+          >
             <div className="rounded-full bg-[#35314F] p-2">
               <Icons.historyIcon className="shrink-0" />
             </div>

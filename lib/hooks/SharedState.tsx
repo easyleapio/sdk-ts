@@ -32,6 +32,9 @@ interface SharedContext {
 
   isTxnPopoverOpen: boolean;
   setIsTxnPopoverOpen: (value: boolean) => void;
+
+  isSuccessEVM: boolean;
+  setIsSuccessEVM: (value: boolean) => void;
 }
 
 const SharedStateContext = createContext({
@@ -55,6 +58,9 @@ const SharedStateContext = createContext({
 
   isTxnPopoverOpen: false,
   setIsTxnPopoverOpen: () => {},
+
+  isSuccessEVM: false,
+  setIsSuccessEVM: () => {},
 } as SharedContext);
 
 export const SharedStateProvider = ({
@@ -81,6 +87,8 @@ export const SharedStateProvider = ({
 
   const [isTxnPopoverOpen, setIsTxnPopoverOpen] = React.useState(false);
 
+  const [isSuccessEVM, setIsSuccessEVM] = React.useState(false);
+
   return (
     <SharedStateContext.Provider
       value={{
@@ -96,6 +104,9 @@ export const SharedStateProvider = ({
         setConnectWalletModalOpen,
         isTxnPopoverOpen,
         setIsTxnPopoverOpen,
+
+        isSuccessEVM,
+        setIsSuccessEVM,
       }}
     >
       {children}

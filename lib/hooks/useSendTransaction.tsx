@@ -172,6 +172,7 @@ export function useSendTransaction(props: UseSendTransactionArgs) {
   };
 
   const context = useSharedState();
+
   function openReviewMoal(
     tokensIn: TokenTransfer[],
     tokensOut: TokenTransfer[],
@@ -193,6 +194,8 @@ export function useSendTransaction(props: UseSendTransactionArgs) {
       send();
     }
   }
+
+  context.setIsSuccessEVM(isSuccessEVM);
 
   return {
     send: openReviewMoal,
