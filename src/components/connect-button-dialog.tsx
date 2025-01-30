@@ -468,8 +468,19 @@ const ConnectButtonDialog: React.FC = () => {
           open={sharedState.isTxnPopoverOpen}
           onOpenChange={sharedState.setIsTxnPopoverOpen}
         >
-          <PopoverTrigger>
+          <PopoverTrigger className="relative">
             <>
+              {destinationTxns.filter((txn: any) => txn.status === "pending")
+                .length > 0 && (
+                <div className="absolute -right-0 -top-1.5 flex size-4 items-center justify-center rounded-full bg-red-500 p-1 text-[9px] font-semibold text-white">
+                  {
+                    destinationTxns.filter(
+                      (txn: any) => txn.status === "pending",
+                    ).length
+                  }
+                </div>
+              )}
+
               {!sharedState.isSuccessEVM && (
                 <div className="rounded-full bg-[#35314F] p-2">
                   <Icons.historyIcon className="shrink-0" />
