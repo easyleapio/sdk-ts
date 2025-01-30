@@ -225,8 +225,8 @@ const ConnectButtonDialog: React.FC = () => {
           },
         });
 
-        setSourceTxns(data.findManySource_requests);
-        setDestinationTxns(data.findManyDestination_requests);
+        setSourceTxns(data.findManySource_requests.reverse());
+        setDestinationTxns(data.findManyDestination_requests.reverse());
       } catch (error) {
         console.error("GraphQL Error:", error);
         throw error;
@@ -608,7 +608,7 @@ const ConnectButtonDialog: React.FC = () => {
                             </span>
                           </div>
 
-                          <div className="group flex cursor-pointer flex-col items-start gap-1">
+                          <div className="group flex flex-col items-start gap-1">
                             <p
                               className={cn(
                                 "flex items-center gap-2 text-base text-[#B9AFF1]",
@@ -620,7 +620,6 @@ const ConnectButtonDialog: React.FC = () => {
                               )}
                             >
                               Bridging to Starknet
-                              <Icons.externalLinkIcon className="transition-all group-hover:brightness-125" />
                             </p>
                             <span className="flex items-center gap-2 text-xs text-[#EDDFFDCC]">
                               Bridged {(txn?.amount_raw / 10 ** 18).toFixed(5)}
