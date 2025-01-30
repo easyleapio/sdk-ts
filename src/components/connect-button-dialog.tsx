@@ -170,8 +170,6 @@ const ConnectButtonDialog: React.FC = () => {
       (destTxn: any) => destTxn.request_id === srcTxn.request_id,
     );
 
-    console.log(txn, "txnnnnnn");
-
     if (!txn) {
       return {
         status: "pending",
@@ -657,7 +655,7 @@ const ConnectButtonDialog: React.FC = () => {
                                 alt="eth logo"
                                 className="size-5 shrink-0"
                               />
-                              Ethereum {txn?.request_id}
+                              Ethereum 
                             </p>
                             <span className="text-xs text-[#EDDFFDCC]">
                               Sepolia
@@ -797,7 +795,7 @@ const ConnectButtonDialog: React.FC = () => {
                                 },
                               )}
                             >
-                              Transaction Completed
+                              Deposited on Vesu
                               <Icons.externalLinkIcon className="transition-all group-hover:brightness-125" />
                             </p>
                           </a>

@@ -10,6 +10,7 @@ import { InteractionMode, useSharedState } from "./SharedState";
 import { useAccount } from "./useAccount";
 import { useSourceBridgeInfo } from "./useBalance";
 import useMode from "./useMode";
+import { mergeArrays } from "./useTransactionHistory";
 
 export interface UseSendTransactionArgs {
   calls?: Call[];
@@ -38,7 +39,7 @@ export function useSendTransaction(props: UseSendTransactionArgs) {
   } = useSendTransactionSN({
     calls: props.calls,
   });
-  const { addressDestination } = useAccount();
+  const { addressDestination, addressSource } = useAccount();
   const sourceTokenInfo = useSourceBridgeInfo(
     props.bridgeConfig.l2_token_address,
   );
@@ -47,6 +48,7 @@ export function useSendTransaction(props: UseSendTransactionArgs) {
     error: errorEVM,
     isPending: isPendingEVM,
     isSuccess: isSuccessEVM,
+    isError: isErrorEVM,
     data: dataEVM,
   } = useSendTransactionEVM();
 
@@ -153,6 +155,30 @@ export function useSendTransaction(props: UseSendTransactionArgs) {
     mySourceFee,
     msgFee,
   ]);
+
+  useEffect(() => {
+    console.log("useSendTransactionn", {dataEVM, isErrorEVM, isSuccessEVM, isPendingEVM});
+    if (dataEVM) {
+      context.setSourceTransactions(mergeArrays(
+        context.sourceTransactions,
+        [{
+          amount_raw: props.bridgeConfig.amount.toString(),
+          receiver: addressDestination,
+          block_number: 0,
+          chain: 'ethereum',
+          cursor: 0,
+          eventIndex: 0,
+          request_id: 0,
+          sender: addressSource,
+          status: isPendingEVM ? 'pending' : 'success',
+          timestamp: new Date().getTime(),
+          token: props.bridgeConfig.l2_token_address,
+          txHash: dataEVM,
+          txIndex: 0,
+        }]
+      ))
+    }
+  }, [dataEVM, isPendingEVM, isSuccessEVM, isErrorEVM]);
 
   const send = async () => {
     if (!props.calls || !props.calls.length) {

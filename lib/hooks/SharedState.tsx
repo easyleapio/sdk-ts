@@ -35,6 +35,15 @@ interface SharedContext {
 
   isSuccessEVM: boolean;
   setIsSuccessEVM: (value: boolean) => void;
+
+  sourceTransactions: any[]; // todo type
+  setSourceTransactions: (value: any[]) => void;
+
+  destinationTransactions: any[]; // todo type
+  setDestinationTransactions: (value: any[]) => void;
+
+  lastTxPollTime: number;
+  setLastTxPollTime: (value: number) => void;
 }
 
 const SharedStateContext = createContext({
@@ -61,6 +70,15 @@ const SharedStateContext = createContext({
 
   isSuccessEVM: false,
   setIsSuccessEVM: () => {},
+
+  sourceTransactions: [],
+  setSourceTransactions: () => {},
+
+  destinationTransactions: [],
+  setDestinationTransactions: () => {},
+
+  lastTxPollTime: 0,
+  setLastTxPollTime: () => {},
 } as SharedContext);
 
 export const SharedStateProvider = ({
@@ -89,6 +107,12 @@ export const SharedStateProvider = ({
 
   const [isSuccessEVM, setIsSuccessEVM] = React.useState(false);
 
+  const [sourceTransactions, setSourceTransactions] = React.useState<any[]>([]);
+  const [destinationTransactions, setDestinationTransactions] =
+    React.useState<any[]>([]);
+
+  const [lastTxPollTime, setLastTxPollTime] = React.useState(0);
+
   return (
     <SharedStateContext.Provider
       value={{
@@ -107,6 +131,15 @@ export const SharedStateProvider = ({
 
         isSuccessEVM,
         setIsSuccessEVM,
+
+        sourceTransactions,
+        setSourceTransactions,
+
+        destinationTransactions,
+        setDestinationTransactions,
+
+        lastTxPollTime,
+        setLastTxPollTime
       }}
     >
       {children}

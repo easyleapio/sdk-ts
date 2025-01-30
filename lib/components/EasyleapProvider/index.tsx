@@ -6,7 +6,7 @@ import {
   voyager,
 } from "@starknet-react/core";
 import { getDefaultConfig } from "connectkit";
-import React from "react";
+import React, { useEffect } from "react";
 import { sepolia as sepoliaEVM } from "viem/chains";
 import {
   createConfig,

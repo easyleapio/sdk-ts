@@ -372,7 +372,8 @@ const VesuDeposit: React.FC = () => {
             </Button>
           )}
         </div>
-        <small className="text-[grey]">This Vesu demo showcases how a dApp can integrate this SDK with a clean UX.</small>
+        <small className="text-[grey]">We chose Vesu because it's active on Sepolia and supports ETH deposits.</small>
+        <small className="text-[grey]">It's used only for demo purposes and the SDK will work with any dApp.</small>
 
         {/* <div className="text-[grey]">
           Amount you get: {(Number(amountOutRes.amountOut) / 1e18).toFixed(8)}{" "}

@@ -8,6 +8,7 @@ import { useEffect, useMemo } from "react";
 import { num } from "starknet";
 import { useAccount as useAccountWagmi, useConfig } from "wagmi";
 import { InteractionMode, useSharedState } from "./SharedState";
+import { useTransactionHistory } from "./useTransactionHistory";
 
 export enum Chains {
   ETH_MAINNET = "ETH_MAINNET",
@@ -41,7 +42,10 @@ export function useAccount(): useAccountResult {
   const { address: addressSource, chainId: chainIdEVM } = useAccountWagmi();
   const { address: addressDestination, chainId: chainIdSN } = useAccountSn();
   const sharedState = useSharedState();
-
+  
+  // init tx history polling
+  useTransactionHistory(addressDestination);
+  
   // todo need to make this generic
   // hard coding for one chain for now
   if (addressSource && chainIdEVM != config.chains[0].id) {
