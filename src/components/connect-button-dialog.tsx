@@ -81,17 +81,17 @@ const ConnectButtonDialog: React.FC = () => {
       case "metamask":
         return <Icons.metamask className="size-3" />;
       case "coinbase wallet":
-        return <Icons.metamask className="size-3" />;
+        return <Icons.coinbase className="size-3" />;
       case "subwallet":
-        return <Icons.metamask className="size-3" />;
+        return <Icons.subwallet className="size-3" />;
       case "trust":
         return <Icons.trust className="size-3" />;
-      case "Rainbow":
+      case "rainbow":
         return <Icons.rainbow className="size-3" />;
       case "phantom":
         return <Icons.phantom className="size-3" />;
       case "walletconnect":
-        return <Icons.phantom className="size-3" />;
+        return <Icons.walletConnect className="size-3" />;
 
       default:
         return null;
@@ -174,6 +174,17 @@ const ConnectButtonDialog: React.FC = () => {
     }
 
     return txn as any;
+  };
+
+  const getPendingTxnCount = () => {
+    const requestIdsSet = new Set(
+      sharedState.destinationTransactions.map((item) => item.request_id),
+    );
+    const pendingTxns = sharedState.sourceTransactions.filter(
+      (item) => !requestIdsSet.has(item.request_id),
+    );
+
+    return pendingTxns.length;
   };
 
   React.useEffect(() => {
@@ -435,14 +446,9 @@ const ConnectButtonDialog: React.FC = () => {
         >
           <PopoverTrigger className="relative">
             <>
-              {sharedState.destinationTransactions.filter((txn: any) => txn.status === "pending")
-                .length > 0 && (
+              {getPendingTxnCount() > 0 && (
                 <div className="absolute -right-0 -top-1.5 flex size-4 items-center justify-center rounded-full bg-red-500 p-1 text-[9px] font-semibold text-white">
-                  {
-                    sharedState.destinationTransactions.filter(
-                      (txn: any) => txn.status === "pending",
-                    ).length
-                  }
+                  {getPendingTxnCount()}
                 </div>
               )}
 
@@ -453,7 +459,8 @@ const ConnectButtonDialog: React.FC = () => {
               )}
 
               {sharedState.isSuccessEVM &&
-                getDestinationTxn(sharedState.sourceTransactions[0]).status === "" && (
+                getDestinationTxn(sharedState.sourceTransactions[0]).status ===
+                  "" && (
                   <div
                     className={cn("rounded-full", {
                       "animate-pulse bg-green-500 p-px":
@@ -467,7 +474,8 @@ const ConnectButtonDialog: React.FC = () => {
                 )}
 
               {sharedState.isSuccessEVM &&
-                getDestinationTxn(sharedState.sourceTransactions[0]).status === "pending" && (
+                getDestinationTxn(sharedState.sourceTransactions[0]).status ===
+                  "pending" && (
                   <div className="rounded-full bg-[#35314F] p-2">
                     <svg
                       width="24"
@@ -536,7 +544,8 @@ const ConnectButtonDialog: React.FC = () => {
                 )}
 
               {sharedState.isSuccessEVM &&
-                getDestinationTxn(sharedState.sourceTransactions[0]).status === "confirmed" && (
+                getDestinationTxn(sharedState.sourceTransactions[0]).status ===
+                  "confirmed" && (
                   <div className="rounded-full bg-[#35314F] p-2">
                     <svg
                       width="24"
@@ -613,7 +622,7 @@ const ConnectButtonDialog: React.FC = () => {
                                 alt="eth logo"
                                 className="size-5 shrink-0"
                               />
-                              Ethereum 
+                              Ethereum
                             </p>
                             <span className="text-xs text-[#EDDFFDCC]">
                               Sepolia
@@ -764,10 +773,10 @@ const ConnectButtonDialog: React.FC = () => {
                 ))}
 
                 {sharedState.sourceTransactions.length === 0 && (
-                  <div className="flex items-center justify-center w-full h-40">
+                  <div className="flex h-40 w-full items-center justify-center">
                     <p className="text-[#B9AFF1]">No transactions yet</p>
-                    </div>
-                  )}
+                  </div>
+                )}
               </Accordion>
             </ScrollArea>
           </PopoverContent>
