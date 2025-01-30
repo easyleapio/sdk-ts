@@ -25,12 +25,12 @@ import { InteractionMode, useSharedState } from "../../lib/hooks";
 import { useAccount } from "../../lib/hooks/useAccount";
 import { useAmountOut } from "../../lib/hooks/useAmountOut";
 import { useBalance } from "../../lib/hooks/useBalance";
+import useMode from "../../lib/hooks/useMode";
 import { useSendTransaction } from "../../lib/hooks/useSendTransaction";
 import { ADDRESSES } from "../../lib/utils/constants";
 import { Icons } from "./Icons";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import useMode from "../../lib/hooks/useMode";
 
 const formSchema = z.object({
   depositAmount: z.string().refine(
@@ -116,7 +116,8 @@ const VesuDeposit: React.FC = () => {
     isPending,
     dataSN,
     dataEVM: _,
-    isSuccess,
+    isSuccessSN,
+    isSuccessEVM,
   } = useSendTransaction({
     calls: calls,
     bridgeConfig: {
@@ -162,7 +163,7 @@ const VesuDeposit: React.FC = () => {
         });
       }
 
-      if (isSuccess) {
+      if (dataSN?.transaction_hash) {
         toast({
           itemID: "stake",
           variant: "complete",
@@ -178,8 +179,25 @@ const VesuDeposit: React.FC = () => {
         });
         form.reset();
       }
+
+      if (isSuccessEVM) {
+        toast({
+          itemID: "stake",
+          variant: "complete",
+          duration: 3000,
+          description: (
+            <div className="flex items-center gap-2 bg-[#b5abdf] text-[#1C182B]">
+              <div className="flex flex-col items-start gap-2 text-sm font-medium">
+                <span className="text-[18px] font-semibold">Success 🎉</span>
+                Bridge transaction sent 🚀
+              </div>
+            </div>
+          ),
+        });
+        form.reset();
+      }
     })();
-  }, [dataSN, error, form, isPending, isSuccess]);
+  }, [dataSN, error, form, isPending, isSuccessEVM, isSuccessSN]);
 
   // Deposit calls
   const tokensOut: TokenTransfer[] = React.useMemo(() => {
@@ -214,16 +232,16 @@ const VesuDeposit: React.FC = () => {
       });
     }
 
-    sharedState.setReviewModalProps({
-      isOpen: true,
-      tokensIn,
-      tokensOut,
-      onContinue: () => {
-        send(tokensIn, tokensOut);
-      },
-    });
+    // sharedState.setReviewModalProps({
+    //   isOpen: true,
+    //   tokensIn,
+    //   tokensOut,
+    //   onContinue: () => {
+    //     send(tokensIn, tokensOut);
+    //   },
+    // });
 
-    // send(tokensIn, tokensOut);
+    send(tokensIn, tokensOut);
   };
 
   return (
