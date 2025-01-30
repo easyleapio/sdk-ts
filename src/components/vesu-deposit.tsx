@@ -255,9 +255,9 @@ const VesuDeposit: React.FC = () => {
       <div className="mt-8 flex w-full flex-col items-start rounded-lg border border-[#675E99] bg-[#1C182B] px-4 py-3 shadow-lg md:px-12 md:py-10 lg:gap-2">
         <div className="flex flex-1 flex-col items-center">
           <p className="text-center text-sm font-medium text-[#DADADA] md:text-lg">
-            Perform a one-step ETH deposit from L1 to L2 using either Bridge{" "}
+            Perform a one-step ETH deposit from L1 using Bridge{" "}
             <br />
-            Mode or Starknet Mode.
+            Mode or directly on Starknet.
           </p>
 
           <div className="mt-7 flex w-full flex-col items-start gap-2">
@@ -372,6 +372,7 @@ const VesuDeposit: React.FC = () => {
             </Button>
           )}
         </div>
+        <small className="text-[grey]">This Vesu demo showcases how a dApp can integrate this SDK with a clean UX.</small>
 
         {/* <div className="text-[grey]">
           Amount you get: {(Number(amountOutRes.amountOut) / 1e18).toFixed(8)}{" "}

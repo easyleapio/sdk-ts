@@ -212,16 +212,16 @@ const ConnectButtonDialog: React.FC = () => {
           variables: {
             where: {
               receiver: {
-                // equals: standariseAddress(addressDestination),
-                equals:
-                  "0x54d159fa98b0f67b3d3b287aae0340bf595d8f2a96ed99532785aeef08c1ede",
+                equals: standariseAddress(addressDestination),
+                // equals:
+                //   "0x54d159fa98b0f67b3d3b287aae0340bf595d8f2a96ed99532785aeef08c1ede",
               },
             },
             findManyDestinationRequestsWhere2: {
               l2_owner: {
-                // equals: standariseAddress(addressDestination),
-                equals:
-                  "0x54d159fa98b0f67b3d3b287aae0340bf595d8f2a96ed99532785aeef08c1ede",
+                equals: standariseAddress(addressDestination),
+                // equals:
+                //   "0x54d159fa98b0f67b3d3b287aae0340bf595d8f2a96ed99532785aeef08c1ede",
               },
             },
           },
@@ -620,7 +620,7 @@ const ConnectButtonDialog: React.FC = () => {
           </PopoverTrigger>
           <PopoverContent className="mr-[5.37rem] mt-4 w-[484px] border border-[#675E99] bg-[#1C182B] px-8 py-6 font-dmSans">
             <h4 className="flex w-full items-center justify-between text-lg font-bold text-[#DADADA]">
-              Transfering{" "}
+              Bridge transaction history
               <Icons.crossIcon
                 className="cursor-pointer"
                 onClick={() => sharedState.setIsTxnPopoverOpen(false)}

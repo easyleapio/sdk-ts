@@ -14,12 +14,12 @@ const Hero: React.FC = () => {
 
       <div className="z-10 mt-10 flex flex-col items-center gap-3 text-[#DADADA] md:-mt-32 md:items-start">
         <h1 className="bg-gradient-to-r from-[#FFFFFF] to-[#EC796B] bg-clip-text text-center text-2xl font-semibold text-transparent md:text-start md:text-[64.54px] md:leading-[77.45px]">
-          The In-App bridge
-          <br className="hidden md:block" /> for Starknet
+          The In-App cross-chain
+          <br className="hidden md:block" />deposit SDK for Starknet
         </h1>
 
         <p className="mt-2 text-center font-semibold md:text-start md:text-[18px] md:leading-[21.6px]">
-          Seamlessly bridge your funds from other chains to Starknet dApps
+          Allow your users to seamlessly bridge into you dApp
           <br className="hidden md:block" />
           in a single step
         </p>
@@ -28,7 +28,7 @@ const Hero: React.FC = () => {
           Supporting chains:{" "}
           <p className="text-[#2FDB81]">
             Ethereum
-            <span className="text-sm text-[grey]">(more coming soon)</span>
+            <span className="text-sm text-[grey]"> (more coming soon)</span>
           </p>
         </div>
 

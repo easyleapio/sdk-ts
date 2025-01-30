@@ -148,7 +148,7 @@ export function ReviewModal() {
           <div className="mt-7 flex flex-col items-start gap-1 rounded-xl bg-[#B9AFF108] px-5 py-4">
             <div className="flex w-full items-center justify-between text-xs">
               <p className="flex items-center gap-2 text-[#B9AFF1]">
-                Estimated transaction time
+                Estimated transaction time:
               </p>
               <p className="flex items-center gap-1 text-[#B9AFF1]">
                 3min <Clock className="size-3" />
@@ -157,22 +157,22 @@ export function ReviewModal() {
 
             <div className="flex w-full items-center justify-between text-xs">
               <p className="flex items-center gap-2 text-[#B9AFF1]">
-                Service fees
+                Service fees (by Easyleap.io):
               </p>
               <p className="flex items-center gap-2 text-[#B9AFF1]">
-                0.00000
-                <img
+                0.05%
+                {/* <img
                   src="/tokens/eth.svg"
                   alt="eth logo"
                   className="size-3 shrink-0"
-                />
+                /> */}
               </p>
             </div>
 
-            <div className="flex w-full items-center justify-between text-xs">
+            {/* <div className="flex w-full items-center justify-between text-xs">
               <p className="flex items-center gap-2 text-[#B9AFF1]">Gas fees</p>
               <p className="flex items-center gap-2 text-[#B9AFF1]">$1.0</p>
-            </div>
+            </div> */}
           </div>
 
           <Button
