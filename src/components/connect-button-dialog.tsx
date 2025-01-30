@@ -167,8 +167,16 @@ const ConnectButtonDialog: React.FC = () => {
 
   const getDestinationTxn = (srcTxn: any) => {
     const txn = destinationTxns.find(
-      (destTxn: any) => destTxn.l2_owner === srcTxn.receiver,
+      (destTxn: any) => destTxn.request_id === srcTxn.request_id,
     );
+
+    console.log(txn, "txnnnnnn");
+
+    if (!txn) {
+      return {
+        status: "pending",
+      };
+    }
 
     return txn as any;
   };
@@ -236,7 +244,8 @@ const ConnectButtonDialog: React.FC = () => {
     })();
   }, [addressDestination]);
 
-  console.log(sourceTxns[0], "sourceTxns");
+  console.log(sourceTxns, "sourceTxns");
+  console.log(destinationTxns, "destination");
 
   const connectedEvmWalletName = localStorage.getItem("STARKPULL_WALLET_EVM");
 
@@ -648,7 +657,7 @@ const ConnectButtonDialog: React.FC = () => {
                                 alt="eth logo"
                                 className="size-5 shrink-0"
                               />
-                              Ethereum
+                              Ethereum {txn?.request_id}
                             </p>
                             <span className="text-xs text-[#EDDFFDCC]">
                               Sepolia
@@ -678,19 +687,19 @@ const ConnectButtonDialog: React.FC = () => {
                             "dd MMM, yyyy h:mm a",
                           )}
 
-                          {txn?.status === "pending" && (
+                          {getDestinationTxn(txn)?.status === "pending" && (
                             <div className="-mr-5 text-nowrap rounded-full bg-[#261A8DCC] p-1 px-2 text-[10px] text-[#B9AFF1]">
                               Pending Submission
                             </div>
                           )}
 
-                          {txn?.status === "confirmed" && (
+                          {getDestinationTxn(txn)?.status === "confirmed" && (
                             <div className="-mr-5 flex items-center gap-2">
                               <div className="text-nowrap rounded-full bg-[#38EF7D80] p-1 px-2 text-[10px] text-[#000]">
                                 Success
                               </div>
                               <a
-                                href={`https://sepolia.etherscan.io/tx/${txn?.txHash}`}
+                                href={`https://sepolia.etherscan.io/tx/${txn.txHash}`}
                                 target="_blank"
                                 className="rounded-3xl bg-[#35314F] p-1"
                               >
@@ -732,7 +741,11 @@ const ConnectButtonDialog: React.FC = () => {
                         </div>
 
                         <div className="flex flex-col items-start gap-6">
-                          <div className="group flex cursor-pointer flex-col items-start gap-1">
+                          <a
+                            href={`https://sepolia.etherscan.io/tx/${txn?.txHash}`}
+                            target="_blank"
+                            className="group flex cursor-pointer flex-col items-start gap-1"
+                          >
                             <p
                               className={cn(
                                 "flex items-center gap-2 text-base text-[#B9AFF1]",
@@ -748,7 +761,7 @@ const ConnectButtonDialog: React.FC = () => {
                             <span className="text-xs text-[#EDDFFDCC]">
                               The deposit was submitted on Ethereum.
                             </span>
-                          </div>
+                          </a>
 
                           <div className="group flex flex-col items-start gap-1">
                             <p
@@ -769,7 +782,11 @@ const ConnectButtonDialog: React.FC = () => {
                             </span>
                           </div>
 
-                          <div className="group mt-2 flex cursor-pointer flex-col items-start gap-1">
+                          <a
+                            href={`https://sepolia.voyager.online/tx/${getDestinationTxn(txn)?.txHash}`}
+                            target="_blank"
+                            className="group mt-2 flex cursor-pointer flex-col items-start gap-1"
+                          >
                             <p
                               className={cn(
                                 "flex items-center gap-2 text-base text-[#B9AFF1]",
@@ -783,7 +800,7 @@ const ConnectButtonDialog: React.FC = () => {
                               Transaction Completed
                               <Icons.externalLinkIcon className="transition-all group-hover:brightness-125" />
                             </p>
-                          </div>
+                          </a>
                         </div>
                       </div>
                     </AccordionContent>
