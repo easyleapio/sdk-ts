@@ -48,8 +48,11 @@ import { ScrollArea } from "./ui/scroll-area";
 import { Switch } from "./ui/switch";
 
 const ConnectButtonDialog: React.FC = () => {
-  const [sourceTxns, setSourceTxns] = React.useState([]);
-  const [destinationTxns, setDestinationTxns] = React.useState([]);
+  const [sourceTxns, setSourceTxns] = React.useState<any>([]);
+  const [destinationTxns, setDestinationTxns] = React.useState<any>([]);
+
+  // const [respectiveDestinationTxn, setRespectiveDestinationTxn] =
+  // React.useState<any>({});
 
   const mode = useMode();
   const sharedState = useSharedState();
@@ -167,7 +170,6 @@ const ConnectButtonDialog: React.FC = () => {
       (destTxn: any) => destTxn.l2_owner === srcTxn.receiver,
     );
 
-    console.log(txn, "txnnn");
     return txn as any;
   };
 
@@ -234,8 +236,7 @@ const ConnectButtonDialog: React.FC = () => {
     })();
   }, [addressDestination]);
 
-  console.log(sourceTxns, "sourceTxns");
-  console.log(destinationTxns, "destinationTxns");
+  console.log(sourceTxns[0], "sourceTxns");
 
   const connectedEvmWalletName = localStorage.getItem("STARKPULL_WALLET_EVM");
 
@@ -467,14 +468,144 @@ const ConnectButtonDialog: React.FC = () => {
           open={sharedState.isTxnPopoverOpen}
           onOpenChange={sharedState.setIsTxnPopoverOpen}
         >
-          <PopoverTrigger
-            className={cn("rounded-full", {
-              "animate-pulse bg-green-500 p-px": !sharedState.isSuccessEVM,
-            })}
-          >
-            <div className="rounded-full bg-[#35314F] p-2">
-              <Icons.historyIcon className="shrink-0" />
-            </div>
+          <PopoverTrigger>
+            <>
+              {!sharedState.isSuccessEVM && (
+                <div className="rounded-full bg-[#35314F] p-2">
+                  <Icons.historyIcon className="shrink-0" />
+                </div>
+              )}
+
+              {sharedState.isSuccessEVM &&
+                getDestinationTxn(sourceTxns[0]).status === "" && (
+                  <div
+                    className={cn("rounded-full", {
+                      "animate-pulse bg-green-500 p-px":
+                        sharedState.isSuccessEVM,
+                    })}
+                  >
+                    <div className="rounded-full bg-[#35314F] p-2">
+                      <Icons.historyIcon className="shrink-0" />
+                    </div>
+                  </div>
+                )}
+
+              {sharedState.isSuccessEVM &&
+                getDestinationTxn(sourceTxns[0]).status === "pending" && (
+                  <div className="rounded-full bg-[#35314F] p-2">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M8.25 21.6399C6.25 20.8399 4.49999 19.3899 3.33999 17.3799C2.19999 15.4099 1.81999 13.2199 2.08999 11.1299"
+                        stroke="#1C182B"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M5.8501 4.47986C7.5501 3.14986 9.68009 2.35986 12.0001 2.35986C14.2701 2.35986 16.3601 3.12985 18.0401 4.40985"
+                        stroke="#B9AFF1"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M15.75 21.6399C17.75 20.8399 19.5 19.3899 20.66 17.3799C21.8 15.4099 22.18 13.2199 21.91 11.1299"
+                        stroke="#1C182B"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M8.25 21.6399C6.25 20.8399 4.49999 19.3899 3.33999 17.3799C2.19999 15.4099 1.81999 13.2199 2.08999 11.1299"
+                        stroke="#1C182B"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M5.8501 4.47986C7.5501 3.14986 9.68009 2.35986 12.0001 2.35986C14.2701 2.35986 16.3601 3.12985 18.0401 4.40985"
+                        stroke="#38EF7D"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M15.75 21.6399C17.75 20.8399 19.5 19.3899 20.66 17.3799C21.8 15.4099 22.18 13.2199 21.91 11.1299"
+                        stroke="#38EF7D"
+                        stroke-opacity="0.5"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M12 17C14.75 17 17 14.75 17 12C17 9.25 14.75 7 12 7C9.25 7 7 9.25 7 12C7 14.75 9.25 17 12 17Z"
+                        stroke="#1C182B"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M9.875 12L11.29 13.415L14.125 10.585"
+                        stroke="#1C182B"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </div>
+                )}
+
+              {sharedState.isSuccessEVM &&
+                getDestinationTxn(sourceTxns[0]).status === "confirmed" && (
+                  <div className="rounded-full bg-[#35314F] p-2">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M8.25 21.6399C6.25 20.8399 4.49999 19.3899 3.33999 17.3799C2.19999 15.4099 1.81999 13.2199 2.08999 11.1299"
+                        stroke="#38EF7D"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M5.84961 4.47986C7.54961 3.14986 9.6796 2.35986 11.9996 2.35986C14.2696 2.35986 16.3596 3.12985 18.0396 4.40985"
+                        stroke="#38EF7D"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M15.75 21.6399C17.75 20.8399 19.5 19.3899 20.66 17.3799C21.8 15.4099 22.18 13.2199 21.91 11.1299"
+                        stroke="#38EF7D"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M12 17C14.75 17 17 14.75 17 12C17 9.25 14.75 7 12 7C9.25 7 7 9.25 7 12C7 14.75 9.25 17 12 17Z"
+                        stroke="#38EF7D"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M9.875 12L11.29 13.415L14.125 10.585"
+                        stroke="#38EF7D"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </div>
+                )}
+            </>
           </PopoverTrigger>
           <PopoverContent className="mr-[5.37rem] mt-4 w-[484px] border border-[#675E99] bg-[#1C182B] px-8 py-6 font-dmSans">
             <h4 className="flex w-full items-center justify-between text-lg font-bold text-[#DADADA]">
@@ -487,7 +618,7 @@ const ConnectButtonDialog: React.FC = () => {
 
             <ScrollArea className="mt-5 h-[40vh]">
               <Accordion type="single" collapsible>
-                {sourceTxns.map((txn: any, i) => (
+                {sourceTxns.map((txn: any, i: any) => (
                   <AccordionItem
                     key={i}
                     value={`txn-${i + 1}`}
