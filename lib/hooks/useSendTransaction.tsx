@@ -10,7 +10,7 @@ import { InteractionMode, useSharedState } from "./SharedState";
 import { useAccount } from "./useAccount";
 import { useSourceBridgeInfo } from "./useBalance";
 import useMode from "./useMode";
-import { mergeArrays } from "./useTransactionHistory";
+import { mergeSortArrays } from "./useTransactionHistory";
 
 export interface UseSendTransactionArgs {
   calls?: Call[];
@@ -159,7 +159,7 @@ export function useSendTransaction(props: UseSendTransactionArgs) {
   useEffect(() => {
     console.log("useSendTransactionn", {dataEVM, isErrorEVM, isSuccessEVM, isPendingEVM});
     if (dataEVM) {
-      context.setSourceTransactions(mergeArrays(
+      context.setSourceTransactions(mergeSortArrays(
         context.sourceTransactions,
         [{
           amount_raw: props.bridgeConfig.amount.toString(),
@@ -170,8 +170,8 @@ export function useSendTransaction(props: UseSendTransactionArgs) {
           eventIndex: 0,
           request_id: 0,
           sender: addressSource,
-          status: isPendingEVM ? 'pending' : 'success',
-          timestamp: new Date().getTime(),
+          status: isPendingEVM ? 'pending' : 'confirmed',
+          timestamp: Math.round(new Date().getTime() / 1000),
           token: props.bridgeConfig.l2_token_address,
           txHash: dataEVM,
           txIndex: 0,

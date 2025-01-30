@@ -1,6 +1,6 @@
 import { ReviewModalProps } from "@lib/components/connect/review-modal";
 import { Chain as ChainSN, sepolia as sepoliaSN } from "@starknet-react/chains";
-import React, { createContext } from "react";
+import React, { createContext, useEffect } from "react";
 
 /**
  * The mode of interaction with the Starknet DApp.

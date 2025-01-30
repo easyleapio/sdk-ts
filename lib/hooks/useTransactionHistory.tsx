@@ -3,7 +3,7 @@ import { useAccount } from "./useAccount";
 import { TXN_QUERY } from "@/hooks/queries";
 import apolloClient from "@/hooks/apollo-client";
 import { useSharedState } from "./SharedState";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 /**
 * Merge two arrays of transactions, removing duplicates
@@ -12,7 +12,7 @@ import { useEffect } from "react";
  * @param arr2 
  * @returns 
  */
-export function mergeArrays(arr1: any[], arr2: any[]) {
+export function mergeSortArrays(arr1: any[], arr2: any[]) {
   const map = new Map(arr2.map((item: any) => [item.txHash, item]));
 
   arr1.forEach(item => {
@@ -21,13 +21,31 @@ export function mergeArrays(arr1: any[], arr2: any[]) {
     }
   });
 
-  const data = Array.from(map.values());
+  const data = Array.from(map.values()).sort((a, b) => b.timestamp - a.timestamp);
   console.log("Merged arrays", arr1, arr2, data);
   return data;
 }
 
 export function useTransactionHistory(addressDestination: string | undefined, pollingTimeMs = 5000) {
   const context = useSharedState();
+
+  const [localSourceTransactions, setLocalSourceTransactions] = React.useState<any[]>([]);
+  const [localDestinationTransactions, setLocalDestinationTransactions] = React.useState<any[]>([]);
+
+  useEffect(() => {
+    console.log('sourcee', context.sourceTransactions.length, new Date());
+  }, [context.sourceTransactions]);
+
+  useEffect(() => {
+    const merged = mergeSortArrays(context.sourceTransactions, localSourceTransactions)
+    console.log('sourcee change1', context.sourceTransactions.length, localSourceTransactions.length, merged.length, merged[0], new Date());
+    context.setSourceTransactions(merged);
+  }, [localSourceTransactions]);
+
+  useEffect(() => {
+    // console.log('sourcee change2', context.destinationTransactions.length, localDestinationTransactions.length, new Date());
+    context.setDestinationTransactions(mergeSortArrays(context.destinationTransactions, localDestinationTransactions))
+  }, [localDestinationTransactions]);
 
   useEffect(() => {
     let isMounted = true;
@@ -39,8 +57,6 @@ export function useTransactionHistory(addressDestination: string | undefined, po
       }
       console.log("Polling data", new Date(), new Date(context.lastTxPollTime));
       if (!addressDestination) {
-        context.setSourceTransactions([]);
-        context.setDestinationTransactions([]);
         return;
       }
 
@@ -65,12 +81,10 @@ export function useTransactionHistory(addressDestination: string | undefined, po
           },
         });
 
-        const finalSourceTxs = mergeArrays(context.sourceTransactions, data.findManySource_requests.reverse())
-          .sort((a, b) => b.timestamp - a.timestamp);
-        const finalDestinationTxs = mergeArrays(context.destinationTransactions, data.findManyDestination_requests.reverse())
-          .sort((a, b) => b.timestamp - a.timestamp);
-        context.setSourceTransactions(finalSourceTxs);
-        context.setDestinationTransactions(finalDestinationTxs);
+        const finalSourceTxs = mergeSortArrays(context.sourceTransactions, data.findManySource_requests.reverse());
+        const finalDestinationTxs = mergeSortArrays(context.destinationTransactions, data.findManyDestination_requests.reverse());
+        setLocalSourceTransactions(finalSourceTxs);
+        setLocalDestinationTransactions(finalDestinationTxs);
         context.setLastTxPollTime(now);
       } catch (error) {
         console.error("GraphQL Error:", error);
@@ -78,9 +92,12 @@ export function useTransactionHistory(addressDestination: string | undefined, po
       }
 
       if (isMounted) {
+        console.log("Polling again in", pollingTimeMs);
         setTimeout(pollData, pollingTimeMs);
       }
     };
+
+    pollData();
 
     return () => {
       isMounted = false; // Cleanup on unmount

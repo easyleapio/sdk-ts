@@ -48,9 +48,6 @@ import { ScrollArea } from "./ui/scroll-area";
 import { Switch } from "./ui/switch";
 
 const ConnectButtonDialog: React.FC = () => {
-  const [sourceTxns, setSourceTxns] = React.useState<any>([]);
-  const [destinationTxns, setDestinationTxns] = React.useState<any>([]);
-
   // const [respectiveDestinationTxn, setRespectiveDestinationTxn] =
   // React.useState<any>({});
 
@@ -166,7 +163,7 @@ const ConnectButtonDialog: React.FC = () => {
   }
 
   const getDestinationTxn = (srcTxn: any) => {
-    const txn = destinationTxns.find(
+    const txn = sharedState.destinationTransactions.find(
       (destTxn: any) => destTxn.request_id === srcTxn.request_id,
     );
 
@@ -205,45 +202,6 @@ const ConnectButtonDialog: React.FC = () => {
       dismiss();
     }
   }, [addressSource, addressDestination, mode]);
-
-  React.useEffect(() => {
-    if (!addressDestination) {
-      return;
-    }
-
-    (async () => {
-      try {
-        const { data } = await apolloClient.query({
-          query: TXN_QUERY,
-          variables: {
-            where: {
-              receiver: {
-                equals: standariseAddress(addressDestination),
-                // equals:
-                //   "0x54d159fa98b0f67b3d3b287aae0340bf595d8f2a96ed99532785aeef08c1ede",
-              },
-            },
-            findManyDestinationRequestsWhere2: {
-              l2_owner: {
-                equals: standariseAddress(addressDestination),
-                // equals:
-                //   "0x54d159fa98b0f67b3d3b287aae0340bf595d8f2a96ed99532785aeef08c1ede",
-              },
-            },
-          },
-        });
-
-        setSourceTxns(data.findManySource_requests.reverse());
-        setDestinationTxns(data.findManyDestination_requests.reverse());
-      } catch (error) {
-        console.error("GraphQL Error:", error);
-        throw error;
-      }
-    })();
-  }, [addressDestination]);
-
-  console.log(sourceTxns, "sourceTxns");
-  console.log(destinationTxns, "destination");
 
   const connectedEvmWalletName = localStorage.getItem("STARKPULL_WALLET_EVM");
 
@@ -477,11 +435,11 @@ const ConnectButtonDialog: React.FC = () => {
         >
           <PopoverTrigger className="relative">
             <>
-              {destinationTxns.filter((txn: any) => txn.status === "pending")
+              {sharedState.destinationTransactions.filter((txn: any) => txn.status === "pending")
                 .length > 0 && (
                 <div className="absolute -right-0 -top-1.5 flex size-4 items-center justify-center rounded-full bg-red-500 p-1 text-[9px] font-semibold text-white">
                   {
-                    destinationTxns.filter(
+                    sharedState.destinationTransactions.filter(
                       (txn: any) => txn.status === "pending",
                     ).length
                   }
@@ -495,7 +453,7 @@ const ConnectButtonDialog: React.FC = () => {
               )}
 
               {sharedState.isSuccessEVM &&
-                getDestinationTxn(sourceTxns[0]).status === "" && (
+                getDestinationTxn(sharedState.sourceTransactions[0]).status === "" && (
                   <div
                     className={cn("rounded-full", {
                       "animate-pulse bg-green-500 p-px":
@@ -509,7 +467,7 @@ const ConnectButtonDialog: React.FC = () => {
                 )}
 
               {sharedState.isSuccessEVM &&
-                getDestinationTxn(sourceTxns[0]).status === "pending" && (
+                getDestinationTxn(sharedState.sourceTransactions[0]).status === "pending" && (
                   <div className="rounded-full bg-[#35314F] p-2">
                     <svg
                       width="24"
@@ -578,7 +536,7 @@ const ConnectButtonDialog: React.FC = () => {
                 )}
 
               {sharedState.isSuccessEVM &&
-                getDestinationTxn(sourceTxns[0]).status === "confirmed" && (
+                getDestinationTxn(sharedState.sourceTransactions[0]).status === "confirmed" && (
                   <div className="rounded-full bg-[#35314F] p-2">
                     <svg
                       width="24"
@@ -636,7 +594,7 @@ const ConnectButtonDialog: React.FC = () => {
 
             <ScrollArea className="mt-5 h-[40vh]">
               <Accordion type="single" collapsible>
-                {sourceTxns.map((txn: any, i: any) => (
+                {sharedState.sourceTransactions.map((txn: any, i: any) => (
                   <AccordionItem
                     key={i}
                     value={`txn-${i + 1}`}
@@ -804,6 +762,12 @@ const ConnectButtonDialog: React.FC = () => {
                     </AccordionContent>
                   </AccordionItem>
                 ))}
+
+                {sharedState.sourceTransactions.length === 0 && (
+                  <div className="flex items-center justify-center w-full h-40">
+                    <p className="text-[#B9AFF1]">No transactions yet</p>
+                    </div>
+                  )}
               </Accordion>
             </ScrollArea>
           </PopoverContent>
