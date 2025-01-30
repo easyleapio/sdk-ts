@@ -145,7 +145,14 @@ export function useSendTransaction(props: UseSendTransactionArgs) {
       return props.bridgeConfig.amount + mySourceFee + msgFee;
     }
     return mySourceFee + msgFee;
-  }, [sourceTokenInfo, props.bridgeConfig.amount, props.bridgeConfig, props, mySourceFee, msgFee]);
+  }, [
+    sourceTokenInfo,
+    props.bridgeConfig.amount,
+    props.bridgeConfig,
+    props,
+    mySourceFee,
+    msgFee,
+  ]);
 
   const send = async () => {
     if (!props.calls || !props.calls.length) {
@@ -165,6 +172,7 @@ export function useSendTransaction(props: UseSendTransactionArgs) {
   };
 
   const context = useSharedState();
+
   function openReviewMoal(
     tokensIn: TokenTransfer[],
     tokensOut: TokenTransfer[],
@@ -186,12 +194,16 @@ export function useSendTransaction(props: UseSendTransactionArgs) {
       send();
     }
   }
+
+  context.setIsSuccessEVM(isSuccessEVM);
+
   return {
     send: openReviewMoal,
     error: errorSN || errorEVM,
     isPending: isPendingSN || isPendingEVM,
-    isSuccess: isSuccessSN || isSuccessEVM,
     dataSN,
     dataEVM,
+    isSuccessSN,
+    isSuccessEVM,
   };
 }

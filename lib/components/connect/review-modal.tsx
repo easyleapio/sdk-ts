@@ -82,8 +82,7 @@ export function ReviewModal() {
             <span className="text-xs text-[#EDDFFDCC]">Sepolia</span>
           </div>
 
-          <Icons.arrowRight className="hidden md:block" />
-          <Icons.arrowRight className="md:hidden" style={{ rotate: "90deg" }} />
+          <Icons.arrowRight className="arrowIcon" />
 
           <div className="flex flex-col items-start gap-0.5 md:mt-5">
             <p className="flex items-center gap-1 text-base text-[#B9AFF1]">
@@ -97,8 +96,7 @@ export function ReviewModal() {
             <span className="text-xs text-[#EDDFFDCC]">Sepolia</span>
           </div>
 
-          <Icons.arrowRight className="hidden md:block" />
-          <Icons.arrowRight className="md:hidden" style={{ rotate: "90deg" }} />
+          <Icons.arrowRight className="arrowIcon" />
 
           <div className="flex items-center justify-center">
             <Icons.vesuNamedLogo />
