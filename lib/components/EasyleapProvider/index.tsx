@@ -17,6 +17,7 @@ import {
 
 import { Toaster } from "~/components/ui/toaster";
 import { SharedStateProvider, useSharedState } from "~/contexts/SharedState";
+import { ThemeProvider } from "~/contexts/ThemeContext";
 
 export interface EasyleapConfig {
   wagmiConfig?: WagmiConfig;
@@ -91,17 +92,19 @@ export function EasyleapProvider(
 
   return (
     <SharedStateProvider>
-      <WagmiProvider config={wagmiConfig}>
-        <StarknetConfig
-          chains={[sepolia, mainnet]}
-          provider={starknetConfig.provider}
-          explorer={starknetConfig.explorer}
-          connectors={starknetConfig?.connectors || []}
-        >
-          {props.children}
-          <Toaster />
-        </StarknetConfig>
-      </WagmiProvider>
+      <ThemeProvider>
+        <WagmiProvider config={wagmiConfig}>
+          <StarknetConfig
+            chains={[sepolia, mainnet]}
+            provider={starknetConfig.provider}
+            explorer={starknetConfig.explorer}
+            connectors={starknetConfig?.connectors || []}
+          >
+            {props.children}
+            <Toaster />
+          </StarknetConfig>
+        </WagmiProvider>
+      </ThemeProvider>
     </SharedStateProvider>
   );
 }

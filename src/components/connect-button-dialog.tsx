@@ -37,6 +37,7 @@ import { useAccount } from "~/hooks/useAccount";
 import useMode from "~/hooks/useMode";
 import { cn, shortAddress } from "~/utils";
 
+import { useTheme } from "~/contexts/ThemeContext";
 import { Icons } from "./Icons";
 import { ScrollArea } from "./ui/scroll-area";
 
@@ -47,6 +48,8 @@ const ConnectButtonDialog: React.FC = () => {
 
   const { disconnect: disconnectSN } = useDisconnectSN();
   const { disconnect: disconnectWagmi } = useDisconnectWagmi();
+
+  const theme = useTheme();
 
   const { dismiss } = useToast();
 
@@ -211,9 +214,15 @@ const ConnectButtonDialog: React.FC = () => {
       className={cn(
         "z-10 flex flex-col items-center gap-4 rounded-2xl md:flex-row",
         {
-          "bg-[#1C182B] py-2 pl-5 pr-3": addressSource || addressDestination,
+          "py-2 pl-5 pr-3": addressSource || addressDestination,
         },
       )}
+      style={{
+        backgroundColor:
+          mode === InteractionMode.Starknet
+            ? theme.starknetMode.mainBgColor
+            : theme.bridgeMode.mainBgColor,
+      }}
     >
       <Dialog
         open={sharedState.connectWalletModalOpen}
@@ -225,14 +234,27 @@ const ConnectButtonDialog: React.FC = () => {
               {!addressSource && !addressDestination && (
                 <Button
                   variant="outline"
-                  className="rounded-[20px] border bg-transparent text-center text-white hover:bg-transparent hover:text-white"
+                  style={{
+                    color: theme.noneMode.color,
+                    backgroundColor: theme.noneMode.backgroundColor,
+                    border: theme.noneMode.border,
+                  }}
+                  className="rounded-[20px] bg-transparent text-center hover:bg-transparent hover:text-white"
                 >
                   Connect wallet
                 </Button>
               )}
 
               {mode == InteractionMode.Starknet && (
-                <Button className="mx-auto flex w-fit items-center justify-start gap-3 rounded-xl border-2 border-[#443f54] bg-transparent font-medium text-[#B9AFF1] hover:bg-transparent">
+                <Button
+                  style={{
+                    color: theme.starknetMode.button.color,
+                    backgroundColor: theme.starknetMode.button.backgroundColor,
+                    border: theme.starknetMode.button.border,
+                    borderRadius: theme.starknetMode.button.borderRadius,
+                  }}
+                  className="mx-auto flex w-fit items-center justify-start gap-3 font-medium hover:bg-transparent"
+                >
                   <span className="rounded-full bg-[#fff] p-1">
                     {getWalletIcon(connector?.id ?? "braavos")}
                   </span>
@@ -242,7 +264,16 @@ const ConnectButtonDialog: React.FC = () => {
 
               {mode == InteractionMode.Bridge && (
                 <div className="mx-auto flex w-fit cursor-pointer items-center justify-center -space-x-[2.6rem] rounded-lg">
-                  <Button className="z-20 flex w-fit scale-110 items-center justify-start gap-3 rounded-xl border-2 border-[#b5abdf] bg-[#1C182B] text-[#b5abdf] shadow-xl shadow-[#1C182B] hover:bg-[#1C182B]">
+                  <Button
+                    style={{
+                      color: theme.bridgeMode.evmButton.color,
+                      backgroundColor:
+                        theme.bridgeMode.evmButton.backgroundColor,
+                      border: theme.bridgeMode.evmButton.border,
+                      borderRadius: theme.bridgeMode.evmButton.borderRadius,
+                    }}
+                    className="z-20 flex w-fit scale-110 items-center justify-start gap-3 rounded-xl shadow-xl shadow-[#1C182B] hover:bg-[#1C182B]"
+                  >
                     <span className="rounded-full bg-[white] p-1">
                       {connectedEvmWalletName &&
                         getWalletIcon(connectedEvmWalletName.toLowerCase())}
@@ -250,7 +281,17 @@ const ConnectButtonDialog: React.FC = () => {
                     {shortAddress(addressSource, 4, 4)}
                   </Button>
 
-                  <Button className="z-0 flex w-fit items-center justify-start gap-3 rounded-xl bg-[#35314F] font-semibold text-[#9183E9] hover:bg-[#35314F]">
+                  <Button
+                    style={{
+                      color: theme.bridgeMode.starknetButton.color,
+                      backgroundColor:
+                        theme.bridgeMode.starknetButton.backgroundColor,
+                      border: theme.bridgeMode.starknetButton.border,
+                      borderRadius:
+                        theme.bridgeMode.starknetButton.borderRadius,
+                    }}
+                    className="z-0 flex w-fit items-center justify-start gap-3 rounded-xl font-semibold hover:bg-[#35314F]"
+                  >
                     {shortAddress(addressDestination, 4, 4)}
                     <span className="rounded-full bg-[#fff] p-1">
                       {getWalletIcon(connector?.id ?? "braavos")}

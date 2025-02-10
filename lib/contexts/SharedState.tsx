@@ -2,7 +2,6 @@ import { Chain as ChainSN, sepolia as sepoliaSN } from "@starknet-react/chains";
 import React from "react";
 
 import { ReviewModalProps } from "~/components/review-modal";
-import { useAccount } from "~/hooks";
 import { toast } from "~/hooks/use-toast";
 
 /**

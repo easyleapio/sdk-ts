@@ -5,6 +5,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "~/components/ui/tooltip";
+import { useTheme } from "~/contexts/ThemeContext";
 import { InteractionMode, useSharedState } from "~/hooks";
 import { toast } from "~/hooks/use-toast";
 import { useAccount } from "~/hooks/useAccount";
@@ -17,6 +18,8 @@ export const ModeSwitcher = () => {
   const sharedState = useSharedState();
 
   const mode = useMode();
+
+  const theme = useTheme();
 
   return (
     <div>
@@ -38,12 +41,21 @@ export const ModeSwitcher = () => {
                   );
                   sharedState.setModeSwitchedManually(true);
                 }}
-                className={cn(
-                  "h-9 w-28 border-2 border-[#b5abdf] font-firaCode",
-                  {
-                    "border-[#443f54]": mode == InteractionMode.Starknet,
-                  },
-                )}
+                className={cn("h-9 w-28 font-firaCode")}
+                style={{
+                  border:
+                    mode === InteractionMode.Starknet
+                      ? theme.starknetMode.switchButton.border
+                      : theme.bridgeMode.switchButton.border,
+                  color:
+                    mode === InteractionMode.Starknet
+                      ? theme.starknetMode.switchButton.color
+                      : theme.bridgeMode.switchButton.color,
+                  backgroundColor:
+                    mode === InteractionMode.Starknet
+                      ? theme.starknetMode.switchButton.backgroundColor
+                      : theme.bridgeMode.switchButton.backgroundColor,
+                }}
               />
             </TooltipTrigger>
             <TooltipContent className="mr-5 mt-2 max-w-[20rem] border border-[#211d31] !bg-[#b5abdf] px-4 py-2 text-[#211d31]">
