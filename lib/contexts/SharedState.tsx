@@ -2,6 +2,8 @@ import { Chain as ChainSN, sepolia as sepoliaSN } from "@starknet-react/chains";
 import React from "react";
 
 import { ReviewModalProps } from "~/components/review-modal";
+import { useAccount } from "~/hooks";
+import { toast } from "~/hooks/use-toast";
 
 /**
  * The mode of interaction with the Starknet DApp.
@@ -45,6 +47,8 @@ interface SharedContext {
 
   lastTxPollTime: number;
   setLastTxPollTime: (value: number) => void;
+
+  switchMode: () => void;
 }
 
 const SharedStateContext = React.createContext({
@@ -80,6 +84,8 @@ const SharedStateContext = React.createContext({
 
   lastTxPollTime: 0,
   setLastTxPollTime: () => {},
+
+  switchMode: () => {},
 } as SharedContext);
 
 export const SharedStateProvider = ({
@@ -115,6 +121,21 @@ export const SharedStateProvider = ({
 
   const [lastTxPollTime, setLastTxPollTime] = React.useState(0);
 
+  // only switches from Bridge to Starknet or vice versa
+  const switchMode = () => {
+    if (mode === InteractionMode.Bridge) {
+      setMode(InteractionMode.Starknet);
+      return toast({
+        title: "Switched to Starknet mode",
+      });
+    } else if (mode === InteractionMode.Starknet) {
+      setMode(InteractionMode.Bridge);
+      return toast({
+        title: "Switched to Bridge mode",
+      });
+    }
+  };
+
   return (
     <SharedStateContext.Provider
       value={{
@@ -142,6 +163,8 @@ export const SharedStateProvider = ({
 
         lastTxPollTime,
         setLastTxPollTime,
+
+        switchMode,
       }}
     >
       {children}

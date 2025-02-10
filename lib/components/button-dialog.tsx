@@ -31,7 +31,7 @@ import {
   PopoverTrigger,
 } from "~/components/ui/popover";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { InteractionMode, useSharedState } from "~/hooks/SharedState";
+import { InteractionMode, useSharedState } from "~/contexts/SharedState";
 import { toast, useToast } from "~/hooks/use-toast";
 import { useAccount } from "~/hooks/useAccount";
 import useMode from "~/hooks/useMode";

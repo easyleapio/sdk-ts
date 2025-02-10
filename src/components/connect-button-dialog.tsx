@@ -32,7 +32,7 @@ import {
 import { toast, useToast } from "@/hooks/use-toast";
 
 import { ModeSwitcher } from "~/components";
-import { InteractionMode, useSharedState } from "~/hooks/SharedState";
+import { InteractionMode, useSharedState } from "~/contexts/SharedState";
 import { useAccount } from "~/hooks/useAccount";
 import useMode from "~/hooks/useMode";
 import { cn, shortAddress } from "~/utils";

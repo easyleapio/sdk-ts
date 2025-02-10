@@ -7,7 +7,7 @@ import { useSendTransaction as useSendTransactionEVM } from "wagmi";
 import { TokenTransfer } from "~/components/review-modal";
 import { ADDRESSES, ZERO_ADDRESS_EVM } from "~/utils/constants";
 
-import { InteractionMode, useSharedState } from "./SharedState";
+import { InteractionMode, useSharedState } from "../contexts/SharedState";
 import { useAccount } from "./useAccount";
 import { useSourceBridgeInfo } from "./useBalance";
 import useMode from "./useMode";

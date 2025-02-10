@@ -4,7 +4,7 @@ import apolloClient from "~/hooks/apollo-client";
 import { TXN_QUERY } from "~/hooks/queries";
 import { standariseAddress } from "~/utils";
 
-import { useSharedState } from "./SharedState";
+import { useSharedState } from "../contexts/SharedState";
 
 /**
  * Merge two arrays of transactions, removing duplicates

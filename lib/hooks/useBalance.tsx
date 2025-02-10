@@ -11,7 +11,7 @@ import { ZERO_ADDRESS_EVM } from "~/utils/constants";
 import TokensInfo from "~/utils/tokens.json";
 import TokensInfoSepolia from "~/utils/tokens.sepolia.json";
 
-import { InteractionMode } from "./SharedState";
+import { InteractionMode } from "../contexts/SharedState";
 import { Chains, useAccount } from "./useAccount";
 import useMode from "./useMode";
 
