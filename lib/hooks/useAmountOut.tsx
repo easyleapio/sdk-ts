@@ -1,35 +1,35 @@
 import { useReadContract } from "@starknet-react/core";
-import { ADDRESSES } from "../../lib/utils/constants";
 import { useMemo } from "react";
 
+import { ADDRESSES } from "~/utils/constants";
 
 /**
- * 
+ *
  * @param amount_raw In full decimal string format (e.g. "1000000000000000000" for 1 ETH)
  */
 export function useAmountOut(amount_raw: bigint) {
   const output = useReadContract({
     abi: [
       {
-        "name": "get_fee",
-        "type": "function",
-        "inputs": [
+        name: "get_fee",
+        type: "function",
+        inputs: [
           {
-            "name": "amount",
-            "type": "core::integer::u128"
-          }
+            name: "amount",
+            type: "core::integer::u128",
+          },
         ],
-        "outputs": [
+        outputs: [
           {
-            "type": "core::integer::u128"
-          }
+            type: "core::integer::u128",
+          },
         ],
-        "state_mutability": "view"
-      }
+        state_mutability: "view",
+      },
     ] as const,
     functionName: "get_fee",
     address: ADDRESSES.STARKNET.EXECUTOR as `0x${string}`,
-    args: [amount_raw]
+    args: [amount_raw],
   });
 
   const postFeeAmount = useMemo(() => {
@@ -42,7 +42,7 @@ export function useAmountOut(amount_raw: bigint) {
   const toReturn = {
     amountOut: postFeeAmount,
     fee: output.data as bigint,
-    ...output
+    ...output,
   };
   delete toReturn.data;
   return toReturn;

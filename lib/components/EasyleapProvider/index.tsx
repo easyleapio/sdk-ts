@@ -6,7 +6,7 @@ import {
   voyager,
 } from "@starknet-react/core";
 import { getDefaultConfig } from "connectkit";
-import React, { useEffect } from "react";
+import React from "react";
 import { sepolia as sepoliaEVM } from "viem/chains";
 import {
   createConfig,
@@ -15,10 +15,8 @@ import {
   WagmiProvider,
 } from "wagmi";
 
-import {
-  SharedStateProvider,
-  useSharedState,
-} from "../../../lib/hooks/SharedState";
+import { Toaster } from "~/components/ui/toaster";
+import { SharedStateProvider, useSharedState } from "~/hooks/SharedState";
 
 export interface EasyleapConfig {
   wagmiConfig?: WagmiConfig;
@@ -101,6 +99,7 @@ export function EasyleapProvider(
           connectors={starknetConfig?.connectors || []}
         >
           {props.children}
+          <Toaster />
         </StarknetConfig>
       </WagmiProvider>
     </SharedStateProvider>

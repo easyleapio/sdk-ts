@@ -10,37 +10,41 @@ import {
   useDisconnect as useDisconnectWagmi,
 } from "wagmi";
 
+import { Icons } from "~/components/Icons";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
+} from "~/components/ui/accordion";
+import { Button } from "~/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "~/components/ui/dialog";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { toast, useToast } from "@/hooks/use-toast";
-
-import { ModeSwitcher } from "~/components";
+} from "~/components/ui/popover";
+import { ScrollArea } from "~/components/ui/scroll-area";
 import { InteractionMode, useSharedState } from "~/hooks/SharedState";
+import { toast, useToast } from "~/hooks/use-toast";
 import { useAccount } from "~/hooks/useAccount";
 import useMode from "~/hooks/useMode";
 import { cn, shortAddress } from "~/utils";
 
-import { Icons } from "./Icons";
-import { ScrollArea } from "./ui/scroll-area";
+import { ModeSwitcher, type ConnectButtonProps } from ".";
 
-const ConnectButtonDialog: React.FC = () => {
+const ButtonDialog: React.FC<ConnectButtonProps> = ({
+  onConnectStarknet,
+  onDisconnectStarknet,
+  onConnectEVM,
+  onDisconnectEVM,
+}) => {
   const mode = useMode();
   const sharedState = useSharedState();
   const { addressSource, addressDestination } = useAccount();
@@ -105,6 +109,7 @@ const ConnectButtonDialog: React.FC = () => {
                     title: "Connect Starknet wallet first",
                   });
                 connect({ connector });
+                onConnectEVM?.();
                 localStorage.setItem("STARKPULL_WALLET_EVM", connector.name);
               }}
               className="flex w-full items-center justify-between text-xs"
@@ -131,7 +136,10 @@ const ConnectButtonDialog: React.FC = () => {
             className="flex h-[2.69rem] w-full items-center rounded-lg border border-[#B9AFF133] px-3 py-1 text-sm text-[#B9AFF1]"
           >
             <button
-              onClick={() => connect({ connector })}
+              onClick={() => {
+                connect({ connector });
+                onConnectStarknet?.();
+              }}
               className="flex w-full items-center justify-between"
             >
               {connector.name}
@@ -192,6 +200,7 @@ const ConnectButtonDialog: React.FC = () => {
 
     if (addressSource && !addressDestination) {
       disconnectWagmi();
+      onDisconnectEVM?.();
     }
 
     if (mode === InteractionMode.Bridge) {
@@ -302,6 +311,8 @@ const ConnectButtonDialog: React.FC = () => {
                       onClick={() => {
                         disconnectSN();
                         disconnectWagmi();
+                        onDisconnectEVM?.();
+                        onDisconnectStarknet?.();
                       }}
                     />
                   </Button>
@@ -367,6 +378,7 @@ const ConnectButtonDialog: React.FC = () => {
                       className="size-4 text-black"
                       onClick={() => {
                         disconnectWagmi();
+                        onDisconnectEVM?.();
                       }}
                     />
                   </Button>
@@ -732,4 +744,4 @@ const ConnectButtonDialog: React.FC = () => {
   );
 };
 
-export default ConnectButtonDialog;
+export default ButtonDialog;

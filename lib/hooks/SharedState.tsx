@@ -1,6 +1,7 @@
-import { ReviewModalProps } from "@lib/components/connect/review-modal";
 import { Chain as ChainSN, sepolia as sepoliaSN } from "@starknet-react/chains";
-import React, { createContext, useEffect } from "react";
+import React from "react";
+
+import { ReviewModalProps } from "~/components/review-modal";
 
 /**
  * The mode of interaction with the Starknet DApp.
@@ -46,7 +47,7 @@ interface SharedContext {
   setLastTxPollTime: (value: number) => void;
 }
 
-const SharedStateContext = createContext({
+const SharedStateContext = React.createContext({
   mode: InteractionMode.None,
   setMode: () => {},
   isModeSwitchedManually: false,
@@ -108,8 +109,9 @@ export const SharedStateProvider = ({
   const [isSuccessEVM, setIsSuccessEVM] = React.useState(false);
 
   const [sourceTransactions, setSourceTransactions] = React.useState<any[]>([]);
-  const [destinationTransactions, setDestinationTransactions] =
-    React.useState<any[]>([]);
+  const [destinationTransactions, setDestinationTransactions] = React.useState<
+    any[]
+  >([]);
 
   const [lastTxPollTime, setLastTxPollTime] = React.useState(0);
 
@@ -139,7 +141,7 @@ export const SharedStateProvider = ({
         setDestinationTransactions,
 
         lastTxPollTime,
-        setLastTxPollTime
+        setLastTxPollTime,
       }}
     >
       {children}
