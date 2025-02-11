@@ -60,48 +60,46 @@ const ButtonDialog: React.FC<ConnectButtonProps> = ({
 
   const theme = useTheme();
 
-  // todo need to figure out a way to make it generic
+  const walletIconMap: Record<
+    string,
+    { Icon: React.ElementType; size?: string }
+  > = {
+    // Starknet wallets
+    braavos: { Icon: Icons.braavos, size: "size-3" },
+    argentX: { Icon: Icons.argentX, size: "size-[18px]" },
+    argentWebWallet: { Icon: MailIcon, size: "size-3" },
+    keplr: { Icon: Icons.keplr, size: "size-3" },
+    "argent-mobile": { Icon: Icons.argentMobile, size: "size-3" },
+
+    // EVM wallets
+    metamask: { Icon: Icons.metamask, size: "size-3" },
+    "coinbase wallet": { Icon: Icons.coinbase, size: "size-3" },
+    subwallet: { Icon: Icons.subwallet, size: "size-3" },
+    trust: { Icon: Icons.trust, size: "size-3" },
+    rainbow: { Icon: Icons.rainbow, size: "size-3" },
+    phantom: { Icon: Icons.phantom, size: "size-3" },
+    walletconnect: { Icon: Icons.wallet, size: "size-3" },
+  };
+
   const getWalletIcon = (walletId: string) => {
-    switch (walletId) {
-      // Starknet wallets
-      case "braavos":
-        return <Icons.braavos className="size-3" />;
-      case "argentX":
-        return <Icons.argentX className="size-[18px]" />;
-      case "argentWebWallet":
-        return <MailIcon className="size-3" />;
-      case "keplr":
-        return <Icons.keplr className="size-3" />;
-      case "argent-mobile":
-        return <Icons.argentMobile className="size-3" />;
+    const wallet = walletIconMap[walletId];
 
-      // EVM wallets
-      case "metamask":
-        return <Icons.metamask className="size-3" />;
-      case "coinbase wallet":
-        return <Icons.coinbase className="size-3" />;
-      case "subwallet":
-        return <Icons.subwallet className="size-3" />;
-      case "trust":
-        return <Icons.trust className="size-3" />;
-      case "rainbow":
-        return <Icons.rainbow className="size-3" />;
-      case "phantom":
-        return <Icons.phantom className="size-3" />;
-      case "walletconnect":
-        return <Icons.walletConnect className="size-3" />;
-
-      default:
-        return null;
-    }
+    return wallet ? (
+      <wallet.Icon key={walletId} className={wallet.size || "size-3"} />
+    ) : null;
   };
 
   function EVMWalletOptions() {
     const { connectors, connect } = useConnectWagmi();
 
+    const uniqueConnectors = connectors.filter(
+      (connector, index, self) =>
+        index === self.findIndex((c) => c.name === connector.name),
+    );
+
     return (
       <ul className="space-y-2">
-        {connectors.map((connector) => (
+        {uniqueConnectors.map((connector) => (
           <li
             key={connector.uid}
             className="flex w-full items-center rounded-xl border border-[#B9AFF11A] px-3 py-1"
@@ -132,9 +130,14 @@ const ButtonDialog: React.FC<ConnectButtonProps> = ({
   function SNWalletOptions() {
     const { connectors, connect } = useConnectSN();
 
+    const uniqueConnectors = connectors.filter(
+      (connector, index, self) =>
+        index === self.findIndex((c) => c.name === connector.name),
+    );
+
     return (
       <ul className="space-y-2.5">
-        {connectors.map((connector) => (
+        {uniqueConnectors.map((connector) => (
           <li
             key={connector.id}
             className="flex h-[2.69rem] w-full items-center rounded-lg border border-[#B9AFF133] px-3 py-1 text-sm text-[#B9AFF1]"
