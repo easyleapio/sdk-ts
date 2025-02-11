@@ -17,12 +17,13 @@ import {
 
 import { Toaster } from "~/components/ui/toaster";
 import { SharedStateProvider, useSharedState } from "~/contexts/SharedState";
-import { ThemeProvider } from "~/contexts/ThemeContext";
+import { GlobalTheme, ThemeProvider } from "~/contexts/ThemeContext";
 
 export interface EasyleapConfig {
   wagmiConfig?: WagmiConfig;
   starknetConfig?: StarknetConfigProps;
   children?: React.ReactNode;
+  theme?: GlobalTheme;
 }
 
 const WALLET_CONNECT_DEFAULT_PROJECT_ID = "242405a2808ac6e90831cb540f36617f"; // akira@unwraplabs.com wallet connect account
@@ -63,6 +64,7 @@ export function EasyleapProvider(
     starknetConfig: defaultEasyleapConfig().starknetConfig,
     wagmiConfig: defaultEasyleapConfig().wagmiConfig,
     children: null,
+    theme: {},
   },
 ) {
   const context = useSharedState();
@@ -92,7 +94,7 @@ export function EasyleapProvider(
 
   return (
     <SharedStateProvider>
-      <ThemeProvider>
+      <ThemeProvider theme={props.theme}>
         <WagmiProvider config={wagmiConfig}>
           <StarknetConfig
             chains={[sepolia, mainnet]}

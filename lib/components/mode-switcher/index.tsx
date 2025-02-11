@@ -12,7 +12,11 @@ import { useAccount } from "~/hooks/useAccount";
 import useMode from "~/hooks/useMode";
 import { cn } from "~/utils";
 
-export const ModeSwitcher = () => {
+interface ModeSwitcherProps {
+  className?: string;
+}
+
+export const ModeSwitcher: React.FC<ModeSwitcherProps> = ({ className }) => {
   const { addressDestination, addressSource } = useAccount();
 
   const sharedState = useSharedState();
@@ -41,20 +45,20 @@ export const ModeSwitcher = () => {
                   );
                   sharedState.setModeSwitchedManually(true);
                 }}
-                className={cn("h-9 w-28 font-firaCode")}
+                className={cn("h-9 w-28 font-firaCode", className)}
                 style={{
                   border:
                     mode === InteractionMode.Starknet
-                      ? theme.starknetMode.switchButton.border
-                      : theme.bridgeMode.switchButton.border,
+                      ? theme?.starknetMode?.switchButton?.border
+                      : theme?.bridgeMode?.switchButton?.border,
                   color:
                     mode === InteractionMode.Starknet
-                      ? theme.starknetMode.switchButton.color
-                      : theme.bridgeMode.switchButton.color,
+                      ? theme?.starknetMode?.switchButton?.color
+                      : theme?.bridgeMode?.switchButton?.color,
                   backgroundColor:
                     mode === InteractionMode.Starknet
-                      ? theme.starknetMode.switchButton.backgroundColor
-                      : theme.bridgeMode.switchButton.backgroundColor,
+                      ? theme?.starknetMode?.switchButton?.backgroundColor
+                      : theme?.bridgeMode?.switchButton?.backgroundColor,
                 }}
               />
             </TooltipTrigger>

@@ -5,6 +5,7 @@ export interface ConnectButtonProps {
   onDisconnectStarknet?: () => void;
   onConnectEVM?: () => void;
   onDisconnectEVM?: () => void;
+  className?: string;
 }
 
 export const ConnectButton: React.FC<ConnectButtonProps> = ({
@@ -12,6 +13,7 @@ export const ConnectButton: React.FC<ConnectButtonProps> = ({
   onDisconnectStarknet,
   onConnectEVM,
   onDisconnectEVM,
+  className = "",
 }) => {
   return (
     <div>
@@ -20,6 +22,7 @@ export const ConnectButton: React.FC<ConnectButtonProps> = ({
         onDisconnectStarknet={onDisconnectStarknet}
         onConnectEVM={onConnectEVM}
         onDisconnectEVM={onDisconnectEVM}
+        className={className}
       />
     </div>
   );

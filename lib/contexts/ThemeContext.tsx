@@ -1,48 +1,48 @@
 import React from "react";
 
-interface GlobalTheme {
-  noneMode: {
-    backgroundColor: string;
-    color: string;
-    border: string;
+export interface GlobalTheme {
+  noneMode?: {
+    backgroundColor?: string;
+    color?: string;
+    border?: string;
   };
-  starknetMode: {
-    mainBgColor: string;
+  starknetMode?: {
+    mainBgColor?: string;
 
-    button: {
-      backgroundColor: string;
-      color: string;
-      border: string;
-      borderRadius: string;
+    button?: {
+      backgroundColor?: string;
+      color?: string;
+      border?: string;
+      borderRadius?: string;
     };
 
-    switchButton: {
-      backgroundColor: string;
-      color: string;
-      border: string;
+    switchButton?: {
+      backgroundColor?: string;
+      color?: string;
+      border?: string;
     };
   };
-  bridgeMode: {
-    mainBgColor: string;
+  bridgeMode?: {
+    mainBgColor?: string;
 
-    starknetButton: {
-      backgroundColor: string;
-      color: string;
-      border: string;
-      borderRadius: string;
+    starknetButton?: {
+      backgroundColor?: string;
+      color?: string;
+      border?: string;
+      borderRadius?: string;
     };
 
-    evmButton: {
-      backgroundColor: string;
-      color: string;
-      border: string;
-      borderRadius: string;
+    evmButton?: {
+      backgroundColor?: string;
+      color?: string;
+      border?: string;
+      borderRadius?: string;
     };
 
-    switchButton: {
-      backgroundColor: string;
-      color: string;
-      border: string;
+    switchButton?: {
+      backgroundColor?: string;
+      color?: string;
+      border?: string;
     };
   };
 }
