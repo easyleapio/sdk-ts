@@ -5,9 +5,13 @@ import { WebWalletConnector } from "starknetkit/webwallet";
 
 import { Toaster } from "@/components/ui/toaster.tsx";
 
+import {
+  defaultEasyleapConfig,
+  EasyleapProvider,
+} from "~/components/EasyleapProvider/index.tsx";
+
 import App from "./App.tsx";
 import "./index.css";
-import { defaultEasyleapConfig, EasyleapProvider } from "../lib/components/EasyleapProvider/index.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

@@ -4,9 +4,9 @@ import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
 // https://vite.dev/config/
-export default defineConfig(({command, mode}) => {
-  const isDemoMode = mode === 'demo'
-  console.log(`Running in ${isDemoMode ? 'demo' : 'production'} mode`)
+export default defineConfig(({ command, mode }) => {
+  const isDemoMode = mode === "demo";
+  console.log(`Running in ${isDemoMode ? "demo" : "production"} mode`);
   return {
     plugins: [
       react(),
@@ -16,16 +16,19 @@ export default defineConfig(({command, mode}) => {
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
+        "~": path.resolve(__dirname, "./lib"),
       },
     },
 
     // activate library mode
-    build: isDemoMode ? {} : {
-      copyPublicDir: false,
-      lib: {
-        entry: resolve(__dirname, "lib/main.ts"),
-        formats: ["es"],
-      },
-    },
+    build: isDemoMode
+      ? {}
+      : {
+          copyPublicDir: false,
+          lib: {
+            entry: resolve(__dirname, "lib/main.ts"),
+            formats: ["es"],
+          },
+        },
   };
 });

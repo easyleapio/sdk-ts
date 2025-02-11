@@ -16,18 +16,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "@/hooks/use-toast";
-import {
-  ReviewModal,
-  TokenTransfer,
-} from "../../lib/components/connect/review-modal";
+import { ReviewModal, TokenTransfer } from "../../lib/components/review-modal";
 
-import { InteractionMode, useSharedState } from "../../lib/hooks";
-import { useAccount } from "../../lib/hooks/useAccount";
-import { useAmountOut } from "../../lib/hooks/useAmountOut";
-import { useBalance } from "../../lib/hooks/useBalance";
-import useMode from "../../lib/hooks/useMode";
-import { useSendTransaction } from "../../lib/hooks/useSendTransaction";
-import { ADDRESSES } from "../../lib/utils/constants";
+import { InteractionMode, useSharedState } from "~/hooks";
+import { useAccount } from "~/hooks/useAccount";
+import { useAmountOut } from "~/hooks/useAmountOut";
+import { useBalance } from "~/hooks/useBalance";
+import useMode from "~/hooks/useMode";
+import { useSendTransaction } from "~/hooks/useSendTransaction";
+import { ADDRESSES } from "~/utils/constants";
+
 import { Icons } from "./Icons";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -232,15 +230,6 @@ const VesuDeposit: React.FC = () => {
       });
     }
 
-    // sharedState.setReviewModalProps({
-    //   isOpen: true,
-    //   tokensIn,
-    //   tokensOut,
-    //   onContinue: () => {
-    //     send(tokensIn, tokensOut);
-    //   },
-    // });
-
     send(tokensIn, tokensOut);
   };
 
@@ -255,8 +244,7 @@ const VesuDeposit: React.FC = () => {
       <div className="mt-8 flex w-full flex-col items-start rounded-lg border border-[#675E99] bg-[#1C182B] px-4 py-3 shadow-lg md:px-12 md:py-10 lg:gap-2">
         <div className="flex flex-1 flex-col items-center">
           <p className="text-center text-sm font-medium text-[#DADADA] md:text-lg">
-            Perform a one-step ETH deposit from L1 using Bridge{" "}
-            <br />
+            Perform a one-step ETH deposit from L1 using Bridge <br />
             Mode or directly on Starknet.
           </p>
 
@@ -372,8 +360,13 @@ const VesuDeposit: React.FC = () => {
             </Button>
           )}
         </div>
-        <small className="text-[grey]">We chose Vesu because it's active on Sepolia and supports ETH deposits.</small>
-        <small className="text-[grey]">It's used only for demo purposes and the SDK will work with any dApp.</small>
+        <small className="text-[grey]">
+          We chose Vesu because it's active on Sepolia and supports ETH
+          deposits.
+        </small>
+        <small className="text-[grey]">
+          It's used only for demo purposes and the SDK will work with any dApp.
+        </small>
 
         {/* <div className="text-[grey]">
           Amount you get: {(Number(amountOutRes.amountOut) / 1e18).toFixed(8)}{" "}

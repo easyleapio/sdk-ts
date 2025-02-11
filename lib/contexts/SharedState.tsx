@@ -1,6 +1,8 @@
-import { ReviewModalProps } from "@lib/components/connect/review-modal";
 import { Chain as ChainSN, sepolia as sepoliaSN } from "@starknet-react/chains";
-import React, { createContext, useEffect } from "react";
+import React from "react";
+
+import { ReviewModalProps } from "~/components/review-modal";
+import { toast } from "~/hooks/use-toast";
 
 /**
  * The mode of interaction with the Starknet DApp.
@@ -44,9 +46,11 @@ interface SharedContext {
 
   lastTxPollTime: number;
   setLastTxPollTime: (value: number) => void;
+
+  switchMode: () => void;
 }
 
-const SharedStateContext = createContext({
+const SharedStateContext = React.createContext({
   mode: InteractionMode.None,
   setMode: () => {},
   isModeSwitchedManually: false,
@@ -79,6 +83,8 @@ const SharedStateContext = createContext({
 
   lastTxPollTime: 0,
   setLastTxPollTime: () => {},
+
+  switchMode: () => {},
 } as SharedContext);
 
 export const SharedStateProvider = ({
@@ -108,10 +114,26 @@ export const SharedStateProvider = ({
   const [isSuccessEVM, setIsSuccessEVM] = React.useState(false);
 
   const [sourceTransactions, setSourceTransactions] = React.useState<any[]>([]);
-  const [destinationTransactions, setDestinationTransactions] =
-    React.useState<any[]>([]);
+  const [destinationTransactions, setDestinationTransactions] = React.useState<
+    any[]
+  >([]);
 
   const [lastTxPollTime, setLastTxPollTime] = React.useState(0);
+
+  // only switches from Bridge to Starknet or vice versa
+  const switchMode = () => {
+    if (mode === InteractionMode.Bridge) {
+      setMode(InteractionMode.Starknet);
+      return toast({
+        title: "Switched to Starknet mode",
+      });
+    } else if (mode === InteractionMode.Starknet) {
+      setMode(InteractionMode.Bridge);
+      return toast({
+        title: "Switched to Bridge mode",
+      });
+    }
+  };
 
   return (
     <SharedStateContext.Provider
@@ -139,7 +161,9 @@ export const SharedStateProvider = ({
         setDestinationTransactions,
 
         lastTxPollTime,
-        setLastTxPollTime
+        setLastTxPollTime,
+
+        switchMode,
       }}
     >
       {children}

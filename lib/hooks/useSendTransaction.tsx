@@ -4,9 +4,10 @@ import { Call, hash, num } from "starknet";
 import { encodeFunctionData } from "viem";
 import { useSendTransaction as useSendTransactionEVM } from "wagmi";
 
-import { TokenTransfer } from "../../lib/components/connect/review-modal";
-import { ADDRESSES, ZERO_ADDRESS_EVM } from "../../lib/utils/constants";
-import { InteractionMode, useSharedState } from "./SharedState";
+import { TokenTransfer } from "~/components/review-modal";
+import { ADDRESSES, ZERO_ADDRESS_EVM } from "~/utils/constants";
+
+import { InteractionMode, useSharedState } from "../contexts/SharedState";
 import { useAccount } from "./useAccount";
 import { useSourceBridgeInfo } from "./useBalance";
 import useMode from "./useMode";
@@ -157,26 +158,32 @@ export function useSendTransaction(props: UseSendTransactionArgs) {
   ]);
 
   useEffect(() => {
-    console.log("useSendTransactionn", {dataEVM, isErrorEVM, isSuccessEVM, isPendingEVM});
+    console.log("useSendTransactionn", {
+      dataEVM,
+      isErrorEVM,
+      isSuccessEVM,
+      isPendingEVM,
+    });
     if (dataEVM) {
-      context.setSourceTransactions(mergeSortArrays(
-        context.sourceTransactions,
-        [{
-          amount_raw: props.bridgeConfig.amount.toString(),
-          receiver: addressDestination,
-          block_number: 0,
-          chain: 'ethereum',
-          cursor: 0,
-          eventIndex: 0,
-          request_id: 0,
-          sender: addressSource,
-          status: isPendingEVM ? 'pending' : 'confirmed',
-          timestamp: Math.round(new Date().getTime() / 1000),
-          token: props.bridgeConfig.l2_token_address,
-          txHash: dataEVM,
-          txIndex: 0,
-        }]
-      ))
+      context.setSourceTransactions(
+        mergeSortArrays(context.sourceTransactions, [
+          {
+            amount_raw: props.bridgeConfig.amount.toString(),
+            receiver: addressDestination,
+            block_number: 0,
+            chain: "ethereum",
+            cursor: 0,
+            eventIndex: 0,
+            request_id: 0,
+            sender: addressSource,
+            status: isPendingEVM ? "pending" : "confirmed",
+            timestamp: Math.round(new Date().getTime() / 1000),
+            token: props.bridgeConfig.l2_token_address,
+            txHash: dataEVM,
+            txIndex: 0,
+          },
+        ]),
+      );
     }
   }, [dataEVM, isPendingEVM, isSuccessEVM, isErrorEVM]);
 

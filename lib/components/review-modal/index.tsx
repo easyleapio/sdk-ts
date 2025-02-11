@@ -1,10 +1,9 @@
 import { Clock } from "lucide-react";
 
-import { Icons } from "@/components/Icons";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-
-import { useSharedState } from "../../main";
+import { Icons } from "~/components/Icons";
+import { Button } from "~/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
+import { useSharedState } from "~/main";
 
 export interface TokenTransfer {
   name: string;
@@ -116,8 +115,8 @@ export function ReviewModal() {
                 Ethereum
               </p>
               <p className="flex items-center gap-2 text-base text-[#B9AFF1]">
-                {context.reviewModalProps.tokensOut.map((token, index) =>
-                  getTokenItem(token, index, false),
+                {context.reviewModalProps.tokensOut.map(
+                  (token: any, index: any) => getTokenItem(token, index, false),
                 )}
               </p>
             </div>
@@ -138,8 +137,8 @@ export function ReviewModal() {
                 className="flex items-center gap-2 text-base"
                 style={{ color: "#38EF7D" }}
               >
-                {context.reviewModalProps.tokensIn.map((token, index) =>
-                  getTokenItem(token, index, true),
+                {context.reviewModalProps.tokensIn.map(
+                  (token: any, index: any) => getTokenItem(token, index, true),
                 )}
               </p>
             </div>

@@ -1,4 +1,4 @@
-import { useSharedState } from "./SharedState";
+import { useSharedState } from "../contexts/SharedState";
 
 const useMode = () => {
   const state = useSharedState();
