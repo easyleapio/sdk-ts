@@ -1,6 +1,5 @@
 {
   "name": "@easyleap/sdk",
-  "private": true,
   "version": "0.0.0",
   "type": "module",
   "main": "dist/main.js",
