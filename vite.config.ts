@@ -10,7 +10,12 @@ export default defineConfig(({ command, mode }) => {
   return {
     plugins: [
       react(),
-      dts({ include: ["lib"], insertTypesEntry: true }), // export types on build
+      dts({
+        include: ["lib"],
+        insertTypesEntry: true,
+        copyDtsFiles: true,
+        exclude: ["node_modules"],
+      }), // export types on build
     ],
 
     resolve: {
