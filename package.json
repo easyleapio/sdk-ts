@@ -1,10 +1,9 @@
 {
   "name": "@easyleap/sdk",
-  "private": true,
-  "version": "0.0.0",
+  "version": "0.0.4",
   "type": "module",
   "main": "dist/main.js",
-  "types": "dist/main.d.ts",
+  "types": "dist/lib/main.d.ts",
   "files": [
     "dist"
   ],

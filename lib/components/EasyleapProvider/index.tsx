@@ -6,7 +6,7 @@ import {
   voyager,
 } from "@starknet-react/core";
 import { getDefaultConfig } from "connectkit";
-import React, { useEffect } from "react";
+import React from "react";
 import { sepolia as sepoliaEVM } from "viem/chains";
 import {
   createConfig,
@@ -15,15 +15,15 @@ import {
   WagmiProvider,
 } from "wagmi";
 
-import {
-  SharedStateProvider,
-  useSharedState,
-} from "../../../lib/hooks/SharedState";
+import { Toaster } from "~/components/ui/toaster";
+import { SharedStateProvider, useSharedState } from "~/contexts/SharedState";
+import { GlobalTheme, ThemeProvider } from "~/contexts/ThemeContext";
 
 export interface EasyleapConfig {
   wagmiConfig?: WagmiConfig;
   starknetConfig?: StarknetConfigProps;
   children?: React.ReactNode;
+  theme?: GlobalTheme;
 }
 
 const WALLET_CONNECT_DEFAULT_PROJECT_ID = "242405a2808ac6e90831cb540f36617f"; // akira@unwraplabs.com wallet connect account
@@ -64,6 +64,7 @@ export function EasyleapProvider(
     starknetConfig: defaultEasyleapConfig().starknetConfig,
     wagmiConfig: defaultEasyleapConfig().wagmiConfig,
     children: null,
+    theme: {},
   },
 ) {
   const context = useSharedState();
@@ -93,16 +94,19 @@ export function EasyleapProvider(
 
   return (
     <SharedStateProvider>
-      <WagmiProvider config={wagmiConfig}>
-        <StarknetConfig
-          chains={[sepolia, mainnet]}
-          provider={starknetConfig.provider}
-          explorer={starknetConfig.explorer}
-          connectors={starknetConfig?.connectors || []}
-        >
-          {props.children}
-        </StarknetConfig>
-      </WagmiProvider>
+      <ThemeProvider theme={props.theme}>
+        <WagmiProvider config={wagmiConfig}>
+          <StarknetConfig
+            chains={[sepolia, mainnet]}
+            provider={starknetConfig.provider}
+            explorer={starknetConfig.explorer}
+            connectors={starknetConfig?.connectors || []}
+          >
+            {props.children}
+            <Toaster />
+          </StarknetConfig>
+        </WagmiProvider>
+      </ThemeProvider>
     </SharedStateProvider>
   );
 }

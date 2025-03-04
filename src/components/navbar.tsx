@@ -1,9 +1,10 @@
 import { useMotionValueEvent, useScroll } from "motion/react";
 import React from "react";
 
-import { cn } from "../../lib/utils";
+import { cn } from "~/utils";
+
+import { ConnectButton } from "~/components";
 import { Icons } from "./Icons";
-import ConnectButtonDialog from "./connect-button-dialog";
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = React.useState(false);
@@ -28,7 +29,7 @@ const Navbar: React.FC = () => {
       <div className="mx-auto flex w-[min(83rem,_100%-2rem)] flex-col items-center justify-between gap-4 md:flex-row md:gap-0">
         <Icons.namedLogo />
 
-        <ConnectButtonDialog />
+        <ConnectButton />
       </div>
     </header>
   );

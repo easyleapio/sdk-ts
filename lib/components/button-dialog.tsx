@@ -10,47 +10,43 @@ import {
   useDisconnect as useDisconnectWagmi,
 } from "wagmi";
 
+import { Icons } from "~/components/Icons";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
+} from "~/components/ui/accordion";
+import { Button } from "~/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "~/components/ui/dialog";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import apolloClient from "@/hooks/apollo-client";
-import { TXN_QUERY } from "@/hooks/queries";
-import { toast, useToast } from "@/hooks/use-toast";
+} from "~/components/ui/popover";
+import { ScrollArea } from "~/components/ui/scroll-area";
+import { InteractionMode, useSharedState } from "~/contexts/SharedState";
+import { useTheme } from "~/contexts/ThemeContext";
+import { toast, useToast } from "~/hooks/use-toast";
+import { useAccount } from "~/hooks/useAccount";
+import useMode from "~/hooks/useMode";
+import { cn, shortAddress } from "~/utils";
 
-import { InteractionMode, useSharedState } from "../../lib/hooks/SharedState";
-import { useAccount } from "../../lib/hooks/useAccount";
-import useMode from "../../lib/hooks/useMode";
-import { cn, shortAddress, standariseAddress } from "../../lib/utils";
-import { Icons } from "./Icons";
-import { ScrollArea } from "./ui/scroll-area";
-import { Switch } from "./ui/switch";
+import { ModeSwitcher, type ConnectButtonProps } from ".";
 
-const ConnectButtonDialog: React.FC = () => {
-  // const [respectiveDestinationTxn, setRespectiveDestinationTxn] =
-  // React.useState<any>({});
-
+const ButtonDialog: React.FC<ConnectButtonProps> = ({
+  onConnectStarknet,
+  onDisconnectStarknet,
+  onConnectEVM,
+  onDisconnectEVM,
+  className,
+}) => {
   const mode = useMode();
   const sharedState = useSharedState();
   const { addressSource, addressDestination } = useAccount();
@@ -62,48 +58,48 @@ const ConnectButtonDialog: React.FC = () => {
 
   const { connector } = useConnectSN();
 
-  // todo need to figure out a way to make it generic
+  const theme = useTheme();
+
+  const walletIconMap: Record<
+    string,
+    { Icon: React.ElementType; size?: string }
+  > = {
+    // Starknet wallets
+    braavos: { Icon: Icons.braavos, size: "size-3" },
+    argentX: { Icon: Icons.argentX, size: "size-[18px]" },
+    argentWebWallet: { Icon: MailIcon, size: "size-3" },
+    keplr: { Icon: Icons.keplr, size: "size-3" },
+    "argent-mobile": { Icon: Icons.argentMobile, size: "size-3" },
+
+    // EVM wallets
+    metamask: { Icon: Icons.metamask, size: "size-3" },
+    "coinbase wallet": { Icon: Icons.coinbase, size: "size-3" },
+    subwallet: { Icon: Icons.subwallet, size: "size-3" },
+    trust: { Icon: Icons.trust, size: "size-3" },
+    rainbow: { Icon: Icons.rainbow, size: "size-3" },
+    phantom: { Icon: Icons.phantom, size: "size-3" },
+    walletconnect: { Icon: Icons.wallet, size: "size-3" },
+  };
+
   const getWalletIcon = (walletId: string) => {
-    switch (walletId) {
-      // Starknet wallets
-      case "braavos":
-        return <Icons.braavos className="size-3" />;
-      case "argentX":
-        return <Icons.argentX className="size-[18px]" />;
-      case "argentWebWallet":
-        return <MailIcon className="size-3" />;
-      case "keplr":
-        return <Icons.keplr className="size-3" />;
-      case "argent-mobile":
-        return <Icons.argentMobile className="size-3" />;
+    const wallet = walletIconMap[walletId];
 
-      // EVM wallets
-      case "metamask":
-        return <Icons.metamask className="size-3" />;
-      case "coinbase wallet":
-        return <Icons.coinbase className="size-3" />;
-      case "subwallet":
-        return <Icons.subwallet className="size-3" />;
-      case "trust":
-        return <Icons.trust className="size-3" />;
-      case "rainbow":
-        return <Icons.rainbow className="size-3" />;
-      case "phantom":
-        return <Icons.phantom className="size-3" />;
-      case "walletconnect":
-        return <Icons.walletConnect className="size-3" />;
-
-      default:
-        return null;
-    }
+    return wallet ? (
+      <wallet.Icon key={walletId} className={wallet.size || "size-3"} />
+    ) : null;
   };
 
   function EVMWalletOptions() {
     const { connectors, connect } = useConnectWagmi();
 
+    const uniqueConnectors = connectors.filter(
+      (connector, index, self) =>
+        index === self.findIndex((c) => c.name === connector.name),
+    );
+
     return (
       <ul className="space-y-2">
-        {connectors.map((connector) => (
+        {uniqueConnectors.map((connector) => (
           <li
             key={connector.uid}
             className="flex w-full items-center rounded-xl border border-[#B9AFF11A] px-3 py-1"
@@ -115,6 +111,7 @@ const ConnectButtonDialog: React.FC = () => {
                     title: "Connect Starknet wallet first",
                   });
                 connect({ connector });
+                onConnectEVM?.();
                 localStorage.setItem("STARKPULL_WALLET_EVM", connector.name);
               }}
               className="flex w-full items-center justify-between text-xs"
@@ -133,15 +130,23 @@ const ConnectButtonDialog: React.FC = () => {
   function SNWalletOptions() {
     const { connectors, connect } = useConnectSN();
 
+    const uniqueConnectors = connectors.filter(
+      (connector, index, self) =>
+        index === self.findIndex((c) => c.name === connector.name),
+    );
+
     return (
       <ul className="space-y-2.5">
-        {connectors.map((connector) => (
+        {uniqueConnectors.map((connector) => (
           <li
             key={connector.id}
             className="flex h-[2.69rem] w-full items-center rounded-lg border border-[#B9AFF133] px-3 py-1 text-sm text-[#B9AFF1]"
           >
             <button
-              onClick={() => connect({ connector })}
+              onClick={() => {
+                connect({ connector });
+                onConnectStarknet?.();
+              }}
               className="flex w-full items-center justify-between"
             >
               {connector.name}
@@ -202,6 +207,7 @@ const ConnectButtonDialog: React.FC = () => {
 
     if (addressSource && !addressDestination) {
       disconnectWagmi();
+      onDisconnectEVM?.();
     }
 
     if (mode === InteractionMode.Bridge) {
@@ -221,9 +227,15 @@ const ConnectButtonDialog: React.FC = () => {
       className={cn(
         "z-10 flex flex-col items-center gap-4 rounded-2xl md:flex-row",
         {
-          "bg-[#1C182B] py-2 pl-5 pr-3": addressSource || addressDestination,
+          "py-2 pl-5 pr-3": addressSource || addressDestination,
         },
       )}
+      style={{
+        backgroundColor:
+          mode === InteractionMode.Starknet
+            ? theme?.starknetMode?.mainBgColor
+            : theme?.bridgeMode?.mainBgColor,
+      }}
     >
       <Dialog
         open={sharedState.connectWalletModalOpen}
@@ -235,14 +247,34 @@ const ConnectButtonDialog: React.FC = () => {
               {!addressSource && !addressDestination && (
                 <Button
                   variant="outline"
-                  className="rounded-[20px] border bg-transparent text-center text-white hover:bg-transparent hover:text-white"
+                  style={{
+                    color: theme?.noneMode?.color,
+                    backgroundColor: theme?.noneMode?.backgroundColor,
+                    border: theme?.noneMode?.border,
+                  }}
+                  className={cn(
+                    "rounded-[20px] bg-transparent text-center hover:bg-transparent hover:text-white",
+                    className,
+                  )}
                 >
                   Connect wallet
                 </Button>
               )}
 
               {mode == InteractionMode.Starknet && (
-                <Button className="mx-auto flex w-fit items-center justify-start gap-3 rounded-xl border-2 border-[#443f54] bg-transparent font-medium text-[#B9AFF1] hover:bg-transparent">
+                <Button
+                  style={{
+                    color: theme?.starknetMode?.button?.color,
+                    backgroundColor:
+                      theme?.starknetMode?.button?.backgroundColor,
+                    border: theme?.starknetMode?.button?.border,
+                    borderRadius: theme?.starknetMode?.button?.borderRadius,
+                  }}
+                  className={cn(
+                    "mx-auto flex w-fit items-center justify-start gap-3 font-medium hover:bg-transparent",
+                    className,
+                  )}
+                >
                   <span className="rounded-full bg-[#fff] p-1">
                     {getWalletIcon(connector?.id ?? "braavos")}
                   </span>
@@ -251,8 +283,22 @@ const ConnectButtonDialog: React.FC = () => {
               )}
 
               {mode == InteractionMode.Bridge && (
-                <div className="mx-auto flex w-fit cursor-pointer items-center justify-center -space-x-[2.6rem] rounded-lg">
-                  <Button className="z-20 flex w-fit scale-110 items-center justify-start gap-3 rounded-xl border-2 border-[#b5abdf] bg-[#1C182B] text-[#b5abdf] shadow-xl shadow-[#1C182B] hover:bg-[#1C182B]">
+                <div
+                  className={cn(
+                    "mx-auto flex w-fit cursor-pointer items-center justify-center -space-x-[2.6rem] rounded-lg",
+                    className,
+                  )}
+                >
+                  <Button
+                    style={{
+                      color: theme?.bridgeMode?.evmButton?.color,
+                      backgroundColor:
+                        theme?.bridgeMode?.evmButton?.backgroundColor,
+                      border: theme?.bridgeMode?.evmButton?.border,
+                      borderRadius: theme?.bridgeMode?.evmButton?.borderRadius,
+                    }}
+                    className="z-20 flex w-fit scale-110 items-center justify-start gap-3 rounded-xl shadow-xl shadow-[#1C182B] hover:bg-[#1C182B]"
+                  >
                     <span className="rounded-full bg-[white] p-1">
                       {connectedEvmWalletName &&
                         getWalletIcon(connectedEvmWalletName.toLowerCase())}
@@ -260,7 +306,20 @@ const ConnectButtonDialog: React.FC = () => {
                     {shortAddress(addressSource, 4, 4)}
                   </Button>
 
-                  <Button className="z-0 flex w-fit items-center justify-start gap-3 rounded-xl bg-[#35314F] font-semibold text-[#9183E9] hover:bg-[#35314F]">
+                  <Button
+                    style={{
+                      color: theme?.bridgeMode?.starknetButton?.color,
+                      backgroundColor:
+                        theme?.bridgeMode?.starknetButton?.backgroundColor,
+                      border: theme?.bridgeMode?.starknetButton?.border,
+                      borderRadius:
+                        theme?.bridgeMode?.starknetButton?.borderRadius,
+                    }}
+                    className={cn(
+                      "z-0 flex w-fit items-center justify-start gap-3 rounded-xl font-semibold hover:bg-[#35314F]",
+                      className,
+                    )}
+                  >
                     {shortAddress(addressDestination, 4, 4)}
                     <span className="rounded-full bg-[#fff] p-1">
                       {getWalletIcon(connector?.id ?? "braavos")}
@@ -271,51 +330,7 @@ const ConnectButtonDialog: React.FC = () => {
             </div>
           </DialogTrigger>
 
-          {(addressDestination || addressSource) && (
-            <TooltipProvider delayDuration={0}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Switch
-                    id="airplane-mode"
-                    checked={mode == InteractionMode.Bridge}
-                    onCheckedChange={(value) => {
-                      if (!addressSource) {
-                        return toast({
-                          title: "Connect EVM wallet to enable bridge mode",
-                        });
-                      }
-                      sharedState.setMode(
-                        value
-                          ? InteractionMode.Bridge
-                          : InteractionMode.Starknet,
-                      );
-                      sharedState.setModeSwitchedManually(true);
-                    }}
-                    className={cn(
-                      "h-9 w-28 border-2 border-[#b5abdf] font-firaCode",
-                      {
-                        "border-[#443f54]": mode == InteractionMode.Starknet,
-                      },
-                    )}
-                  />
-                </TooltipTrigger>
-                <TooltipContent className="mr-5 mt-2 max-w-[20rem] border border-[#211d31] !bg-[#b5abdf] px-4 py-2 text-[#211d31]">
-                  <p>
-                    Switch to Bridge mode to deposit directly from ETH Mainnet
-                    into your starknet wallet in a single step.
-                  </p>
-                  <br />
-                  <p>
-                    This dApp supports in-app bridge mode, powered by
-                    <span> </span>
-                    <a href="https://easyleap.io/" className="underline">
-                      easyleap.io.
-                    </a>
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          )}
+          <ModeSwitcher />
         </div>
 
         <DialogContent
@@ -356,6 +371,8 @@ const ConnectButtonDialog: React.FC = () => {
                       onClick={() => {
                         disconnectSN();
                         disconnectWagmi();
+                        onDisconnectEVM?.();
+                        onDisconnectStarknet?.();
                       }}
                     />
                   </Button>
@@ -421,6 +438,7 @@ const ConnectButtonDialog: React.FC = () => {
                       className="size-4 text-black"
                       onClick={() => {
                         disconnectWagmi();
+                        onDisconnectEVM?.();
                       }}
                     />
                   </Button>
@@ -487,57 +505,57 @@ const ConnectButtonDialog: React.FC = () => {
                       <path
                         d="M8.25 21.6399C6.25 20.8399 4.49999 19.3899 3.33999 17.3799C2.19999 15.4099 1.81999 13.2199 2.08999 11.1299"
                         stroke="#1C182B"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         d="M5.8501 4.47986C7.5501 3.14986 9.68009 2.35986 12.0001 2.35986C14.2701 2.35986 16.3601 3.12985 18.0401 4.40985"
                         stroke="#B9AFF1"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         d="M15.75 21.6399C17.75 20.8399 19.5 19.3899 20.66 17.3799C21.8 15.4099 22.18 13.2199 21.91 11.1299"
                         stroke="#1C182B"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         d="M8.25 21.6399C6.25 20.8399 4.49999 19.3899 3.33999 17.3799C2.19999 15.4099 1.81999 13.2199 2.08999 11.1299"
                         stroke="#1C182B"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         d="M5.8501 4.47986C7.5501 3.14986 9.68009 2.35986 12.0001 2.35986C14.2701 2.35986 16.3601 3.12985 18.0401 4.40985"
                         stroke="#38EF7D"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         d="M15.75 21.6399C17.75 20.8399 19.5 19.3899 20.66 17.3799C21.8 15.4099 22.18 13.2199 21.91 11.1299"
                         stroke="#38EF7D"
                         stroke-opacity="0.5"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         d="M12 17C14.75 17 17 14.75 17 12C17 9.25 14.75 7 12 7C9.25 7 7 9.25 7 12C7 14.75 9.25 17 12 17Z"
                         stroke="#1C182B"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         d="M9.875 12L11.29 13.415L14.125 10.585"
                         stroke="#1C182B"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </svg>
                   </div>
@@ -557,35 +575,35 @@ const ConnectButtonDialog: React.FC = () => {
                       <path
                         d="M8.25 21.6399C6.25 20.8399 4.49999 19.3899 3.33999 17.3799C2.19999 15.4099 1.81999 13.2199 2.08999 11.1299"
                         stroke="#38EF7D"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         d="M5.84961 4.47986C7.54961 3.14986 9.6796 2.35986 11.9996 2.35986C14.2696 2.35986 16.3596 3.12985 18.0396 4.40985"
                         stroke="#38EF7D"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         d="M15.75 21.6399C17.75 20.8399 19.5 19.3899 20.66 17.3799C21.8 15.4099 22.18 13.2199 21.91 11.1299"
                         stroke="#38EF7D"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         d="M12 17C14.75 17 17 14.75 17 12C17 9.25 14.75 7 12 7C9.25 7 7 9.25 7 12C7 14.75 9.25 17 12 17Z"
                         stroke="#38EF7D"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         d="M9.875 12L11.29 13.415L14.125 10.585"
                         stroke="#38EF7D"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </svg>
                   </div>
@@ -786,4 +804,4 @@ const ConnectButtonDialog: React.FC = () => {
   );
 };
 
-export default ConnectButtonDialog;
+export default ButtonDialog;
