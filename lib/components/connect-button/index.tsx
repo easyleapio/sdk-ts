@@ -1,4 +1,4 @@
-import ButtonDialog from "~/components/button-dialog";
+import ButtonDialog from "@lib/components/button-dialog";
 
 export interface ConnectButtonProps {
   onConnectStarknet?: () => void;

@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 
-import apolloClient from "~/hooks/apollo-client";
-import { TXN_QUERY } from "~/hooks/queries";
-import { standariseAddress } from "~/utils";
+import apolloClient from "@lib/hooks/apollo-client";
+import { TXN_QUERY } from "@lib/hooks/queries";
+import { standariseAddress } from "@lib/utils";
 
 import { useSharedState } from "../contexts/SharedState";
 

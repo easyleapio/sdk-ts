@@ -15,9 +15,9 @@ import {
   WagmiProvider,
 } from "wagmi";
 
-import { Toaster } from "~/components/ui/toaster";
-import { SharedStateProvider, useSharedState } from "~/contexts/SharedState";
-import { GlobalTheme, ThemeProvider } from "~/contexts/ThemeContext";
+import { Toaster } from "@lib/components/ui/toaster";
+import { SharedStateProvider, useSharedState } from "@lib/contexts/SharedState";
+import { GlobalTheme, ThemeProvider } from "@lib/contexts/ThemeContext";
 
 export interface EasyleapConfig {
   wagmiConfig?: WagmiConfig;

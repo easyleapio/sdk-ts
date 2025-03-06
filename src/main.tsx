@@ -8,7 +8,7 @@ import { Toaster } from "@/components/ui/toaster.tsx";
 import {
   defaultEasyleapConfig,
   EasyleapProvider,
-} from "~/components/EasyleapProvider/index.tsx";
+} from "@lib/components/EasyleapProvider/index.tsx";
 
 import App from "./App.tsx";
 import "./index.css";

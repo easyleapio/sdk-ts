@@ -4,8 +4,8 @@ import { Call, hash, num } from "starknet";
 import { encodeFunctionData } from "viem";
 import { useSendTransaction as useSendTransactionEVM } from "wagmi";
 
-import { TokenTransfer } from "~/components/review-modal";
-import { ADDRESSES, ZERO_ADDRESS_EVM } from "~/utils/constants";
+import { TokenTransfer } from "@lib/components/review-modal";
+import { ADDRESSES, ZERO_ADDRESS_EVM } from "@lib/utils/constants";
 
 import { InteractionMode, useSharedState } from "../contexts/SharedState";
 import { useAccount } from "./useAccount";
@@ -13,7 +13,7 @@ import { useSourceBridgeInfo } from "./useBalance";
 import useMode from "./useMode";
 import { mergeSortArrays } from "./useTransactionHistory";
 
-export interface UseSendTransactionArgs {
+export interface EUseSendTransactionArgs_EasyLeap {
   calls?: Call[];
   bridgeConfig: {
     l2_token_address: `0x${string}`;
@@ -29,7 +29,7 @@ export function useSNMsgFee() {
   return BigInt((0.001 * 10 ** 18).toString());
 }
 
-export function useSendTransaction(props: UseSendTransactionArgs) {
+export function useSendTransaction(props: EUseSendTransactionArgs_EasyLeap): any {
   const mode = useMode();
   const {
     send: sendSN,

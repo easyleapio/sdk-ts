@@ -6,10 +6,10 @@ import { useEffect, useMemo } from "react";
 import { constants } from "starknet";
 import { useBalance as useBalanceWagmi } from "wagmi";
 
-import { standardise } from "~/utils";
-import { ZERO_ADDRESS_EVM } from "~/utils/constants";
-import TokensInfo from "~/utils/tokens.json";
-import TokensInfoSepolia from "~/utils/tokens.sepolia.json";
+import { standardise } from "@lib/utils";
+import { ZERO_ADDRESS_EVM } from "@lib/utils/constants";
+import TokensInfo from "@lib/utils/tokens.json";
+import TokensInfoSepolia from "@lib/utils/tokens.sepolia.json";
 
 import { InteractionMode } from "../contexts/SharedState";
 import { Chains, useAccount } from "./useAccount";

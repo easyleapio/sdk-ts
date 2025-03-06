@@ -1,9 +1,9 @@
 import { Clock } from "lucide-react";
 
-import { Icons } from "~/components/Icons";
-import { Button } from "~/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
-import { useSharedState } from "~/main";
+import { Icons } from "@lib/components/Icons";
+import { Button } from "@lib/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@lib/components/ui/dialog";
+import { useSharedState } from "@lib/main";
 
 export interface TokenTransfer {
   name: string;

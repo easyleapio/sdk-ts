@@ -1,8 +1,8 @@
 import { Chain as ChainSN, sepolia as sepoliaSN } from "@starknet-react/chains";
 import React from "react";
 
-import { ReviewModalProps } from "~/components/review-modal";
-import { toast } from "~/hooks/use-toast";
+import { ReviewModalProps } from "@lib/components/review-modal";
+import { toast } from "@lib/hooks/use-toast";
 
 /**
  * The mode of interaction with the Starknet DApp.

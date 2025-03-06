@@ -1,8 +1,8 @@
 import * as SwitchPrimitives from "@radix-ui/react-switch";
 import * as React from "react";
 
-import { Icons } from "~/components/Icons";
-import { cn } from "~/utils";
+import { Icons } from "@lib/components/Icons";
+import { cn } from "@lib/utils";
 
 const Switch = React.forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root>,

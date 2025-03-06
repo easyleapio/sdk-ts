@@ -10,33 +10,33 @@ import {
   useDisconnect as useDisconnectWagmi,
 } from "wagmi";
 
-import { Icons } from "~/components/Icons";
+import { Icons } from "@lib/components/Icons";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "~/components/ui/accordion";
-import { Button } from "~/components/ui/button";
+} from "@lib/components/ui/accordion";
+import { Button } from "@lib/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "~/components/ui/dialog";
+} from "@lib/components/ui/dialog";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "~/components/ui/popover";
-import { ScrollArea } from "~/components/ui/scroll-area";
-import { InteractionMode, useSharedState } from "~/contexts/SharedState";
-import { useTheme } from "~/contexts/ThemeContext";
-import { toast, useToast } from "~/hooks/use-toast";
-import { useAccount } from "~/hooks/useAccount";
-import useMode from "~/hooks/useMode";
-import { cn, shortAddress } from "~/utils";
+} from "@lib/components/ui/popover";
+import { ScrollArea } from "@lib/components/ui/scroll-area";
+import { InteractionMode, useSharedState } from "@lib/contexts/SharedState";
+import { useTheme } from "@lib/contexts/ThemeContext";
+import { toast, useToast } from "@lib/hooks/use-toast";
+import { useAccount } from "@lib/hooks/useAccount";
+import useMode from "@lib/hooks/useMode";
+import { cn, shortAddress } from "@lib/utils";
 
 import { ModeSwitcher, type ConnectButtonProps } from ".";
 

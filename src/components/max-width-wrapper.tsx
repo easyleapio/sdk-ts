@@ -1,6 +1,6 @@
 import React from "react";
 
-import { cn } from "~/utils";
+import { cn } from "@lib/utils";
 
 interface MaxWidthWrapperProps extends React.HTMLProps<HTMLDivElement> {
   children: React.ReactNode;

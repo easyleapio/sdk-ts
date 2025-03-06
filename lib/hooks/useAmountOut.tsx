@@ -1,7 +1,7 @@
 import { useReadContract } from "@starknet-react/core";
 import { useMemo } from "react";
 
-import { ADDRESSES } from "~/utils/constants";
+import { ADDRESSES } from "@lib/utils/constants";
 
 /**
  *

@@ -1,9 +1,9 @@
 import { useMotionValueEvent, useScroll } from "motion/react";
 import React from "react";
 
-import { cn } from "~/utils";
+import { cn } from "@lib/utils";
 
-import { ConnectButton } from "~/components";
+import { ConnectButton } from "@lib/components";
 import { Icons } from "./Icons";
 
 const Navbar: React.FC = () => {

@@ -1,8 +1,8 @@
 {
   "name": "@easyleap/sdk",
-  "version": "0.0.4",
+  "version": "0.0.6-beta.1",
   "type": "module",
-  "main": "dist/main.js",
+  "main": "dist/sdk.js",
   "types": "dist/lib/main.d.ts",
   "files": [
     "dist"
@@ -47,6 +47,7 @@
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "viem": "~2.22.8",
+    "vite-tsconfig-paths": "^5.1.4",
     "wagmi": "^2.14.7",
     "zod": "^3.24.1"
   },

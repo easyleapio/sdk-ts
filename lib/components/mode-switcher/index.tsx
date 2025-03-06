@@ -1,16 +1,16 @@
-import { Switch } from "~/components/ui/switch";
+import { Switch } from "@lib/components/ui/switch";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "~/components/ui/tooltip";
-import { useTheme } from "~/contexts/ThemeContext";
-import { InteractionMode, useSharedState } from "~/hooks";
-import { toast } from "~/hooks/use-toast";
-import { useAccount } from "~/hooks/useAccount";
-import useMode from "~/hooks/useMode";
-import { cn } from "~/utils";
+} from "@lib/components/ui/tooltip";
+import { useTheme } from "@lib/contexts/ThemeContext";
+import { InteractionMode, useSharedState } from "@lib/hooks";
+import { toast } from "@lib/hooks/use-toast";
+import { useAccount } from "@lib/hooks/useAccount";
+import useMode from "@lib/hooks/useMode";
+import { cn } from "@lib/utils";
 
 interface ModeSwitcherProps {
   className?: string;

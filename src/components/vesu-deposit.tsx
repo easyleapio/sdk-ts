@@ -18,13 +18,13 @@ import {
 import { toast } from "@/hooks/use-toast";
 import { ReviewModal, TokenTransfer } from "../../lib/components/review-modal";
 
-import { InteractionMode, useSharedState } from "~/hooks";
-import { useAccount } from "~/hooks/useAccount";
-import { useAmountOut } from "~/hooks/useAmountOut";
-import { useBalance } from "~/hooks/useBalance";
-import useMode from "~/hooks/useMode";
-import { useSendTransaction } from "~/hooks/useSendTransaction";
-import { ADDRESSES } from "~/utils/constants";
+import { InteractionMode, useSharedState } from "@lib/hooks";
+import { useAccount } from "@lib/hooks/useAccount";
+import { useAmountOut } from "@lib/hooks/useAmountOut";
+import { useBalance } from "@lib/hooks/useBalance";
+import useMode from "@lib/hooks/useMode";
+import { useSendTransaction } from "@lib/hooks/useSendTransaction";
+import { ADDRESSES } from "@lib/utils/constants";
 
 import { Icons } from "./Icons";
 import { Button } from "./ui/button";

@@ -1,4 +1,4 @@
-import { Chains } from "~/hooks/useAccount";
+import { Chains } from "@lib/hooks/useAccount";
 
 export const ZERO_ADDRESS_EVM = "0x0000000000000000000000000000000000000000";
 
