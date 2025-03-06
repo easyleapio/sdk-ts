@@ -16,15 +16,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "@/hooks/use-toast";
-import { ReviewModal, TokenTransfer } from "../../lib/components/review-modal";
+import { ReviewModal, TokenTransfer } from "../../";
 
-import { InteractionMode, useSharedState } from "@lib/hooks";
-import { useAccount } from "@lib/hooks/useAccount";
-import { useAmountOut } from "@lib/hooks/useAmountOut";
-import { useBalance } from "@lib/hooks/useBalance";
+import { InteractionMode, useSharedState } from "../../";
+import { useAccount } from "../../";
+import { useAmountOut } from "../../";
+import { useBalance } from "../../";
 import useMode from "@lib/hooks/useMode";
-import { useSendTransaction } from "@lib/hooks/useSendTransaction";
-import { ADDRESSES } from "@lib/utils/constants";
+import { useSendTransaction } from "../../";
+import { ADDRESSES } from "../../";
 
 import { Icons } from "./Icons";
 import { Button } from "./ui/button";

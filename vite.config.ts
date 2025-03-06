@@ -36,6 +36,9 @@ export default defineConfig(({ command, mode }) => {
             entry: resolve(__dirname, "lib/main.ts"),
             formats: ["es"],
           },
+          rollupOptions: {
+            external: ["react", "react-dom"],
+          },
         },
   };
 });

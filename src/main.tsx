@@ -5,10 +5,7 @@ import { WebWalletConnector } from "starknetkit/webwallet";
 
 import { Toaster } from "@/components/ui/toaster.tsx";
 
-import {
-  defaultEasyleapConfig,
-  EasyleapProvider,
-} from "@lib/components/EasyleapProvider/index.tsx";
+import { defaultEasyleapConfig, EasyleapProvider } from "../";
 
 import App from "./App.tsx";
 import "./index.css";
