@@ -6,16 +6,11 @@ settings:
 
 importers:
 
-  .: {}
-
-  demo:
+  .:
     dependencies:
       '@apollo/client':
         specifier: ^3.12.8
         version: 3.13.2(@types/react@18.3.18)(graphql@16.10.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@easyleap/sdk':
-        specifier: workspace:*
-        version: link:../lib
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.54.2(react@18.3.1))
@@ -55,6 +50,9 @@ importers:
       '@starknet-react/core':
         specifier: ^3.5.0
         version: 3.7.2(bufferutil@4.0.9)(get-starknet-core@4.0.0)(react@18.3.1)(starknet@6.23.1)(typescript@5.6.3)(utf-8-validate@5.0.10)
+      '@tanstack/react-query':
+        specifier: ^5.64.1
+        version: 5.67.1(react@18.3.1)
       '@wagmi/core':
         specifier: ^2.16.3
         version: 2.16.5(@tanstack/query-core@5.67.1)(@types/react@18.3.18)(react@18.3.1)(typescript@5.6.3)(use-sync-external-store@1.4.0(react@18.3.1))(viem@2.22.23(bufferutil@4.0.9)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.24.2))
@@ -167,163 +165,6 @@ importers:
       vite-plugin-dts:
         specifier: ^4.5.0
         version: 4.5.3(@types/node@22.13.9)(rollup@4.34.9)(typescript@5.6.3)(vite@6.2.0(@types/node@22.13.9)(jiti@1.21.7)(yaml@2.7.0))
-
-  lib:
-    dependencies:
-      '@apollo/client':
-        specifier: ^3.12.8
-        version: 3.13.2(@types/react@18.3.18)(graphql@16.10.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@emotion/is-prop-valid':
-        specifier: ^1.3.1
-        version: 1.3.1
-      '@radix-ui/react-accordion':
-        specifier: ^1.2.2
-        version: 1.2.3(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@radix-ui/react-dialog':
-        specifier: ^1.1.4
-        version: 1.1.6(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@radix-ui/react-dropdown-menu':
-        specifier: ^2.1.5
-        version: 2.1.6(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@radix-ui/react-label':
-        specifier: ^2.1.1
-        version: 2.1.2(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@radix-ui/react-popover':
-        specifier: ^1.1.5
-        version: 1.1.6(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@radix-ui/react-scroll-area':
-        specifier: ^1.2.2
-        version: 1.2.3(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@radix-ui/react-slot':
-        specifier: ^1.1.1
-        version: 1.1.2(@types/react@18.3.18)(react@18.3.1)
-      '@radix-ui/react-switch':
-        specifier: ^1.1.2
-        version: 1.1.3(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@radix-ui/react-toast':
-        specifier: ^1.2.4
-        version: 1.2.6(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@radix-ui/react-tooltip':
-        specifier: ^1.1.7
-        version: 1.1.8(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@starknet-react/chains':
-        specifier: ^3.1.0
-        version: 3.1.2
-      '@starknet-react/core':
-        specifier: ^3.5.0
-        version: 3.7.2(bufferutil@4.0.9)(get-starknet-core@4.0.0)(react@18.3.1)(starknet@6.23.1)(typescript@5.6.3)(utf-8-validate@5.0.10)
-      '@wagmi/core':
-        specifier: ^2.16.3
-        version: 2.16.5(@tanstack/query-core@5.67.1)(@types/react@18.3.18)(react@18.3.1)(typescript@5.6.3)(use-sync-external-store@1.4.0(react@18.3.1))(viem@2.22.23(bufferutil@4.0.9)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.24.2))
-      class-variance-authority:
-        specifier: ^0.7.1
-        version: 0.7.1
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
-      connectkit:
-        specifier: ^1.8.2
-        version: 1.8.2(@babel/core@7.26.9)(@tanstack/react-query@5.67.1(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-is@16.13.1)(react@18.3.1)(viem@2.22.23(bufferutil@4.0.9)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.24.2))(wagmi@2.14.12(@tanstack/query-core@5.67.1)(@tanstack/react-query@5.67.1(react@18.3.1))(@types/react@18.3.18)(bufferutil@4.0.9)(react@18.3.1)(typescript@5.6.3)(utf-8-validate@5.0.10)(viem@2.22.23(bufferutil@4.0.9)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.24.2))(zod@3.24.2))
-      date-fns:
-        specifier: ^4.1.0
-        version: 4.1.0
-      ethers:
-        specifier: ^6.13.5
-        version: 6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      jotai-tanstack-query:
-        specifier: ^0.9.0
-        version: 0.9.0(@tanstack/query-core@5.67.1)(jotai@2.12.1(@types/react@18.3.18)(react@18.3.1))
-      lucide-react:
-        specifier: ^0.473.0
-        version: 0.473.0(react@18.3.1)
-      motion:
-        specifier: ^12.0.0
-        version: 12.4.10(@emotion/is-prop-valid@1.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react:
-        specifier: ^18
-        version: 18.3.1
-      react-dom:
-        specifier: ^18
-        version: 18.3.1(react@18.3.1)
-      react-hook-form:
-        specifier: ^7.54.2
-        version: 7.54.2(react@18.3.1)
-      starknet:
-        specifier: ^6.11.0
-        version: 6.23.1
-      starknetkit:
-        specifier: ^2.6.1
-        version: 2.6.1(bufferutil@4.0.9)(starknet@6.23.1)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.24.2)
-      tailwind-merge:
-        specifier: ^2.6.0
-        version: 2.6.0
-      viem:
-        specifier: ~2.22.8
-        version: 2.22.23(bufferutil@4.0.9)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.24.2)
-      wagmi:
-        specifier: ^2.14.7
-        version: 2.14.12(@tanstack/query-core@5.67.1)(@tanstack/react-query@5.67.1(react@18.3.1))(@types/react@18.3.18)(bufferutil@4.0.9)(react@18.3.1)(typescript@5.6.3)(utf-8-validate@5.0.10)(viem@2.22.23(bufferutil@4.0.9)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.24.2))(zod@3.24.2)
-      ws:
-        specifier: ^8.18.1
-        version: 8.18.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    devDependencies:
-      '@eslint/js':
-        specifier: ^9.17.0
-        version: 9.21.0
-      '@types/node':
-        specifier: ^22.10.7
-        version: 22.13.9
-      '@types/react':
-        specifier: ^18.3.18
-        version: 18.3.18
-      '@types/react-dom':
-        specifier: ^18.3.5
-        version: 18.3.5(@types/react@18.3.18)
-      '@vitejs/plugin-react-swc':
-        specifier: ^3.5.0
-        version: 3.8.0(vite@6.2.0(@types/node@22.13.9)(jiti@1.21.7)(yaml@2.7.0))
-      autoprefixer:
-        specifier: ^10.4.20
-        version: 10.4.20(postcss@8.5.3)
-      eslint:
-        specifier: ^9.17.0
-        version: 9.21.0(jiti@1.21.7)
-      eslint-plugin-react-hooks:
-        specifier: ^5.0.0
-        version: 5.2.0(eslint@9.21.0(jiti@1.21.7))
-      eslint-plugin-react-refresh:
-        specifier: ^0.4.16
-        version: 0.4.19(eslint@9.21.0(jiti@1.21.7))
-      globals:
-        specifier: ^15.14.0
-        version: 15.15.0
-      postcss:
-        specifier: ^8.5.1
-        version: 8.5.3
-      prettier:
-        specifier: ^3.4.2
-        version: 3.5.3
-      prettier-plugin-tailwindcss:
-        specifier: ^0.6.10
-        version: 0.6.11(prettier@3.5.3)
-      tailwindcss:
-        specifier: ^3.4.17
-        version: 3.4.17
-      typescript:
-        specifier: ~5.6.2
-        version: 5.6.3
-      typescript-eslint:
-        specifier: ^8.18.2
-        version: 8.26.0(eslint@9.21.0(jiti@1.21.7))(typescript@5.6.3)
-      vite:
-        specifier: ^6.0.5
-        version: 6.2.0(@types/node@22.13.9)(jiti@1.21.7)(yaml@2.7.0)
-      vite-plugin-dts:
-        specifier: ^4.5.0
-        version: 4.5.3(@types/node@22.13.9)(rollup@4.34.9)(typescript@5.6.3)(vite@6.2.0(@types/node@22.13.9)(jiti@1.21.7)(yaml@2.7.0))
-      vite-tsconfig-paths:
-        specifier: ^5.1.4
-        version: 5.1.4(typescript@5.6.3)(vite@6.2.0(@types/node@22.13.9)(jiti@1.21.7)(yaml@2.7.0))
 
 packages:
 
@@ -2753,24 +2594,6 @@ packages:
   jju@1.4.0:
     resolution: {integrity: sha512-8wb9Yw966OSxApiCt0K3yNJL8pnNeIv+OEq2YMidz4FKP6nonSRoOXc80iXY4JaN2FC11B9qsNmDsm+ZOfMROA==}
 
-  jotai-tanstack-query@0.9.0:
-    resolution: {integrity: sha512-8n7/xV14+ZE63dyqngtmqs6aV1bNnQJF9bJN5Bj70USc2cMFRmsVhGGzL1cSvp5E/xXasU37czFFaZ0vavmyfA==}
-    peerDependencies:
-      '@tanstack/query-core': '*'
-      jotai: '>=2.0.0'
-
-  jotai@2.12.1:
-    resolution: {integrity: sha512-VUW0nMPYIru5g89tdxwr9ftiVdc/nGV9jvHISN8Ucx+m1vI9dBeHemfqYzEuw5XSkmYjD/MEyApN9k6yrATsZQ==}
-    engines: {node: '>=12.20.0'}
-    peerDependencies:
-      '@types/react': '>=17.0.0'
-      react: '>=17.0.0'
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-      react:
-        optional: true
-
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
@@ -4041,18 +3864,6 @@ packages:
 
   ws@8.18.0:
     resolution: {integrity: sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: '>=5.0.2'
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-
-  ws@8.18.1:
-    resolution: {integrity: sha512-RKW2aJZMXeMxVpnZ6bck+RswznaxmzdULiBr6KY7XkTnW8uvt0iT9H5DkHUChXrc+uurzwa0rVI16n/Xzjdz1w==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -7229,16 +7040,6 @@ snapshots:
 
   jju@1.4.0: {}
 
-  jotai-tanstack-query@0.9.0(@tanstack/query-core@5.67.1)(jotai@2.12.1(@types/react@18.3.18)(react@18.3.1)):
-    dependencies:
-      '@tanstack/query-core': 5.67.1
-      jotai: 2.12.1(@types/react@18.3.18)(react@18.3.1)
-
-  jotai@2.12.1(@types/react@18.3.18)(react@18.3.1):
-    optionalDependencies:
-      '@types/react': 18.3.18
-      react: 18.3.1
-
   js-tokens@4.0.0: {}
 
   js-yaml@4.1.0:
@@ -8449,11 +8250,6 @@ snapshots:
       utf-8-validate: 5.0.10
 
   ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10):
-    optionalDependencies:
-      bufferutil: 4.0.9
-      utf-8-validate: 5.0.10
-
-  ws@8.18.1(bufferutil@4.0.9)(utf-8-validate@5.0.10):
     optionalDependencies:
       bufferutil: 4.0.9
       utf-8-validate: 5.0.10
