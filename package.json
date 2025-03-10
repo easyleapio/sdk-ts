@@ -5,5 +5,13 @@
   "workspaces": [
     "demo",
     "lib"
-  ]
+  ],
+  "scripts": {
+    "build:sdk": "cd lib && pnpm build",
+    "build:demo": "cd demo && pnpm build",
+    "dev:demo": "cd demo && pnpm dev",
+    "lint:demo": "cd demo && pnpm lint",
+    "lint:fix:demo": "cd demo && pnpm lint:fix",
+    "preview:demo": "cd demo && pnpm preview"
+  }
 }
