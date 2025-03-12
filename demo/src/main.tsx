@@ -8,6 +8,8 @@ import { Toaster } from "@/components/ui/toaster.tsx";
 import { defaultEasyleapConfig, EasyleapProvider } from "@easyleap/sdk";
 
 import App from "./App.tsx";
+
+import "@easyleap/sdk/dist/sdk.css";
 import "./index.css";
 
 createRoot(document.getElementById("root")!).render(

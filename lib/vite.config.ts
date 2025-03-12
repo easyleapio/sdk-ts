@@ -16,15 +16,15 @@ export default defineConfig(({ command, mode }) => {
         include: ["src"],
         insertTypesEntry: true,
         copyDtsFiles: true,
-        exclude: ["node_modules"],
-      }), // export types on build
+        exclude: ["node_modules"]
+      }) // export types on build
     ],
 
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
-        "~": path.resolve(__dirname, "./lib"),
-      },
+        "~": path.resolve(__dirname, "./lib")
+      }
     },
 
     // activate library mode
@@ -32,21 +32,24 @@ export default defineConfig(({ command, mode }) => {
       ? {}
       : {
           copyPublicDir: false,
+          cssCodeSplit: false, // Keep CSS in one file
           lib: {
             entry: resolve(__dirname, "src/main.ts"),
-            formats: ["es", "cjs"],
+            formats: ["es", "cjs"]
           },
           rollupOptions: {
             external: [
-              "react", "react-dom", 
-              "@starknet-react/chains", "@starknet-react/core", "starknet", "starknetkit",
-              "wagmi", "@wagmi/core",
+              "react",
+              "react-dom",
+              "@starknet-react/chains",
+              "@starknet-react/core",
+              "starknet",
+              "starknetkit",
+              "wagmi",
+              "@wagmi/core",
               "jotai-tanstack-query"
-            ], // Mark React as external
-          },
-          rollupOptions: {
-            external: ["react", "react-dom"],
-          },
-        },
+            ]
+          }
+        }
   };
 });
