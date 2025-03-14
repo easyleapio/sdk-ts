@@ -13,6 +13,7 @@
     "lint:demo": "cd demo && pnpm lint",
     "lint:fix:demo": "cd demo && pnpm lint:fix",
     "preview:demo": "cd demo && pnpm preview",
+    "storybook:lib": "cd lib && pnpm storybook",
     "publish:lib": "cd lib && npm publish --tag beta"
   }
 }

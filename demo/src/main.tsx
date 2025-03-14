@@ -9,7 +9,7 @@ import { defaultEasyleapConfig, EasyleapProvider } from "@easyleap/sdk";
 
 import App from "./App.tsx";
 
-import "@easyleap/sdk/dist/sdk.css";
+import "@easyleap/sdk/styles.css";
 import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
