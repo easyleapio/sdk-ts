@@ -19,8 +19,8 @@ const DialogOverlay = React.forwardRef<
   <DialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      "fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-      className,
+      "easyleap-fixed easyleap-inset-0 easyleap-z-50 easyleap-bg-black/80 easyleap-data-[state=open]:animate-in easyleap-data-[state=closed]:animate-out easyleap-data-[state=closed]:fade-out-0 easyleap-data-[state=open]:fade-in-0",
+      className
     )}
     {...props}
   />
@@ -38,20 +38,20 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg",
-        className,
+        "easyleap-fixed easyleap-left-[50%] easyleap-top-[50%] easyleap-z-50 easyleap-grid easyleap-w-full easyleap-translate-x-[-50%] easyleap-translate-y-[-50%] easyleap-gap-4 easyleap-border easyleap-p-6 easyleap-shadow-lg easyleap-duration-200 easyleap-data-[state=open]:animate-in easyleap-data-[state=closed]:animate-out easyleap-data-[state=closed]:fade-out-0 easyleap-data-[state=open]:fade-in-0 easyleap-data-[state=closed]:zoom-out-95 easyleap-data-[state=open]:zoom-in-95 easyleap-data-[state=closed]:slide-out-to-left-1/2 easyleap-data-[state=closed]:slide-out-to-top-[48%] easyleap-data-[state=open]:slide-in-from-left-1/2 easyleap-data-[state=open]:slide-in-from-top-[48%] easyleap-rounded-lg easyleap-max-w-[425px]",
+        className
       )}
       {...props}
     >
       {children}
       <DialogPrimitive.Close
         className={cn(
-          "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground",
-          closeClassName,
+          "easyleap-absolute easyleap-right-4 easyleap-top-4 easyleap-rounded-sm easyleap-opacity-70 easyleap-ring-offset-background easyleap-transition-opacity easyleap-hover:opacity-100 easyleap-focus:outline-none easyleap-focus:ring-2 easyleap-focus:ring-ring easyleap-focus:ring-offset-2 easyleap-disabled:pointer-events-none easyleap-data-[state=open]:bg-accent easyleap-data-[state=open]:text-muted-foreground",
+          closeClassName
         )}
       >
-        <X className="h-4 w-4" />
-        <span className="sr-only">Close</span>
+        <X className="easyleap-h-4 easyleap-w-4" />
+        <span className="easyleap-sr-only">Close</span>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
   </DialogPortal>
@@ -64,8 +64,8 @@ const DialogHeader = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "flex flex-col space-y-1.5 text-center sm:text-left",
-      className,
+      "easyleap-flex easyleap-flex-col easyleap-space-y-1.5 easyleap-text-center easyleap-sm:text-left",
+      className
     )}
     {...props}
   />
@@ -78,8 +78,8 @@ const DialogFooter = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
-      className,
+      "easyleap-flex easyleap-flex-col-reverse easyleap-sm:flex-row easyleap-sm:justify-end easyleap-sm:space-x-2",
+      className
     )}
     {...props}
   />
@@ -92,10 +92,7 @@ const DialogTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Title
     ref={ref}
-    className={cn(
-      "text-lg font-semibold leading-none tracking-tight",
-      className,
-    )}
+    className={cn("easyleap-tracking-tight", className)}
     {...props}
   />
 ));
@@ -107,7 +104,7 @@ const DialogDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Description
     ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
+    className={cn("easyleap-text-sm easyleap-text-muted-foreground", className)}
     {...props}
   />
 ));
@@ -123,5 +120,5 @@ export {
   DialogOverlay,
   DialogPortal,
   DialogTitle,
-  DialogTrigger,
+  DialogTrigger
 };

@@ -13,7 +13,7 @@ export const ConnectButton: React.FC<ConnectButtonProps> = ({
   onDisconnectStarknet,
   onConnectEVM,
   onDisconnectEVM,
-  className = "",
+  className = ""
 }) => {
   return (
     <div>

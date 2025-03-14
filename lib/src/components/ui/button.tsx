@@ -5,33 +5,33 @@ import * as React from "react";
 import { cn } from "@lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  "easyleap-inline-flex easyleap-items-center easyleap-justify-center easyleap-gap-2 easyleap-whitespace-nowrap easyleap-text-sm easyleap-font-medium easyleap-transition-colors easyleap-focus-visible:outline-none easyleap-focus-visible:ring-1 easyleap-focus-visible:ring-ring easyleap-disabled:pointer-events-none easyleap-disabled:opacity-50 [&_svg]:easyleap-pointer-events-none [&_svg]:easyleap-shrink-0",
   {
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow hover:bg-primary/90",
+          "easyleap-bg-primary easyleap-text-primary-foreground easyleap-shadow easyleap-hover:bg-primary/90",
         destructive:
-          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+          "easyleap-bg-destructive easyleap-text-destructive-foreground easyleap-shadow-sm easyleap-hover:bg-destructive/90",
         outline:
-          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+          "easyleap-border easyleap-border-input  easyleap-bg-background easyleap-shadow-sm easyleap-hover:bg-accent easyleap-hover:text-accent-foreground",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+          "easyleap-bg-secondary easyleap-text-secondary-foreground easyleap-shadow-sm easyleap-hover:bg-secondary/80",
+        ghost: "easyleap-hover:bg-accent easyleap-hover:text-accent-foreground",
+        link: "easyleap-text-primary easyleap-underline-offset-4 easyleap-hover:underline"
       },
       size: {
-        default: "h-9 px-4 py-2",
-        sm: "h-8 rounded-md px-3 text-xs",
-        lg: "h-10 rounded-md px-8",
-        icon: "h-9 w-9",
-      },
+        default: "easyleap-h-9 easyleap-px-4 easyleap-py-2",
+        sm: "easyleap-h-8 easyleap-px-3 easyleap-text-xs",
+        lg: "easyleap-h-10 easyleap-px-8",
+        icon: "easyleap-h-9 easyleap-w-9"
+      }
     },
     defaultVariants: {
       variant: "default",
-      size: "default",
-    },
-  },
+      size: "default"
+    }
+  }
 );
 
 export interface ButtonProps
@@ -50,7 +50,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       />
     );
-  },
+  }
 );
 Button.displayName = "Button";
 

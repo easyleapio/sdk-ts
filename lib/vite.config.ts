@@ -32,10 +32,10 @@ export default defineConfig(({ command, mode }) => {
       ? {}
       : {
           copyPublicDir: false,
-          cssCodeSplit: false, // Keep CSS in one file
           lib: {
             entry: resolve(__dirname, "src/main.ts"),
-            formats: ["es", "cjs"]
+            formats: ["es", "cjs"],
+            fileName: (format) => `easyleap.${format}.js`
           },
           rollupOptions: {
             external: [

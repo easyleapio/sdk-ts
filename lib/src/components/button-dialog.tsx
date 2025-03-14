@@ -1,13 +1,13 @@
 import {
   useConnect as useConnectSN,
-  useDisconnect as useDisconnectSN,
+  useDisconnect as useDisconnectSN
 } from "@starknet-react/core";
 import { format } from "date-fns";
 import { Loader2, MailIcon, X } from "lucide-react";
 import React from "react";
 import {
   useConnect as useConnectWagmi,
-  useDisconnect as useDisconnectWagmi,
+  useDisconnect as useDisconnectWagmi
 } from "wagmi";
 
 import { Icons } from "@lib/components/Icons";
@@ -15,7 +15,7 @@ import {
   Accordion,
   AccordionContent,
   AccordionItem,
-  AccordionTrigger,
+  AccordionTrigger
 } from "@lib/components/ui/accordion";
 import { Button } from "@lib/components/ui/button";
 import {
@@ -23,12 +23,12 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogTrigger
 } from "@lib/components/ui/dialog";
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger,
+  PopoverTrigger
 } from "@lib/components/ui/popover";
 import { ScrollArea } from "@lib/components/ui/scroll-area";
 import { InteractionMode, useSharedState } from "@lib/contexts/SharedState";
@@ -45,7 +45,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
   onDisconnectStarknet,
   onConnectEVM,
   onDisconnectEVM,
-  className,
+  className
 }) => {
   const mode = useMode();
   const sharedState = useSharedState();
@@ -78,14 +78,16 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
     trust: { Icon: Icons.trust, size: "size-3" },
     rainbow: { Icon: Icons.rainbow, size: "size-3" },
     phantom: { Icon: Icons.phantom, size: "size-3" },
-    walletconnect: { Icon: Icons.wallet, size: "size-3" },
+    walletconnect: { Icon: Icons.wallet, size: "size-3" }
   };
 
   const getWalletIcon = (walletId: string) => {
     const wallet = walletIconMap[walletId];
 
     return wallet ? (
-      <wallet.Icon key={walletId} className={wallet.size || "size-3"} />
+      <div className="easyleap">
+        <wallet.Icon key={walletId} className={wallet.size || "size-3"} />
+      </div>
     ) : null;
   };
 
@@ -94,30 +96,30 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
 
     const uniqueConnectors = connectors.filter(
       (connector, index, self) =>
-        index === self.findIndex((c) => c.name === connector.name),
+        index === self.findIndex((c) => c.name === connector.name)
     );
 
     return (
-      <ul className="space-y-2">
+      <ul className="easyleap-space-y-2">
         {uniqueConnectors.map((connector) => (
           <li
             key={connector.uid}
-            className="flex w-full items-center rounded-xl border border-[#B9AFF11A] px-3 py-1"
+            className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-rounded-xl easyleap-border easyleap-border-[#B9AFF11A] easyleap-px-3 easyleap-py-1"
           >
             <button
               onClick={() => {
                 if (!addressDestination)
                   return toast({
-                    title: "Connect Starknet wallet first",
+                    title: "Connect Starknet wallet first"
                   });
                 connect({ connector });
                 onConnectEVM?.();
                 localStorage.setItem("STARKPULL_WALLET_EVM", connector.name);
               }}
-              className="flex w-full items-center justify-between text-xs"
+              className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between easyleap-text-xs"
             >
               {connector.name}
-              <span className="rounded-full border border-[#B9AFF11A] bg-[#211D31] p-1">
+              <span className="easyleap-rounded-full easyleap-border easyleap-border-[#B9AFF11A] easyleap-bg-[#211D31] easyleap-p-1">
                 {getWalletIcon(connector.name.toLowerCase())}
               </span>
             </button>
@@ -132,30 +134,30 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
 
     const uniqueConnectors = connectors.filter(
       (connector, index, self) =>
-        index === self.findIndex((c) => c.name === connector.name),
+        index === self.findIndex((c) => c.name === connector.name)
     );
 
     return (
-      <ul className="space-y-2.5">
+      <ul className="easyleap-space-y-2.5">
         {uniqueConnectors.map((connector) => (
           <li
             key={connector.id}
-            className="flex h-[2.69rem] w-full items-center rounded-lg border border-[#B9AFF133] px-3 py-1 text-sm text-[#B9AFF1]"
+            className="easyleap-flex easyleap-h-[2.69rem] easyleap-w-full easyleap-items-center easyleap-rounded-lg easyleap-border easyleap-border-[#B9AFF133] easyleap-px-3 easyleap-py-1 easyleap-text-sm easyleap-text-[#B9AFF1]"
           >
             <button
               onClick={() => {
                 connect({ connector });
                 onConnectStarknet?.();
               }}
-              className="flex w-full items-center justify-between"
+              className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between"
             >
               {connector.name}
               <div
                 className={cn(
-                  "rounded-full border border-[#B9AFF133] bg-transparent p-1",
+                  "easyleap-rounded-full easyleap-border easyleap-border-[#B9AFF133] easyleap-bg-transparent easyleap-p-1",
                   {
-                    "p-0": connector.id === "argentX",
-                  },
+                    "easyleap-p-0": connector.id === "argentX"
+                  }
                 )}
               >
                 {getWalletIcon(connector.id)}
@@ -169,12 +171,12 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
 
   const getDestinationTxn = (srcTxn: any) => {
     const txn = sharedState.destinationTransactions.find(
-      (destTxn: any) => destTxn.request_id === srcTxn.request_id,
+      (destTxn: any) => destTxn.request_id === srcTxn.request_id
     );
 
     if (!txn) {
       return {
-        status: "pending",
+        status: "pending"
       };
     }
 
@@ -183,10 +185,10 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
 
   const getPendingTxnCount = () => {
     const requestIdsSet = new Set(
-      sharedState.destinationTransactions.map((item) => item.request_id),
+      sharedState.destinationTransactions.map((item) => item.request_id)
     );
     const pendingTxns = sharedState.sourceTransactions.filter(
-      (item) => !requestIdsSet.has(item.request_id),
+      (item) => !requestIdsSet.has(item.request_id)
     );
 
     return pendingTxns.length;
@@ -201,7 +203,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
       toast({
         title: "Wallets Connected!",
         description:
-          "Starknet and EVM wallets are linked. move L1 funds to this dApp.",
+          "Starknet and EVM wallets are linked. move L1 funds to this dApp."
       });
     }
 
@@ -213,7 +215,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
     if (mode === InteractionMode.Bridge) {
       dismiss();
       toast({
-        title: "Bridge mode is enabled",
+        title: "Bridge mode is enabled"
       });
     } else {
       dismiss();
@@ -225,36 +227,37 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
   return (
     <div
       className={cn(
-        "z-10 flex flex-col items-center gap-4 rounded-2xl md:flex-row",
+        "easyleap-z-10 easyleap-flex easyleap-flex-col easyleap-items-center easyleap-gap-4 easyleap-md:flex-row easyleap-rounded-[20px]",
         {
-          "py-2 pl-5 pr-3": addressSource || addressDestination,
-        },
+          "easyleap-py-2 easyleap-pl-5 easyleap-pr-3":
+            addressSource || addressDestination
+        }
       )}
       style={{
         backgroundColor:
           mode === InteractionMode.Starknet
             ? theme?.starknetMode?.mainBgColor
-            : theme?.bridgeMode?.mainBgColor,
+            : theme?.bridgeMode?.mainBgColor
       }}
     >
       <Dialog
         open={sharedState.connectWalletModalOpen}
         onOpenChange={sharedState.setConnectWalletModalOpen}
       >
-        <div className="flex flex-col items-center gap-4 md:flex-row">
+        <div className="easyleap-flex easyleap-flex-col easyleap-items-center easyleap-md:flex-row">
           <DialogTrigger asChild>
-            <div className="w-full font-firaCode">
+            <div className="easyleap-w-full easyleap-font-firaCode">
               {!addressSource && !addressDestination && (
                 <Button
                   variant="outline"
                   style={{
                     color: theme?.noneMode?.color,
                     backgroundColor: theme?.noneMode?.backgroundColor,
-                    border: theme?.noneMode?.border,
+                    border: theme?.noneMode?.border
                   }}
                   className={cn(
-                    "rounded-[20px] bg-transparent text-center hover:bg-transparent hover:text-white",
-                    className,
+                    "easyleap-rounded-[20px] easyleap-bg-transparent easyleap-text-center easyleap-hover:bg-transparent easyleap-hover:text-white",
+                    className
                   )}
                 >
                   Connect wallet
@@ -268,14 +271,14 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                     backgroundColor:
                       theme?.starknetMode?.button?.backgroundColor,
                     border: theme?.starknetMode?.button?.border,
-                    borderRadius: theme?.starknetMode?.button?.borderRadius,
+                    borderRadius: theme?.starknetMode?.button?.borderRadius
                   }}
                   className={cn(
-                    "mx-auto flex w-fit items-center justify-start gap-3 font-medium hover:bg-transparent",
-                    className,
+                    "easyleap-mx-auto easyleap-flex easyleap-w-fit easyleap-items-center easyleap-justify-start easyleap-gap-3 easyleap-font-medium easyleap-hover:bg-transparent",
+                    className
                   )}
                 >
-                  <span className="rounded-full bg-[#fff] p-1">
+                  <span className="easyleap-rounded-full easyleap-bg-[#fff] easyleap-p-1">
                     {getWalletIcon(connector?.id ?? "braavos")}
                   </span>
                   {shortAddress(addressDestination || "", 8, 8)}
@@ -285,8 +288,8 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
               {mode == InteractionMode.Bridge && (
                 <div
                   className={cn(
-                    "mx-auto flex w-fit cursor-pointer items-center justify-center -space-x-[2.6rem] rounded-lg",
-                    className,
+                    "easyleap-mx-auto easyleap-flex easyleap-w-fit easyleap-cursor-pointer easyleap-items-center easyleap-justify-center easyleap--space-x-[2.6rem] easyleap-rounded-lg",
+                    className
                   )}
                 >
                   <Button
@@ -295,11 +298,11 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                       backgroundColor:
                         theme?.bridgeMode?.evmButton?.backgroundColor,
                       border: theme?.bridgeMode?.evmButton?.border,
-                      borderRadius: theme?.bridgeMode?.evmButton?.borderRadius,
+                      borderRadius: theme?.bridgeMode?.evmButton?.borderRadius
                     }}
-                    className="z-20 flex w-fit scale-110 items-center justify-start gap-3 rounded-xl shadow-xl shadow-[#1C182B] hover:bg-[#1C182B]"
+                    className="easyleap-z-20 easyleap-flex easyleap-w-fit easyleap-scale-110 easyleap-items-center easyleap-justify-start easyleap-gap-3 easyleap-rounded-xl easyleap-shadow-xl easyleap-shadow-[#1C182B] easyleap-hover:bg-[#1C182B]"
                   >
-                    <span className="rounded-full bg-[white] p-1">
+                    <span className="easyleap-rounded-full easyleap-bg-[white] easyleap-p-1">
                       {connectedEvmWalletName &&
                         getWalletIcon(connectedEvmWalletName.toLowerCase())}
                     </span>
@@ -313,15 +316,15 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                         theme?.bridgeMode?.starknetButton?.backgroundColor,
                       border: theme?.bridgeMode?.starknetButton?.border,
                       borderRadius:
-                        theme?.bridgeMode?.starknetButton?.borderRadius,
+                        theme?.bridgeMode?.starknetButton?.borderRadius
                     }}
                     className={cn(
-                      "z-0 flex w-fit items-center justify-start gap-3 rounded-xl font-semibold hover:bg-[#35314F]",
-                      className,
+                      "easyleap-z-0 easyleap-flex easyleap-w-fit easyleap-items-center easyleap-justify-start easyleap-gap-3 easyleap-rounded-xl easyleap-font-semibold easyleap-hover:bg-[#35314F]",
+                      className
                     )}
                   >
                     {shortAddress(addressDestination, 4, 4)}
-                    <span className="rounded-full bg-[#fff] p-1">
+                    <span className="easyleap-rounded-full easyleap-bg-[#fff] easyleap-p-1">
                       {getWalletIcon(connector?.id ?? "braavos")}
                     </span>
                   </Button>
@@ -334,32 +337,37 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
         </div>
 
         <DialogContent
-          className="max-h-[100vh] overflow-y-auto overflow-x-hidden border border-[#675E99] bg-[#211D31] p-2 py-4 font-dmSans sm:max-w-[425px] md:p-6 lg:max-h-none"
-          closeClassName="text-[#B9AFF1]"
+          className="easyleap-max-h-[100vh] easyleap-overflow-y-auto easyleap-overflow-x-hidden easyleap-border easyleap-border-[#675E99] easyleap-bg-[#211D31] easyleap-p-2 easyleap-font-dmSans easyleap-md:p-6 easyleap-lg:max-h-none"
+          closeClassName="easyleap-text-[#B9AFF1]"
         >
           <DialogHeader>
-            <DialogTitle className="text-center text-2xl font-normal text-[#B9AFF1]">
+            <DialogTitle className="easyleap-text-center easyleap-text-2xl easyleap-font-normal easyleap-text-[#B9AFF1]">
               Connect To
               <br />{" "}
-              <span className="font-bold text-white">EVM and Starknet</span>
+              <span className="easyleap-font-bold easyleap-text-white">
+                EVM and Starknet
+              </span>
             </DialogTitle>
           </DialogHeader>
 
-          <div className="flex w-full flex-col items-start justify-center gap-6">
-            <div className="mt-1 w-full">
+          <div className="easyleap-flex easyleap-w-full easyleap-flex-col easyleap-items-start easyleap-justify-center easyleap-gap-6">
+            <div className="easyleap-mt-1 easyleap-w-full">
               {!addressDestination ? (
                 <SNWalletOptions />
               ) : (
-                <div className="mt-5 flex flex-col items-start gap-2">
-                  <p className="text-xs font-medium text-[#EDDFFDCC]/60">
+                <div className="easyleap-mt-5 easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-2">
+                  <p className="easyleap-text-xs easyleap-font-medium easyleap-text-[#EDDFFDCC]/60">
                     Connected to {connector?.name}
                   </p>
-                  <Button className="flex w-[98.2%] items-center rounded-lg bg-[#b5abdf] !font-firaCode font-semibold text-black hover:bg-[#9489c2] md:w-full md:justify-between [&_svg]:pointer-events-auto">
-                    <div className="flex items-center justify-start gap-3">
+                  <Button className="easyleap-flex easyleap-w-[98.2%] easyleap-items-center easyleap-rounded-lg easyleap-bg-[#b5abdf] !easyleap-font-firaCode easyleap-font-semibold easyleap-text-black easyleap-hover:bg-[#9489c2] easyleap-md:w-full easyleap-md:justify-between [&_svg]:easyleap-pointer-events-auto">
+                    <div className="easyleap-flex easyleap-items-center easyleap-justify-start easyleap-gap-3">
                       <span
-                        className={cn("rounded-full bg-black p-1", {
-                          "p-0": connector?.id === "argentX",
-                        })}
+                        className={cn(
+                          "easyleap-rounded-full easyleap-bg-black easyleap-p-1",
+                          {
+                            "easyleap-p-0": connector?.id === "argentX"
+                          }
+                        )}
                       >
                         {getWalletIcon(connector?.id ?? "braavos")}
                       </span>
@@ -367,7 +375,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                     </div>
 
                     <X
-                      className="size-4 text-black"
+                      className="easyleap-size-4 easyleap-text-black"
                       onClick={() => {
                         disconnectSN();
                         disconnectWagmi();
@@ -380,54 +388,61 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
               )}
             </div>
 
-            <div className="mt-3 w-full">
-              <h5 className="text-center text-base font-medium text-[#B9AFF1]">
+            <div className="easyleap-mt-3 easyleap-w-full">
+              <h5 className="easyleap-text-center easyleap-text-base easyleap-font-medium easyleap-text-[#B9AFF1]">
                 Optional
               </h5>
-              <p className="mt-1 text-center text-sm font-normal text-[#EDDFFDCC]">
+              <p className="easyleap-mt-1 easyleap-text-center easyleap-text-sm easyleap-font-normal easyleap-text-[#EDDFFDCC]">
                 Link your EVM wallet to transfer L1 tokens seamlessly <br />{" "}
                 into the DApp!
               </p>
 
               {!addressSource ? (
-                <Accordion type="single" collapsible className="mt-5 w-full">
+                <Accordion
+                  type="single"
+                  collapsible
+                  className="easyleap-mt-5 easyleap-w-full"
+                >
                   <AccordionItem
                     value="evm-wallets"
-                    className="mt-2 rounded-xl border border-[#B9AFF133] bg-transparent px-4 py-2 text-[#B9AFF1]"
+                    className="easyleap-mt-2 easyleap-rounded-xl easyleap-border easyleap-border-[#B9AFF133] easyleap-bg-transparent easyleap-px-4 easyleap-py-2 easyleap-text-[#B9AFF1]"
                   >
-                    <AccordionTrigger hideChevron className="w-full py-0">
-                      <div className="flex w-full items-center justify-between">
+                    <AccordionTrigger
+                      hideChevron
+                      className="easyleap-w-full easyleap-py-0"
+                    >
+                      <div className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between">
                         EVM Wallets
-                        <div className="flex items-center -space-x-[0.8rem]">
-                          <div className="rounded-full border border-[#B9AFF11A] bg-[#211D31] p-1">
-                            <Icons.phantom className="size-5" />
+                        <div className="easyleap-flex easyleap-items-center easyleap--space-x-[0.8rem]">
+                          <div className="easyleap-rounded-full easyleap-border easyleap-border-[#B9AFF11A] easyleap-bg-[#211D31] easyleap-p-1">
+                            <Icons.phantom className="easyleap-size-5" />
                           </div>
-                          <div className="rounded-full border border-[#B9AFF11A] bg-[#211D31] p-1">
-                            <Icons.rainbow className="size-5" />
+                          <div className="easyleap-rounded-full easyleap-border easyleap-border-[#B9AFF11A] easyleap-bg-[#211D31] easyleap-p-1">
+                            <Icons.rainbow className="easyleap-size-5" />
                           </div>
-                          <div className="rounded-full border border-[#B9AFF11A] bg-[#211D31] p-1">
-                            <Icons.trust className="size-5" />
+                          <div className="easyleap-rounded-full easyleap-border easyleap-border-[#B9AFF11A] easyleap-bg-[#211D31] easyleap-p-1">
+                            <Icons.trust className="easyleap-size-5" />
                           </div>
-                          <div className="rounded-full border border-[#B9AFF11A] bg-[#211D31] p-1">
-                            <Icons.metamask className="size-5" />
+                          <div className="easyleap-rounded-full easyleap-border easyleap-border-[#B9AFF11A] easyleap-bg-[#211D31] easyleap-p-1">
+                            <Icons.metamask className="easyleap-size-5" />
                           </div>
                         </div>
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className="mt-5 pb-0">
+                    <AccordionContent className="easyleap-mt-5 easyleap-pb-0">
                       <EVMWalletOptions />
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
               ) : (
-                <div className="mt-7 flex flex-col items-start gap-2">
-                  <p className="text-xs font-medium text-[#EDDFFDCC]/60">
+                <div className="easyleap-mt-7 easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-2">
+                  <p className="easyleap-text-xs easyleap-font-medium easyleap-text-[#EDDFFDCC]/60">
                     Connected to {connectedEvmWalletName}
                   </p>
 
-                  <Button className="flex w-[98.2%] items-center justify-between rounded-lg bg-[#b5abdf] !font-firaCode font-semibold text-black hover:bg-[#9489c2] md:w-full [&_svg]:pointer-events-auto">
-                    <div className="flex items-center justify-start gap-3">
-                      <span className="rounded-full bg-black p-1">
+                  <Button className="easyleap-flex easyleap-w-[98.2%] easyleap-items-center easyleap-justify-between easyleap-rounded-lg easyleap-bg-[#b5abdf] !easyleap-font-firaCode easyleap-font-semibold easyleap-text-black easyleap-hover:bg-[#9489c2] easyleap-md:w-full [&_svg]:easyleap-pointer-events-auto">
+                    <div className="easyleap-flex easyleap-items-center easyleap-justify-start easyleap-gap-3">
+                      <span className="easyleap-rounded-full easyleap-bg-black easyleap-p-1">
                         {connectedEvmWalletName &&
                           getWalletIcon(connectedEvmWalletName.toLowerCase())}
                       </span>
@@ -435,7 +450,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                     </div>
 
                     <X
-                      className="size-4 text-black"
+                      className="easyleap-size-4 easyleap-text-black"
                       onClick={() => {
                         disconnectWagmi();
                         onDisconnectEVM?.();
@@ -446,8 +461,8 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
               )}
 
               {(addressSource || addressDestination) && (
-                <DialogTrigger className="mt-8 w-[98.2%] md:w-full">
-                  <Button className="w-full rounded-lg bg-[#b5abdf] font-semibold text-black hover:bg-[#9489c2]">
+                <DialogTrigger className="easyleap-mt-8 easyleap-w-[98.2%] easyleap-md:w-full">
+                  <Button className="easyleap-w-full easyleap-rounded-lg easyleap-bg-[#b5abdf] easyleap-font-semibold easyleap-text-black easyleap-hover:bg-[#9489c2]">
                     Done
                   </Button>
                 </DialogTrigger>
@@ -462,17 +477,17 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
           open={sharedState.isTxnPopoverOpen}
           onOpenChange={sharedState.setIsTxnPopoverOpen}
         >
-          <PopoverTrigger className="relative">
+          <PopoverTrigger className="easyleap-relative">
             <>
               {getPendingTxnCount() > 0 && (
-                <div className="absolute -right-0 -top-1.5 flex size-4 items-center justify-center rounded-full bg-red-500 p-1 text-[9px] font-semibold text-white">
+                <div className="easyleap-absolute easyleap--right-0 easyleap--top-1.5 easyleap-flex easyleap-size-4 easyleap-items-center easyleap-justify-center easyleap-rounded-full easyleap-bg-red-500 easyleap-p-1 easyleap-text-[9px] easyleap-font-semibold easyleap-text-white">
                   {getPendingTxnCount()}
                 </div>
               )}
 
               {!sharedState.isSuccessEVM && (
-                <div className="rounded-full bg-[#35314F] p-2">
-                  <Icons.historyIcon className="shrink-0" />
+                <div className="easyleap-rounded-full easyleap-bg-[#35314F] easyleap-p-2">
+                  <Icons.historyIcon className="easyleap-shrink-0" />
                 </div>
               )}
 
@@ -480,13 +495,13 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                 getDestinationTxn(sharedState.sourceTransactions[0]).status ===
                   "" && (
                   <div
-                    className={cn("rounded-full", {
-                      "animate-pulse bg-green-500 p-px":
-                        sharedState.isSuccessEVM,
+                    className={cn("easyleap-rounded-full", {
+                      "easyleap-animate-pulse easyleap-bg-green-500 easyleap-p-px":
+                        sharedState.isSuccessEVM
                     })}
                   >
-                    <div className="rounded-full bg-[#35314F] p-2">
-                      <Icons.historyIcon className="shrink-0" />
+                    <div className="easyleap-rounded-full easyleap-bg-[#35314F] easyleap-p-2">
+                      <Icons.historyIcon className="easyleap-shrink-0" />
                     </div>
                   </div>
                 )}
@@ -494,7 +509,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
               {sharedState.isSuccessEVM &&
                 getDestinationTxn(sharedState.sourceTransactions[0]).status ===
                   "pending" && (
-                  <div className="rounded-full bg-[#35314F] p-2">
+                  <div className="easyleap-rounded-full easyleap-bg-[#35314F] easyleap-p-2">
                     <svg
                       width="24"
                       height="24"
@@ -564,7 +579,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
               {sharedState.isSuccessEVM &&
                 getDestinationTxn(sharedState.sourceTransactions[0]).status ===
                   "confirmed" && (
-                  <div className="rounded-full bg-[#35314F] p-2">
+                  <div className="easyleap-rounded-full easyleap-bg-[#35314F] easyleap-p-2">
                     <svg
                       width="24"
                       height="24"
@@ -610,83 +625,85 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                 )}
             </>
           </PopoverTrigger>
-          <PopoverContent className="mr-[5.37rem] mt-4 w-[484px] border border-[#675E99] bg-[#1C182B] px-8 py-6 font-dmSans">
-            <h4 className="flex w-full items-center justify-between text-lg font-bold text-[#DADADA]">
+          <PopoverContent className="easyleap-mr-[5.37rem] easyleap-mt-4 easyleap-w-[484px] easyleap-border easyleap-border-[#675E99] easyleap-bg-[#1C182B] easyleap-px-8 easyleap-py-6 easyleap-font-dmSans">
+            <h4 className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between easyleap-text-lg easyleap-font-bold easyleap-text-[#DADADA]">
               Bridge transaction history
               <Icons.crossIcon
-                className="cursor-pointer"
+                className="easyleap-cursor-pointer"
                 onClick={() => sharedState.setIsTxnPopoverOpen(false)}
               />
             </h4>
 
-            <ScrollArea className="mt-5 h-[40vh]">
+            <ScrollArea className="easyleap-mt-5 easyleap-h-[40vh]">
               <Accordion type="single" collapsible>
                 {sharedState.sourceTransactions.map((txn: any, i: any) => (
                   <AccordionItem
                     key={i}
                     value={`txn-${i + 1}`}
-                    className="mt-2 rounded-xl border-0 bg-[#B9AFF108] px-4 py-2 text-[#B9AFF1]"
+                    className="easyleap-mt-2 easyleap-rounded-xl easyleap-border-0 easyleap-bg-[#B9AFF108] easyleap-px-4 easyleap-py-2 easyleap-text-[#B9AFF1]"
                   >
                     <AccordionTrigger
-                      className="w-full items-start px-2.5 py-1 hover:no-underline"
-                      customChevron={<Icons.chevronIcon className="size-5" />}
+                      className="easyleap-w-full easyleap-items-start easyleap-px-2.5 easyleap-py-1 easyleap-hover:no-underline"
+                      customChevron={
+                        <Icons.chevronIcon className="easyleap-size-5" />
+                      }
                     >
-                      <div className="flex w-full flex-col items-center gap-6">
-                        <div className="flex w-full items-center gap-8">
-                          <div className="flex flex-col items-start gap-0.5">
-                            <p className="flex items-center gap-1 text-base text-[#B9AFF1]">
+                      <div className="easyleap-flex easyleap-w-full easyleap-flex-col easyleap-items-center easyleap-gap-6">
+                        <div className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-gap-8">
+                          <div className="easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-0.5">
+                            <p className="easyleap-flex easyleap-items-center easyleap-gap-1 easyleap-text-base easyleap-text-[#B9AFF1]">
                               <img
                                 src="/tokens/eth.svg"
                                 alt="eth logo"
-                                className="size-5 shrink-0"
+                                className="easyleap-size-5 easyleap-shrink-0"
                               />
                               Ethereum
                             </p>
-                            <span className="text-xs text-[#EDDFFDCC]">
+                            <span className="easyleap-text-xs easyleap-text-[#EDDFFDCC]">
                               Sepolia
                             </span>
                           </div>
 
-                          <Icons.arrowRight className="!rotate-0" />
+                          <Icons.arrowRight className="!easyleap-rotate-0" />
 
-                          <div className="flex flex-col items-start gap-0.5">
-                            <p className="flex items-center gap-1 text-base text-[#B9AFF1]">
+                          <div className="easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-0.5">
+                            <p className="easyleap-flex easyleap-items-center easyleap-gap-1 easyleap-text-base easyleap-text-[#B9AFF1]">
                               <img
                                 src="/tokens/strk.svg"
                                 alt="strk logo"
-                                className="size-5 shrink-0"
+                                className="easyleap-size-5 easyleap-shrink-0"
                               />
                               Starknet
                             </p>
-                            <span className="text-xs text-[#EDDFFDCC]">
+                            <span className="easyleap-text-xs easyleap-text-[#EDDFFDCC]">
                               Sepolia
                             </span>
                           </div>
                         </div>
 
-                        <div className="flex w-full items-center justify-between text-xs text-[#EDDFFDCC]">
+                        <div className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between easyleap-text-xs easyleap-text-[#EDDFFDCC]">
                           {format(
                             new Date(txn?.timestamp * 1000),
-                            "dd MMM, yyyy h:mm a",
+                            "dd MMM, yyyy h:mm a"
                           )}
 
                           {getDestinationTxn(txn)?.status === "pending" && (
-                            <div className="-mr-5 text-nowrap rounded-full bg-[#261A8DCC] p-1 px-2 text-[10px] text-[#B9AFF1]">
+                            <div className="easyleap--mr-5 easyleap-text-nowrap easyleap-rounded-full easyleap-bg-[#261A8DCC] easyleap-p-1 easyleap-px-2 easyleap-text-[10px] easyleap-text-[#B9AFF1]">
                               Pending Submission
                             </div>
                           )}
 
                           {getDestinationTxn(txn)?.status === "confirmed" && (
-                            <div className="-mr-5 flex items-center gap-2">
-                              <div className="text-nowrap rounded-full bg-[#38EF7D80] p-1 px-2 text-[10px] text-[#000]">
+                            <div className="easyleap--mr-5 easyleap-flex easyleap-items-center easyleap-gap-2">
+                              <div className="easyleap-text-nowrap easyleap-rounded-full easyleap-bg-[#38EF7D80] easyleap-p-1 easyleap-px-2 easyleap-text-[10px] easyleap-text-[#000]">
                                 Success
                               </div>
                               <a
                                 href={`https://sepolia.etherscan.io/tx/${txn.txHash}`}
                                 target="_blank"
-                                className="rounded-3xl bg-[#35314F] p-1"
+                                className="easyleap-rounded-3xl easyleap-bg-[#35314F] easyleap-p-1"
                               >
-                                <Icons.externalLinkIcon className="size-4" />
+                                <Icons.externalLinkIcon className="easyleap-size-4" />
                               </a>
                             </div>
                           )}
@@ -694,94 +711,94 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                       </div>
                     </AccordionTrigger>
 
-                    <AccordionContent className="mx-5 mt-4 border-t border-[#675E9933]">
-                      <div className="mt-5 flex items-center justify-start gap-3">
-                        <div className="flex flex-col items-center justify-center gap-3">
+                    <AccordionContent className="easyleap-mx-5 easyleap-mt-4 easyleap-border-t easyleap-border-[#675E9933]">
+                      <div className="easyleap-mt-5 easyleap-flex easyleap-items-center easyleap-justify-start easyleap-gap-3">
+                        <div className="easyleap-flex easyleap-flex-col easyleap-items-center easyleap-justify-center easyleap-gap-3">
                           {txn?.status === "pending" && (
-                            <Loader2 className="size-6 animate-spin" />
+                            <Loader2 className="easyleap-size-6 easyleap-animate-spin" />
                           )}
                           {txn?.status === "confirmed" && (
-                            <Icons.checkIcon className="size-6" />
+                            <Icons.checkIcon className="easyleap-size-6" />
                           )}
 
                           {getDestinationTxn(txn)?.status === "pending" && (
                             <>
-                              <div className="h-6 w-px rounded-full bg-[#675E9933]" />
-                              <Loader2 className="size-6 animate-spin" />
-                              <div className="h-6 w-px rounded-full bg-[#675E9933]" />
-                              <Loader2 className="size-6 animate-spin" />
+                              <div className="easyleap-h-6 easyleap-w-px easyleap-rounded-full easyleap-bg-[#675E9933]" />
+                              <Loader2 className="easyleap-size-6 easyleap-animate-spin" />
+                              <div className="easyleap-h-6 easyleap-w-px easyleap-rounded-full easyleap-bg-[#675E9933]" />
+                              <Loader2 className="easyleap-size-6 easyleap-animate-spin" />
                             </>
                           )}
 
                           {getDestinationTxn(txn)?.status === "confirmed" && (
                             <>
-                              <div className="h-6 w-px rounded-full bg-[#675E9933]" />
-                              <Icons.checkIcon className="size-6" />
-                              <div className="h-6 w-px rounded-full bg-[#675E9933]" />
-                              <Icons.checkIcon className="size-6" />
+                              <div className="easyleap-h-6 easyleap-w-px easyleap-rounded-full easyleap-bg-[#675E9933]" />
+                              <Icons.checkIcon className="easyleap-size-6" />
+                              <div className="easyleap-h-6 easyleap-w-px easyleap-rounded-full easyleap-bg-[#675E9933]" />
+                              <Icons.checkIcon className="easyleap-size-6" />
                             </>
                           )}
                         </div>
 
-                        <div className="flex flex-col items-start gap-6">
+                        <div className="easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-6">
                           <a
                             href={`https://sepolia.etherscan.io/tx/${txn?.txHash}`}
                             target="_blank"
-                            className="group flex cursor-pointer flex-col items-start gap-1"
+                            className="easyleap-group easyleap-flex easyleap-cursor-pointer easyleap-flex-col easyleap-items-start easyleap-gap-1"
                           >
                             <p
                               className={cn(
-                                "flex items-center gap-2 text-base text-[#B9AFF1]",
+                                "easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-base easyleap-text-[#B9AFF1]",
                                 {
-                                  "font-bold text-white":
-                                    txn?.status === "confirmed",
-                                },
+                                  "easyleap-font-bold easyleap-text-white":
+                                    txn?.status === "confirmed"
+                                }
                               )}
                             >
                               Initiated transfer from EVM wallet{" "}
-                              <Icons.externalLinkIcon className="transition-all group-hover:brightness-125" />
+                              <Icons.externalLinkIcon className="easyleap-transition-all easyleap-group-hover:brightness-125" />
                             </p>
-                            <span className="text-xs text-[#EDDFFDCC]">
+                            <span className="easyleap-text-xs easyleap-text-[#EDDFFDCC]">
                               The deposit was submitted on Ethereum.
                             </span>
                           </a>
 
-                          <div className="group flex flex-col items-start gap-1">
+                          <div className="easyleap-group easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-1">
                             <p
                               className={cn(
-                                "flex items-center gap-2 text-base text-[#B9AFF1]",
+                                "easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-base easyleap-text-[#B9AFF1]",
                                 {
-                                  "font-bold text-white":
+                                  "easyleap-font-bold easyleap-text-white":
                                     getDestinationTxn(txn)?.status ===
-                                    "confirmed",
-                                },
+                                    "confirmed"
+                                }
                               )}
                             >
                               Bridging to Starknet
                             </p>
-                            <span className="flex items-center gap-2 text-xs text-[#EDDFFDCC]">
+                            <span className="easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-xs easyleap-text-[#EDDFFDCC]">
                               Bridged {(txn?.amount_raw / 10 ** 18).toFixed(5)}
-                              <Icons.ethereumLogo className="size-4" />
+                              <Icons.ethereumLogo className="easyleap-size-4" />
                             </span>
                           </div>
 
                           <a
                             href={`https://sepolia.voyager.online/tx/${getDestinationTxn(txn)?.txHash}`}
                             target="_blank"
-                            className="group mt-2 flex cursor-pointer flex-col items-start gap-1"
+                            className="easyleap-group easyleap-mt-2 easyleap-flex easyleap-cursor-pointer easyleap-flex-col easyleap-items-start easyleap-gap-1"
                           >
                             <p
                               className={cn(
-                                "flex items-center gap-2 text-base text-[#B9AFF1]",
+                                "easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-base easyleap-text-[#B9AFF1]",
                                 {
-                                  "font-bold text-white":
+                                  "easyleap-font-bold easyleap-text-white":
                                     getDestinationTxn(txn)?.status ===
-                                    "confirmed",
-                                },
+                                    "confirmed"
+                                }
                               )}
                             >
                               Deposited on Vesu
-                              <Icons.externalLinkIcon className="transition-all group-hover:brightness-125" />
+                              <Icons.externalLinkIcon className="easyleap-transition-all easyleap-group-hover:brightness-125" />
                             </p>
                           </a>
                         </div>
@@ -791,8 +808,10 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                 ))}
 
                 {sharedState.sourceTransactions.length === 0 && (
-                  <div className="flex h-40 w-full items-center justify-center">
-                    <p className="text-[#B9AFF1]">No transactions yet</p>
+                  <div className="easyleap-flex easyleap-h-40 easyleap-w-full easyleap-items-center easyleap-justify-center">
+                    <p className="easyleap-text-[#B9AFF1]">
+                      No transactions yet
+                    </p>
                   </div>
                 )}
               </Accordion>
