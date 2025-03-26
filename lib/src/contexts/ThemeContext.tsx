@@ -20,6 +20,13 @@ export interface GlobalTheme {
       backgroundColor?: string;
       color?: string;
       border?: string;
+      borderRadius?: string;
+    };
+
+    historyButton?: {
+      backgroundColor?: string;
+      color?: string;
+      border?: string;
     };
   };
   bridgeMode?: {
@@ -43,6 +50,13 @@ export interface GlobalTheme {
       backgroundColor?: string;
       color?: string;
       border?: string;
+      borderRadius?: string;
+    };
+
+    historyButton?: {
+      backgroundColor?: string;
+      color?: string;
+      border?: string;
     };
   };
 }
@@ -51,7 +65,7 @@ const defaultTheme: GlobalTheme = {
   noneMode: {
     backgroundColor: "#221D31",
     color: "#fff",
-    border: "1px solid #fff",
+    border: "1px solid #fff"
   },
   starknetMode: {
     mainBgColor: "#1C182B",
@@ -60,14 +74,20 @@ const defaultTheme: GlobalTheme = {
       backgroundColor: "#1C182B",
       color: "#B9AEF1",
       border: "2px solid #443F53",
-      borderRadius: "0.75rem",
+      borderRadius: "0.75rem"
     },
 
     switchButton: {
       backgroundColor: "#1C182B",
       color: "#B9AEF1",
-      border: "2px solid #443F53",
+      border: "2px solid #443F53"
     },
+
+    historyButton: {
+      backgroundColor: "#1C182B",
+      color: "#B9AEF1",
+      border: "2px solid #443F53"
+    }
   },
   bridgeMode: {
     mainBgColor: "#1C182B",
@@ -76,29 +96,35 @@ const defaultTheme: GlobalTheme = {
       backgroundColor: "#35314F",
       color: "#9182E8",
       border: "0px solid transparent",
-      borderRadius: "0.75rem",
+      borderRadius: "0.75rem"
     },
 
     evmButton: {
       backgroundColor: "#1C182B",
       color: "#B5AADF",
       border: "2px solid #B5AADF",
-      borderRadius: "0.75rem",
+      borderRadius: "0.75rem"
     },
 
     switchButton: {
       backgroundColor: "#1C182B",
       color: "#B5AADF",
-      border: "2px solid #B5AADF",
+      border: "2px solid #B5AADF"
     },
-  },
+
+    historyButton: {
+      backgroundColor: "#1C182B",
+      color: "#B5AADF",
+      border: "2px solid #B5AADF"
+    }
+  }
 };
 
 const ThemeContext = React.createContext<GlobalTheme>(defaultTheme);
 
 export const ThemeProvider = ({
   theme,
-  children,
+  children
 }: {
   theme?: GlobalTheme;
   children: React.ReactNode;

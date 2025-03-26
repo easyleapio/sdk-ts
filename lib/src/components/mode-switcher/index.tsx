@@ -3,7 +3,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  TooltipTrigger,
+  TooltipTrigger
 } from "@lib/components/ui/tooltip";
 import { useTheme } from "@lib/contexts/ThemeContext";
 import { InteractionMode, useSharedState } from "@lib/hooks";
@@ -37,15 +37,18 @@ export const ModeSwitcher: React.FC<ModeSwitcherProps> = ({ className }) => {
                 onCheckedChange={(value) => {
                   if (!addressSource) {
                     return toast({
-                      title: "Connect EVM wallet to enable bridge mode",
+                      title: "Connect EVM wallet to enable bridge mode"
                     });
                   }
                   sharedState.setMode(
-                    value ? InteractionMode.Bridge : InteractionMode.Starknet,
+                    value ? InteractionMode.Bridge : InteractionMode.Starknet
                   );
                   sharedState.setModeSwitchedManually(true);
                 }}
-                className={cn("h-9 w-28 font-firaCode", className)}
+                className={cn(
+                  "easyleap-h-9 easyleap-w-28 easyleap-font-firaCode easyleap-ml-4 easyleap-border-[1.5px] easyleap-border-[#DBDBDB]/60",
+                  className
+                )}
                 style={{
                   border:
                     mode === InteractionMode.Starknet
@@ -58,11 +61,11 @@ export const ModeSwitcher: React.FC<ModeSwitcherProps> = ({ className }) => {
                   backgroundColor:
                     mode === InteractionMode.Starknet
                       ? theme?.starknetMode?.switchButton?.backgroundColor
-                      : theme?.bridgeMode?.switchButton?.backgroundColor,
+                      : theme?.bridgeMode?.switchButton?.backgroundColor
                 }}
               />
             </TooltipTrigger>
-            <TooltipContent className="mr-5 mt-2 max-w-[20rem] border border-[#211d31] !bg-[#b5abdf] px-4 py-2 text-[#211d31]">
+            <TooltipContent className="easyleap-mr-5 easyleap-mt-2 easyleap-max-w-[20rem] easyleap-border easyleap-border-[#211d31] easyleap-bg-[#b5abdf] easyleap-px-4 easyleap-py-2 easyleap-text-[#211d31]">
               <p>
                 Switch to Bridge mode to deposit directly from ETH Mainnet into
                 your starknet wallet in a single step.
@@ -71,7 +74,7 @@ export const ModeSwitcher: React.FC<ModeSwitcherProps> = ({ className }) => {
               <p>
                 This dApp supports in-app bridge mode, powered by
                 <span> </span>
-                <a href="https://easyleap.io/" className="underline">
+                <a href="https://easyleap.io/" className="easyleap-underline">
                   easyleap.io.
                 </a>
               </p>

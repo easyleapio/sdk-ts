@@ -1,6 +1,6 @@
 import {
   UseBalanceResult,
-  useBalance as useBalanceSN,
+  useBalance as useBalanceSN
 } from "@starknet-react/core";
 import { useEffect, useMemo } from "react";
 import { constants } from "starknet";
@@ -12,7 +12,7 @@ import TokensInfo from "@lib/utils/tokens.json";
 import TokensInfoSepolia from "@lib/utils/tokens.sepolia.json";
 
 import { InteractionMode } from "../contexts/SharedState";
-import { Chains, useAccount } from "./useAccount";
+import { useAccount, Chains } from "./useAccount";
 import { useMode } from "./useMode";
 
 export interface UseBalanceProps {
@@ -54,13 +54,16 @@ export function useBalance(props: UseBalanceProps): UseBalanceResult {
   const { source, addressSource, addressDestination } = useAccount();
   const resultSN = useBalanceSN({
     token: l2TokenAddress,
-    address: addressDestination,
+    address: addressDestination
   });
 
   // Find corresponding EVM token address
   const sourceTokenInfo = useSourceBridgeInfo(l2TokenAddress);
 
-  const resultWagma = useBalanceWagmi({ address: addressSource });
+  const resultWagmi = useBalanceWagmi({
+    address: addressSource,
+    token: sourceTokenInfo?.l1_token_address as `0x${string}` | undefined
+  });
 
   const result = useMemo(() => {
     if (mode == InteractionMode.Starknet || mode == InteractionMode.None) {
@@ -74,12 +77,12 @@ export function useBalance(props: UseBalanceProps): UseBalanceResult {
         return resultSN;
       }
 
-      return resultWagma;
+      return resultWagmi;
     }
 
     // todo return error
     return resultSN;
-  }, [mode, source, sourceTokenInfo?.l1_token_address, resultSN, resultWagma]);
+  }, [mode, source, sourceTokenInfo?.l1_token_address, resultSN, resultWagmi]);
 
   useEffect(() => {
     console.log("useBalance", {
@@ -87,10 +90,10 @@ export function useBalance(props: UseBalanceProps): UseBalanceResult {
       mode,
       addressDestination,
       source,
-      resultWagma,
+      resultWagmi,
       addressSource,
       error: result.error,
-      sourceTokenAddr: sourceTokenInfo?.l1_token_address,
+      sourceTokenAddr: sourceTokenInfo?.l1_token_address
     });
   }, [result]);
   return result;

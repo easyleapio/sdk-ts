@@ -784,7 +784,7 @@ export const Icons = {
     >
       <path
         d="M9.62012 3.95312L13.6668 7.99979L9.62012 12.0465"
-        stroke="#DFDFEC"
+        stroke="#000000"
         strokeWidth="1.5"
         strokeMiterlimit="10"
         strokeLinecap="round"
@@ -792,7 +792,7 @@ export const Icons = {
       />
       <path
         d="M2.33325 8H13.5533"
-        stroke="#DFDFEC"
+        stroke="#000000"
         strokeWidth="1.5"
         strokeMiterlimit="10"
         strokeLinecap="round"
@@ -848,10 +848,10 @@ export const Icons = {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <rect width="18" height="18" rx="9" fill="#1C182B" />
+      <rect width="18" height="18" rx="9" fill="#000000" />
       <path
         d="M12.96 7.4751L9.70004 10.7351C9.31504 11.1201 8.68504 11.1201 8.30004 10.7351L5.04004 7.4751"
-        stroke="#B9AFF1"
+        stroke="#ffffff"
         strokeWidth="1.5"
         strokeMiterlimit="10"
         strokeLinecap="round"
@@ -922,7 +922,7 @@ export const Icons = {
     >
       <path
         d="M11.4731 9.99993L15.4505 13.9774L13.9774 15.4505L9.99993 11.4731L6.02246 15.4505L4.54932 13.9774L8.52679 9.99993L4.54932 6.02246L6.02246 4.54932L9.99993 8.52679L13.9774 4.54932L15.4505 6.02246L11.4731 9.99993Z"
-        fill="#B9AFF1"
+        fill="#000000"
       />
     </svg>
   ),
@@ -1579,5 +1579,5 @@ export const Icons = {
         />
       </defs>
     </svg>
-  ),
+  )
 };

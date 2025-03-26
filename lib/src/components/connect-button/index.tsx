@@ -5,6 +5,10 @@ export interface ConnectButtonProps {
   onDisconnectStarknet?: () => void;
   onConnectEVM?: () => void;
   onDisconnectEVM?: () => void;
+  style?: {
+    buttonStyles?: React.CSSProperties;
+    modalStyles?: React.CSSProperties;
+  };
   className?: string;
 }
 
@@ -13,6 +17,10 @@ export const ConnectButton: React.FC<ConnectButtonProps> = ({
   onDisconnectStarknet,
   onConnectEVM,
   onDisconnectEVM,
+  style = {
+    buttonStyles: {},
+    modalStyles: {}
+  },
   className = ""
 }) => {
   return (
@@ -22,6 +30,7 @@ export const ConnectButton: React.FC<ConnectButtonProps> = ({
         onDisconnectStarknet={onDisconnectStarknet}
         onConnectEVM={onConnectEVM}
         onDisconnectEVM={onDisconnectEVM}
+        style={style}
         className={className}
       />
     </div>

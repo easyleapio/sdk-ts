@@ -29,7 +29,14 @@ const Navbar: React.FC = () => {
       <div className="mx-auto flex w-[min(83rem,_100%-2rem)] flex-col items-center justify-between gap-4 md:flex-row md:gap-0">
         <Icons.namedLogo />
 
-        <ConnectButton />
+        <ConnectButton
+          style={{
+            buttonStyles: {
+              // backgroundColor: "transparent",
+              background: "transparent"
+            }
+          }}
+        />
       </div>
     </header>
   );

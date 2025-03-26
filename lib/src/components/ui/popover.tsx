@@ -19,7 +19,7 @@ const PopoverContent = React.forwardRef<
       align={align}
       sideOffset={sideOffset}
       className={cn(
-        "easyleap-z-50 easyleap-w-72 easyleap-rounded-md easyleap-border easyleap-bg-popover easyleap-p-4 easyleap-text-popover-foreground easyleap-shadow-md easyleap-outline-none easyleap-data-[state=open]:animate-in easyleap-data-[state=closed]:animate-out easyleap-data-[state=closed]:fade-out-0 easyleap-data-[state=open]:fade-in-0 easyleap-data-[state=closed]:zoom-out-95 easyleap-data-[state=open]:zoom-in-95 easyleap-data-[side=bottom]:slide-in-from-top-2 easyleap-data-[side=left]:slide-in-from-right-2 easyleap-data-[side=right]:slide-in-from-left-2 easyleap-data-[side=top]:slide-in-from-bottom-2",
+        "easyleap-z-50 easyleap-w-72 easyleap-rounded-xl easyleap-border easyleap-p-4 easyleap-text-popover-foreground easyleap-shadow-md easyleap-outline-none data-[state=open]:easyleap-animate-in data-[state=closed]:easyleap-animate-out data-[state=closed]:easyleap-fade-out-0 data-[state=open]:easyleap-fade-in-0 data-[state=closed]:easyleap-zoom-out-95 data-[state=open]:easyleap-zoom-in-95 data-[side=bottom]:easyleap-slide-in-from-top-2 data-[side=left]:easyleap-slide-in-from-right-2 data-[side=right]:easyleap-slide-in-from-left-2 data-[side=top]:easyleap-slide-in-from-bottom-2",
         className
       )}
       {...props}

@@ -16,14 +16,14 @@ export default defineConfig(({ command, mode }) => {
         include: ["src"],
         insertTypesEntry: true,
         copyDtsFiles: true,
-        exclude: ["node_modules"]
+        exclude: ["node_modules"],
+        rollupTypes: true
       }) // export types on build
     ],
 
     resolve: {
       alias: {
-        "@": path.resolve(__dirname, "./src"),
-        "~": path.resolve(__dirname, "./lib")
+        "@": path.resolve(__dirname, "./src")
       }
     },
 
@@ -33,9 +33,9 @@ export default defineConfig(({ command, mode }) => {
       : {
           copyPublicDir: false,
           lib: {
-            entry: resolve(__dirname, "src/main.ts"),
-            formats: ["es", "cjs"],
-            fileName: (format) => `easyleap.${format}.js`
+            entry: resolve(__dirname, "src/main.tsx"),
+            name: "easyleap",
+            fileName: "easyleap"
           },
           rollupOptions: {
             external: [
@@ -48,7 +48,13 @@ export default defineConfig(({ command, mode }) => {
               "wagmi",
               "@wagmi/core",
               "jotai-tanstack-query"
-            ]
+            ],
+            output: {
+              globals: {
+                react: "React",
+                "react-dom": "ReactDOM"
+              }
+            }
           }
         }
   };

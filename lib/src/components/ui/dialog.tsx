@@ -19,7 +19,7 @@ const DialogOverlay = React.forwardRef<
   <DialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      "easyleap-fixed easyleap-inset-0 easyleap-z-50 easyleap-bg-black/80 easyleap-data-[state=open]:animate-in easyleap-data-[state=closed]:animate-out easyleap-data-[state=closed]:fade-out-0 easyleap-data-[state=open]:fade-in-0",
+      "easyleap-fixed easyleap-inset-0 easyleap-z-50 easyleap-bg-black/80 data-[state=open]:easyleap-animate-in data-[state=closed]:easyleap-animate-out data-[state=closed]:easyleap-fade-out-0 data-[state=open]:easyleap-fade-in-0",
       className
     )}
     {...props}
@@ -38,7 +38,7 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "easyleap-fixed easyleap-left-[50%] easyleap-top-[50%] easyleap-z-50 easyleap-grid easyleap-w-full easyleap-translate-x-[-50%] easyleap-translate-y-[-50%] easyleap-gap-4 easyleap-border easyleap-p-6 easyleap-shadow-lg easyleap-duration-200 easyleap-data-[state=open]:animate-in easyleap-data-[state=closed]:animate-out easyleap-data-[state=closed]:fade-out-0 easyleap-data-[state=open]:fade-in-0 easyleap-data-[state=closed]:zoom-out-95 easyleap-data-[state=open]:zoom-in-95 easyleap-data-[state=closed]:slide-out-to-left-1/2 easyleap-data-[state=closed]:slide-out-to-top-[48%] easyleap-data-[state=open]:slide-in-from-left-1/2 easyleap-data-[state=open]:slide-in-from-top-[48%] easyleap-rounded-lg easyleap-max-w-[425px]",
+        "easyleap-fixed easyleap-left-[50%] easyleap-top-[50%] easyleap-z-50 easyleap-grid easyleap-w-full easyleap-translate-x-[-50%] easyleap-translate-y-[-50%] easyleap-gap-4 easyleap-p-6 easyleap-shadow-lg easyleap-duration-200 data-[state=open]:easyleap-animate-in data-[state=closed]:easyleap-animate-out data-[state=closed]:easyleap-fade-out-0 data-[state=open]:easyleap-fade-in-0 data-[state=closed]:easyleap-zoom-out-95 data-[state=open]:easyleap-zoom-in-95 data-[state=closed]:easyleap-slide-out-to-left-1/2 data-[state=closed]:easyleap-slide-out-to-top-[48%] data-[state=open]:easyleap-slide-in-from-left-1/2 data-[state=open]:easyleap-slide-in-from-top-[48%] easyleap-max-w-[425px] easyleap-rounded-[10px]",
         className
       )}
       {...props}
@@ -46,7 +46,7 @@ const DialogContent = React.forwardRef<
       {children}
       <DialogPrimitive.Close
         className={cn(
-          "easyleap-absolute easyleap-right-4 easyleap-top-4 easyleap-rounded-sm easyleap-opacity-70 easyleap-ring-offset-background easyleap-transition-opacity easyleap-hover:opacity-100 easyleap-focus:outline-none easyleap-focus:ring-2 easyleap-focus:ring-ring easyleap-focus:ring-offset-2 easyleap-disabled:pointer-events-none easyleap-data-[state=open]:bg-accent easyleap-data-[state=open]:text-muted-foreground",
+          "easyleap-absolute easyleap-right-4 easyleap-top-4 easyleap-rounded-sm easyleap-opacity-70 easyleap-ring-offset-background easyleap-transition-opacity hover:easyleap-opacity-100 focus:easyleap-outline-none focus:easyleap-ring-2 focus:easyleap-ring-ring focus:easyleap-ring-offset-2 disabled:easyleap-pointer-events-none data-[state=open]:easyleap-bg-accent data-[state=open]:easyleap-text-muted-foreground",
           closeClassName
         )}
       >
@@ -64,7 +64,7 @@ const DialogHeader = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "easyleap-flex easyleap-flex-col easyleap-space-y-1.5 easyleap-text-center easyleap-sm:text-left",
+      "easyleap-flex easyleap-flex-col easyleap-space-y-1.5 easyleap-text-center sm:easyleap-text-left",
       className
     )}
     {...props}
@@ -78,7 +78,7 @@ const DialogFooter = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "easyleap-flex easyleap-flex-col-reverse easyleap-sm:flex-row easyleap-sm:justify-end easyleap-sm:space-x-2",
+      "easyleap-flex easyleap-flex-col-reverse sm:easyleap-flex-row sm:easyleap-justify-end sm:easyleap-space-x-2",
       className
     )}
     {...props}

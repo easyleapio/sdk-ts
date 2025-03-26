@@ -2,7 +2,11 @@ import { Clock } from "lucide-react";
 
 import { Icons } from "@lib/components/Icons";
 import { Button } from "@lib/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@lib/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger
+} from "@lib/components/ui/dialog";
 import { useSharedState } from "@lib/main";
 
 export interface TokenTransfer {
@@ -11,11 +15,17 @@ export interface TokenTransfer {
   logo: string;
 }
 
+export interface DestinationDapp {
+  name: string;
+  logo: string;
+}
+
 export interface ReviewModalProps {
   isOpen: boolean;
   onClose?: () => void;
   tokensIn: TokenTransfer[];
   tokensOut: TokenTransfer[];
+  destinationDapp: DestinationDapp;
   onContinue: () => void;
 }
 
@@ -44,21 +54,21 @@ export function ReviewModal() {
       onOpenChange={(value) => {
         context.setReviewModalProps({
           ...context.reviewModalProps,
-          isOpen: value,
+          isOpen: value
         });
       }}
     >
       <DialogTrigger className=""></DialogTrigger>
 
       <DialogContent
-        className="max-h-[100vh] overflow-y-auto overflow-x-hidden border border-[#675E99] bg-[#1C182B] font-dmSans sm:max-w-[425px] lg:max-h-none"
+        className="easyleap-max-h-[100vh] easyleap-overflow-y-auto easyleap-overflow-x-hidden easyleap-border easyleap-border-[#675E99] easyleap-bg-white easyleap-font-dmSans easyleap-sm:easyleap-max-w-[425px] easyleap-lg:easyleap-max-h-none"
         closeClassName="text-[#B9AFF1]"
       >
-        <h4 className="text-center text-2xl font-normal text-[#B9AFF1]">
+        <h4 className="easyleap-text-center easyleap-text-2xl easyleap-font-normal easyleap-text-black">
           Confirmation
         </h4>
 
-        <p className="-mt-2 text-center text-sm font-normal text-[#EDDFFDCC]">
+        <p className="easyleap-mt-[-2px] easyleap-text-center easyleap-text-sm easyleap-font-normal easyleap-text-black">
           You are about to perform the deposit with bridge mode.{" "}
           <br className="hidden md:block" /> Funds are automatically bridged
           from L1 to L2 and sent to <br className="hidden md:block" />{" "}
@@ -66,99 +76,122 @@ export function ReviewModal() {
         </p>
 
         <div
-          className="mt-5 flex flex-col items-center justify-between md:mt-0 md:flex-row md:!gap-0"
+          className="easyleap-mt-5 easyleap-flex easyleap-items-center easyleap-justify-center easyleap-md:easyleap-mt-0 easyleap-md:!easyleap-gap-0"
           style={{ gap: "1rem" }}
         >
           <div className="flex flex-col items-start gap-0.5 md:mt-5">
-            <p className="flex items-center gap-1 text-base text-[#B9AFF1]">
-              <img
-                src="/tokens/eth.svg"
-                alt="eth logo"
-                className="size-5 shrink-0"
-              />
+            <p className="easyleap-flex easyleap-items-center easyleap-gap-1 easyleap-text-base easyleap-text-black">
+              <Icons.ethereumLogo className="size-5 shrink-0" />
               Ethereum
             </p>
-            <span className="text-xs text-[#EDDFFDCC]">Sepolia</span>
+            <span className="easyleap-text-xs easyleap-text-black/60">
+              Sepolia
+            </span>
           </div>
 
-          <Icons.arrowRight className="arrowIcon" />
+          <Icons.arrowRight className="easyleap-arrowIcon" />
 
           <div className="flex flex-col items-start gap-0.5 md:mt-5">
-            <p className="flex items-center gap-1 text-base text-[#B9AFF1]">
-              <img
-                src="/tokens/strk.svg"
-                alt="strk logo"
-                className="size-5 shrink-0"
-              />
+            <p className="easyleap-flex easyleap-items-center easyleap-gap-1 easyleap-text-base easyleap-text-black">
+              <Icons.starknetLogo className="size-5 shrink-0" />
               Starknet
             </p>
-            <span className="text-xs text-[#EDDFFDCC]">Sepolia</span>
+            <span className="easyleap-text-xs easyleap-text-black/60">
+              Sepolia
+            </span>
           </div>
 
-          <Icons.arrowRight className="arrowIcon" />
+          <Icons.arrowRight className="easyleap-arrowIcon" />
 
-          <div className="flex items-center justify-center">
-            <Icons.vesuNamedLogo />
+          <div className="easyleap-flex easyleap-items-center easyleap-justify-center">
+            <span className="easyleap-flex easyleap-items-center easyleap-gap-2">
+              <img
+                src={context.reviewModalProps.destinationDapp.logo}
+                alt={context.reviewModalProps.destinationDapp.name}
+                className="size-5 shrink-0"
+              />
+              {context.reviewModalProps.destinationDapp.name}
+            </span>
           </div>
         </div>
 
-        <div className="mt-7">
-          <div className="flex flex-col items-start gap-3 rounded-xl bg-[#B9AFF108] px-5 py-2 pb-4">
-            <span className="text-xs text-[#EDDFFDCC]">Send</span>
-            <div className="flex w-full items-center justify-between">
-              <p className="flex items-center gap-2 text-base text-[#B9AFF1]">
-                <img
-                  src="/tokens/eth.svg"
-                  alt="eth logo"
-                  className="size-7 shrink-0"
-                />
-                Ethereum
-              </p>
-              <p className="flex items-center gap-2 text-base text-[#B9AFF1]">
+        <div className="easyleap-mt-7">
+          <div className="easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-3 easyleap-rounded-xl easyleap-bg-[#E6E6E6] easyleap-px-5 easyleap-py-2 easyleap-pb-4">
+            <span className="easyleap-text-xs easyleap-text-black">Send</span>
+            <div className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between">
+              <p className="easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-base easyleap-text-black">
                 {context.reviewModalProps.tokensOut.map(
-                  (token: any, index: any) => getTokenItem(token, index, false),
+                  (token: any, index: any) => (
+                    <span
+                      key={index}
+                      className="easyleap-flex easyleap-items-center easyleap-gap-2"
+                    >
+                      <img
+                        src={token.logo}
+                        alt={token.name}
+                        className="size-6 shrink-0"
+                      />
+                      {token.name}
+                    </span>
+                  )
+                )}
+              </p>
+              <p className="easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-base easyleap-text-black">
+                {context.reviewModalProps.tokensOut.map(
+                  (token: any, index: any) => getTokenItem(token, index, false)
                 )}
               </p>
             </div>
           </div>
 
-          <div className="mt-4 flex flex-col items-start gap-3 rounded-xl bg-[#B9AFF108] px-5 py-2 pb-4">
-            <span className="text-xs text-[#EDDFFDCC]">Receive</span>
-            <div className="flex w-full items-center justify-between">
-              <p className="flex items-center gap-2 text-base text-[#B9AFF1]">
-                <img
-                  src="/tokens/strk.svg"
-                  alt="strk logo"
-                  className="size-7 shrink-0"
-                />
-                Starknet
+          <div className="easyleap-mt-4 easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-3 easyleap-rounded-xl easyleap-bg-[#E6E6E6] easyleap-px-5 easyleap-py-2 easyleap-pb-4">
+            <span className="easyleap-text-xs easyleap-text-black">
+              Receive
+            </span>
+            <div className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between">
+              <p className="easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-base easyleap-text-black">
+                {context.reviewModalProps.tokensIn.map(
+                  (token: any, index: any) => (
+                    <span
+                      key={index}
+                      className="easyleap-flex easyleap-items-center easyleap-gap-2"
+                    >
+                      <img
+                        src={token.logo}
+                        alt={token.name}
+                        className="size-6 shrink-0"
+                      />
+                      {token.name}
+                    </span>
+                  )
+                )}
               </p>
               <p
-                className="flex items-center gap-2 text-base"
+                className="easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-base"
                 style={{ color: "#38EF7D" }}
               >
                 {context.reviewModalProps.tokensIn.map(
-                  (token: any, index: any) => getTokenItem(token, index, true),
+                  (token: any, index: any) => getTokenItem(token, index, true)
                 )}
               </p>
             </div>
           </div>
 
-          <div className="mt-7 flex flex-col items-start gap-1 rounded-xl bg-[#B9AFF108] px-5 py-4">
-            <div className="flex w-full items-center justify-between text-xs">
-              <p className="flex items-center gap-2 text-[#B9AFF1]">
+          <div className="easyleap-mt-7 easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-1 easyleap-rounded-xl easyleap-bg-[#E6E6E6] easyleap-px-5 easyleap-py-4">
+            <div className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between easyleap-text-xs">
+              <p className="easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-black/60">
                 Estimated transaction time:
               </p>
-              <p className="flex items-center gap-1 text-[#B9AFF1]">
+              <p className="easyleap-flex easyleap-items-center easyleap-gap-1 easyleap-text-black/60">
                 3min <Clock className="size-3" />
               </p>
             </div>
 
-            <div className="flex w-full items-center justify-between text-xs">
-              <p className="flex items-center gap-2 text-[#B9AFF1]">
+            <div className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between easyleap-text-xs">
+              <p className="easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-black/60">
                 Service fees (by Easyleap.io):
               </p>
-              <p className="flex items-center gap-2 text-[#B9AFF1]">
+              <p className="easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-black/60">
                 0.05%
                 {/* <img
                   src="/tokens/eth.svg"
@@ -176,11 +209,7 @@ export function ReviewModal() {
 
           <Button
             onClick={context.reviewModalProps.onContinue}
-            style={{
-              background:
-                "linear-gradient(180deg, #7151EB 0%, #C078FF 100%), radial-gradient(29.19% 139.29% at 51.96% 8.93%, #80A6FC 0%, rgba(113, 81, 235, 0) 100%)",
-            }}
-            className="mt-5 h-11 w-full rounded-[40px] px-6 text-white"
+            className="easyleap-mt-5 easyleap-h-11 easyleap-w-full easyleap-rounded-[40px] easyleap-bg-[#2F2F2F] easyleap-px-6 easyleap-text-white"
           >
             Continue
           </Button>

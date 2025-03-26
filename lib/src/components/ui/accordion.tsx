@@ -10,13 +10,7 @@ const AccordionItem = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
 >(({ className, ...props }, ref) => (
-  <div className="easyleap">
-    <AccordionPrimitive.Item
-      ref={ref}
-      className={cn("easyleap-border-b", className)}
-      {...props}
-    />
-  </div>
+  <AccordionPrimitive.Item ref={ref} className={cn(className)} {...props} />
 ));
 AccordionItem.displayName = "AccordionItem";
 
@@ -35,7 +29,7 @@ const AccordionTrigger = React.forwardRef<
       <AccordionPrimitive.Trigger
         ref={ref}
         className={cn(
-          "easyleap-flex easyleap-flex-1 easyleap-items-center easyleap-justify-between easyleap-text-left easyleap-text-sm easyleap-font-medium easyleap-transition-all easyleap-hover:underline [&[data-state=open]>svg]:easyleap-rotate-180",
+          "easyleap-flex easyleap-flex-1 easyleap-items-center easyleap-justify-between easyleap-text-left easyleap-text-sm easyleap-font-medium easyleap-transition-all [&[data-state=open]>svg]:easyleap-rotate-180",
           className
         )}
         {...props}

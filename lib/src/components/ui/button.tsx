@@ -5,20 +5,36 @@ import * as React from "react";
 import { cn } from "@lib/utils";
 
 const buttonVariants = cva(
-  "easyleap-inline-flex easyleap-items-center easyleap-justify-center easyleap-gap-2 easyleap-whitespace-nowrap easyleap-text-sm easyleap-font-medium easyleap-transition-colors easyleap-focus-visible:outline-none easyleap-focus-visible:ring-1 easyleap-focus-visible:ring-ring easyleap-disabled:pointer-events-none easyleap-disabled:opacity-50 [&_svg]:easyleap-pointer-events-none [&_svg]:easyleap-shrink-0",
+  [
+    "easyleap-inline-flex",
+    "easyleap-items-center",
+    "easyleap-justify-center",
+    "easyleap-gap-2",
+    "easyleap-whitespace-nowrap",
+    "easyleap-text-sm",
+    "easyleap-font-medium",
+    "easyleap-transition-colors",
+    "focus-visible:easyleap-outline-none",
+    "focus-visible:easyleap-ring-1",
+    "focus-visible:easyleap-ring-ring",
+    "disabled:easyleap-pointer-events-none",
+    "disabled:easyleap-opacity-50",
+    "[&_svg]:easyleap-pointer-events-none",
+    "[&_svg]:easyleap-shrink-0"
+  ],
   {
     variants: {
       variant: {
         default:
-          "easyleap-bg-primary easyleap-text-primary-foreground easyleap-shadow easyleap-hover:bg-primary/90",
+          "easyleap-bg-primary easyleap-text-primary-foreground easyleap-shadow hover:easyleap-bg-primary/90",
         destructive:
-          "easyleap-bg-destructive easyleap-text-destructive-foreground easyleap-shadow-sm easyleap-hover:bg-destructive/90",
+          "easyleap-bg-destructive easyleap-text-destructive-foreground easyleap-shadow-sm hover:easyleap-bg-destructive/90",
         outline:
-          "easyleap-border easyleap-border-input  easyleap-bg-background easyleap-shadow-sm easyleap-hover:bg-accent easyleap-hover:text-accent-foreground",
+          "easyleap-border easyleap-border-input easyleap-bg-background easyleap-shadow-sm hover:easyleap-bg-accent hover:easyleap-text-accent-foreground",
         secondary:
-          "easyleap-bg-secondary easyleap-text-secondary-foreground easyleap-shadow-sm easyleap-hover:bg-secondary/80",
-        ghost: "easyleap-hover:bg-accent easyleap-hover:text-accent-foreground",
-        link: "easyleap-text-primary easyleap-underline-offset-4 easyleap-hover:underline"
+          "easyleap-bg-secondary easyleap-text-secondary-foreground easyleap-shadow-sm hover:easyleap-bg-secondary/80",
+        ghost: "hover:easyleap-bg-accent hover:easyleap-text-accent-foreground",
+        link: "easyleap-text-primary easyleap-underline-offset-4 hover:easyleap-underline"
       },
       size: {
         default: "easyleap-h-9 easyleap-px-4 easyleap-py-2",

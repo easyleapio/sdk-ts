@@ -13,7 +13,7 @@ import { toast } from "@lib/hooks/use-toast";
 export enum InteractionMode {
   Bridge = "Bridge",
   Starknet = "Starknet",
-  None = "None",
+  None = "None"
 }
 
 export interface ChainsConfig {
@@ -56,14 +56,18 @@ const SharedStateContext = React.createContext({
   isModeSwitchedManually: false,
   setModeSwitchedManually: () => {},
   chains: {
-    starknet: sepoliaSN,
+    starknet: sepoliaSN
   },
   setChains: () => {},
   reviewModalProps: {
     isOpen: false,
     tokensIn: [],
     tokensOut: [],
-    onContinue: () => {},
+    destinationDapp: {
+      name: "",
+      logo: ""
+    },
+    onContinue: () => {}
   },
   setReviewModalProps: () => {},
   connectWalletModalOpen: false,
@@ -84,11 +88,11 @@ const SharedStateContext = React.createContext({
   lastTxPollTime: 0,
   setLastTxPollTime: () => {},
 
-  switchMode: () => {},
+  switchMode: () => {}
 } as SharedContext);
 
 export const SharedStateProvider = ({
-  children,
+  children
 }: {
   children: React.ReactNode;
 }) => {
@@ -96,14 +100,18 @@ export const SharedStateProvider = ({
   const [isModeSwitchedManually, setModeSwitchedManually] =
     React.useState(false);
   const [chains, setChains] = React.useState<ChainsConfig>({
-    starknet: sepoliaSN,
+    starknet: sepoliaSN
   });
   const [reviewModalProps, setReviewModalProps] =
     React.useState<ReviewModalProps>({
       isOpen: false,
       tokensIn: [],
       tokensOut: [],
-      onContinue: () => {},
+      destinationDapp: {
+        name: "",
+        logo: ""
+      },
+      onContinue: () => {}
     });
 
   const [connectWalletModalOpen, setConnectWalletModalOpen] =
@@ -125,12 +133,12 @@ export const SharedStateProvider = ({
     if (mode === InteractionMode.Bridge) {
       setMode(InteractionMode.Starknet);
       return toast({
-        title: "Switched to Starknet mode",
+        title: "Switched to Starknet mode"
       });
     } else if (mode === InteractionMode.Starknet) {
       setMode(InteractionMode.Bridge);
       return toast({
-        title: "Switched to Bridge mode",
+        title: "Switched to Bridge mode"
       });
     }
   };
@@ -163,7 +171,7 @@ export const SharedStateProvider = ({
         lastTxPollTime,
         setLastTxPollTime,
 
-        switchMode,
+        switchMode
       }}
     >
       {children}

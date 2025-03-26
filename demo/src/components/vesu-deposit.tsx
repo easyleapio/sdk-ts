@@ -16,7 +16,7 @@ import {
   FormMessage
 } from "@/components/ui/form";
 import { toast } from "@/hooks/use-toast";
-import { ReviewModal, TokenTransfer } from "@easyleap/sdk";
+import { DestinationDapp, ReviewModal, TokenTransfer } from "@easyleap/sdk";
 
 import { InteractionMode, useSharedState } from "@easyleap/sdk";
 import { useAccount } from "@easyleap/sdk";
@@ -218,6 +218,11 @@ const VesuDeposit: React.FC = () => {
     ];
   }, [amountOutRes.amountOut]);
 
+  const destinationDapp: DestinationDapp = {
+    name: "Vesu",
+    logo: "https://app.vesu.xyz/favicon.ico"
+  };
+
   const onSubmit = async (values: FormValues) => {
     if (Number(values.depositAmount) > Number(balanceInfo?.data?.formatted)) {
       return toast({
@@ -230,7 +235,7 @@ const VesuDeposit: React.FC = () => {
       });
     }
 
-    send(tokensIn, tokensOut);
+    send(tokensIn, tokensOut, destinationDapp);
   };
 
   return (

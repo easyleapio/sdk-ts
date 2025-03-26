@@ -7,7 +7,7 @@ import {
   ToastDescription,
   ToastProvider,
   ToastTitle,
-  ToastViewport,
+  ToastViewport
 } from "./toast";
 
 export function Toaster() {
@@ -20,14 +20,16 @@ export function Toaster() {
           <Toast
             key={id}
             {...props}
-            className="h-fit border-[#1C182B] bg-[#b5abdf] backdrop-blur-lg"
+            className="easyleap-h-fit easyleap-rounded-xl easyleap-bg-[#b5abdf] easyleap-backdrop-blur-lg"
           >
-            <div className="grid gap-1">
+            <div className="easyleap-grid easyleap-gap-1">
               {title && (
-                <ToastTitle className="text-[#1C182B]">{title}</ToastTitle>
+                <ToastTitle className="easyleap-text-[#1C182B]">
+                  {title}
+                </ToastTitle>
               )}
               {description && (
-                <ToastDescription className="text-[#1C182B]">
+                <ToastDescription className="easyleap-text-[#1C182B]">
                   {description}
                 </ToastDescription>
               )}
