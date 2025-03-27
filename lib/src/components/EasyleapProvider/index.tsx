@@ -3,7 +3,7 @@ import {
   publicProvider,
   StarknetConfig,
   StarknetConfigProps,
-  voyager,
+  voyager
 } from "@starknet-react/core";
 import { getDefaultConfig } from "connectkit";
 import React from "react";
@@ -12,7 +12,7 @@ import {
   createConfig,
   http,
   Config as WagmiConfig,
-  WagmiProvider,
+  WagmiProvider
 } from "wagmi";
 
 import { Toaster } from "@lib/components/ui/toaster";
@@ -36,7 +36,7 @@ export function defaultEasyleapConfig() {
         chains: [sepoliaEVM],
         transports: {
           // RPC URL for each chain
-          [sepoliaEVM.id]: http(`https://eth-sepolia.public.blastapi.io`),
+          [sepoliaEVM.id]: http(`https://eth-sepolia.public.blastapi.io`)
         },
 
         // Required API Keys
@@ -48,14 +48,14 @@ export function defaultEasyleapConfig() {
         // Optional App Info
         appDescription: "Bridge funds to Starknet dApps in a single click",
         appUrl: "https://easyleap.com", // your app's url
-        appIcon: "https://easyleap.com/logo.png", // your app's icon, no bigger than 1024x1024px (max. 1MB)
-      }),
+        appIcon: "https://easyleap.com/logo.png" // your app's icon, no bigger than 1024x1024px (max. 1MB)
+      })
     ),
     starknetConfig: {
       chains: [sepolia],
       provider: publicProvider(),
-      explorer: voyager,
-    },
+      explorer: voyager
+    }
   };
 }
 
@@ -64,8 +64,8 @@ export function EasyleapProvider(
     starknetConfig: defaultEasyleapConfig().starknetConfig,
     wagmiConfig: defaultEasyleapConfig().wagmiConfig,
     children: null,
-    theme: {},
-  },
+    theme: {}
+  }
 ) {
   const context = useSharedState();
 
@@ -87,7 +87,7 @@ export function EasyleapProvider(
     // todo need to ensure only one chain can be given
     if (starknetConfig.chains && starknetConfig.chains.length > 0) {
       context.setChains({
-        starknet: starknetConfig.chains[0],
+        starknet: starknetConfig.chains[0]
       });
     }
   }, [starknetConfig.chains]);

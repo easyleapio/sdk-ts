@@ -38,7 +38,7 @@ const AccordionTrigger = React.forwardRef<
         {customChevron
           ? customChevron
           : !hideChevron && (
-              <ChevronDown className="easyleap-h-4 easyleap-w-4 easyleap-shrink-0 easyleap-text-muted-foreground easyleap-transition-transform easyleap-duration-200" />
+              <ChevronDown className="easyleap-h-4 easyleap-w-4 easyleap-shrink-0 easyleap-text-[#757575] easyleap-transition-transform easyleap-duration-200" />
             )}
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>

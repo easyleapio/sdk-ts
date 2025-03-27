@@ -10,7 +10,7 @@ const Switch = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SwitchPrimitives.Root
     className={cn(
-      "easyleap-peer easyleap-relative easyleap-inline-flex easyleap-h-5 easyleap-shrink-0 easyleap-cursor-pointer easyleap-items-center easyleap-rounded-full easyleap-border-2 easyleap-border-transparent easyleap-shadow-sm easyleap-transition-colors focus-visible:easyleap-outline-none focus-visible:easyleap-ring-2 focus-visible:easyleap-ring-ring focus-visible:easyleap-ring-offset-2 focus-visible:easyleap-ring-offset-background disabled:easyleap-cursor-not-allowed disabled:easyleap-opacity-50 data-[state=checked]:easyleap-bg-primary data-[state=unchecked]:easyleap-bg-input",
+      "easyleap-peer easyleap-relative easyleap-inline-flex easyleap-h-5 easyleap-shrink-0 easyleap-cursor-pointer easyleap-items-center easyleap-rounded-full easyleap-border-2 easyleap-border-transparent easyleap-shadow-sm easyleap-transition-colors focus-visible:easyleap-outline-none focus-visible:easyleap-ring-2 focus-visible:easyleap-ring-[#0A0A0A] focus-visible:easyleap-ring-offset-2 focus-visible:easyleap-ring-offset-black disabled:easyleap-cursor-not-allowed disabled:easyleap-opacity-50 data-[state=checked]:easyleap-bg-[#1A1A1A] data-[state=unchecked]:easyleap-bg-[#E5E5E7]",
       className
     )}
     {...props}

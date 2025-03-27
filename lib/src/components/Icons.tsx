@@ -803,39 +803,32 @@ export const Icons = {
   historyIcon: (props: LucideProps) => (
     <svg
       {...props}
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
+      width="20"
+      height="20"
+      viewBox="0 0 40 40"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        d="M8 12.2002H15"
-        stroke="#B9AFF1"
-        strokeMiterlimit="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        d="M31.6666 17.5V16.6666C31.6666 10.3813 31.6664 7.23853 29.7139 5.28591C27.7612 3.33334 24.6186 3.33334 18.3332 3.33334C12.0481 3.33334 8.90533 3.33344 6.95272 5.28599C5.00015 7.23859 5.00012 10.3812 5.00007 16.6665L5 24.1667C4.99995 29.6457 4.99993 32.3853 6.51313 34.2292C6.7902 34.5668 7.09977 34.8763 7.43738 35.1535C9.28128 36.6667 12.0208 36.6667 17.4999 36.6667"
+        stroke="#FFFFFF"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       />
       <path
-        d="M8 16.2002H12.38"
-        stroke="#B9AFF1"
-        strokeMiterlimit="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        d="M11.6667 11.6667H25.0001M11.6667 18.3333H18.3334"
+        stroke="#FFFFFF"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       />
       <path
-        d="M10 6H14C16 6 16 5 16 4C16 2 15 2 14 2H10C9 2 8 2 8 4C8 6 9 6 10 6Z"
-        stroke="#B9AFF1"
-        strokeMiterlimit="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M16 4.02002C19.33 4.20002 21 5.43002 21 10V16C21 20 20 22 15 22H9C4 22 3 20 3 16V10C3 5.44002 4.67 4.20002 8 4.02002"
-        stroke="#B9AFF1"
-        strokeMiterlimit="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        d="M30 30.8333L27.5 29.9167V25.8333M20 29.1667C20 33.3088 23.3578 36.6667 27.5 36.6667C31.6422 36.6667 35 33.3088 35 29.1667C35 25.0245 31.6422 21.6667 27.5 21.6667C23.3578 21.6667 20 25.0245 20 29.1667Z"
+        stroke="#FFFFFF"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       />
     </svg>
   ),
@@ -1496,8 +1489,8 @@ export const Icons = {
   coinbase: (props: LucideProps) => (
     <svg
       {...props}
-      width="256"
-      height="256"
+      width="20"
+      height="20"
       viewBox="0 0 256 256"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

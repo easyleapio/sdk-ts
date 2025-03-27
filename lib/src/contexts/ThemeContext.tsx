@@ -63,59 +63,56 @@ export interface GlobalTheme {
 
 const defaultTheme: GlobalTheme = {
   noneMode: {
-    backgroundColor: "#221D31",
-    color: "#fff",
-    border: "1px solid #fff"
+    backgroundColor: "none",
+    color: "#FFFFFF",
+    border: "2px solid #423F52"
   },
   starknetMode: {
-    mainBgColor: "#1C182B",
+    mainBgColor: "#FFFFFF",
 
     button: {
-      backgroundColor: "#1C182B",
-      color: "#B9AEF1",
-      border: "2px solid #443F53",
-      borderRadius: "0.75rem"
+      backgroundColor: "#1B182B",
+      color: "#FFFFFF",
+      border: "2px solid #423F52",
+      borderRadius: "40px"
     },
 
     switchButton: {
-      backgroundColor: "#1C182B",
-      color: "#B9AEF1",
-      border: "2px solid #443F53"
+      backgroundColor: "#1B182B",
+      color: "#FFFFFF",
+      border: "2px solid #423F52"
     },
 
     historyButton: {
-      backgroundColor: "#1C182B",
-      color: "#B9AEF1",
-      border: "2px solid #443F53"
+      backgroundColor: "#1B182B",
+      color: "#FFFFFF",
+      border: "2px solid #423F52"
     }
   },
   bridgeMode: {
-    mainBgColor: "#1C182B",
+    mainBgColor: "#FFFFFF",
 
     starknetButton: {
       backgroundColor: "#35314F",
-      color: "#9182E8",
-      border: "0px solid transparent",
-      borderRadius: "0.75rem"
+      color: "#FFFFFF"
     },
 
     evmButton: {
-      backgroundColor: "#1C182B",
-      color: "#B5AADF",
-      border: "2px solid #B5AADF",
-      borderRadius: "0.75rem"
+      backgroundColor: "#1B182B",
+      color: "#FFFFFF",
+      border: "2px solid #423F52"
     },
 
     switchButton: {
-      backgroundColor: "#1C182B",
-      color: "#B5AADF",
-      border: "2px solid #B5AADF"
+      backgroundColor: "#1B182B",
+      color: "#FFFFFF",
+      border: "2px solid #423F52"
     },
 
     historyButton: {
-      backgroundColor: "#1C182B",
-      color: "#B5AADF",
-      border: "2px solid #B5AADF"
+      backgroundColor: "#1B182B",
+      color: "#FFFFFF",
+      border: "2px solid #423F52"
     }
   }
 };

@@ -141,14 +141,14 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
         {uniqueConnectors.map((connector) => (
           <li
             key={connector.id}
-            className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-rounded-xl easyleap-border-[1.5px] easyleap-border-[#DBDBDB] easyleap-px-3 easyleap-py-1.5 easyleap-text-sm easyleap-text-[#B1B1B1] hover:easyleap-bg-[#E8E8E8]"
+            className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-rounded-xl easyleap-border-[1.5px] easyleap-border-[#DBDBDB] easyleap-px-3 easyleap-py-1.5 easyleap-text-sm easyleap-text-[#2F2F2F] hover:easyleap-bg-[#E8E8E8]"
           >
             <button
               onClick={() => {
                 connect({ connector });
                 onConnectStarknet?.();
               }}
-              className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between hover:easyleap-text-[#2F2F2F]"
+              className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between"
             >
               {connector.name}
               <div
@@ -227,24 +227,27 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
   return (
     <div
       className={cn(
-        "easyleap-z-10 easyleap-flex easyleap-items-center easyleap-gap-4 md:easyleap-flex-row easyleap-bg-black easyleap-rounded-[20px]",
+        "easyleap-w-full easyleap-z-10 easyleap-flex easyleap-items-center easyleap-gap-4 md:easyleap-flex-row easyleap-rounded-[50px]",
         {
-          "easyleap-py-2 easyleap-pl-5 easyleap-pr-3":
-            addressSource || addressDestination
+          "easyleap-bg-white easyleap-px-2 easyleap-py-1":
+            addressSource || addressDestination,
+          "easyleap-px-4": mode === InteractionMode.Bridge
         }
       )}
       style={{
         backgroundColor:
-          mode === InteractionMode.Starknet
-            ? theme?.starknetMode?.mainBgColor
-            : theme?.bridgeMode?.mainBgColor
+          addressSource || addressDestination
+            ? mode === InteractionMode.Starknet
+              ? theme?.starknetMode?.mainBgColor
+              : theme?.bridgeMode?.mainBgColor
+            : undefined
       }}
     >
       <Dialog
         open={sharedState.connectWalletModalOpen}
         onOpenChange={sharedState.setConnectWalletModalOpen}
       >
-        <div className="easyleap-w-full easyleap-flex easyleap-items-center  md:easyleap-flex-row">
+        <div className="easyleap-w-full easyleap-flex easyleap-items-center md:easyleap-flex-row">
           <DialogTrigger asChild>
             <div className="easyleap-w-full easyleap-font-firaCode">
               {!addressSource && !addressDestination && (
@@ -260,7 +263,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                     ...style?.buttonStyles
                   }}
                   className={cn(
-                    "easyleap-rounded-[20px] easyleap-bg-transparent easyleap-text-center hover:easyleap-bg-transparent easyleap-text-white hover:!easyleap-text-white",
+                    "easyleap-rounded-[50px] easyleap-text-center easyleap-text-white",
                     className
                   )}
                 >
@@ -278,7 +281,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                     borderRadius: theme?.starknetMode?.button?.borderRadius
                   }}
                   className={cn(
-                    "easyleap-mx-auto easyleap-flex easyleap-w-fit easyleap-items-center easyleap-justify-start easyleap-gap-3 easyleap-font-medium hover:easyleap-bg-transparent easyleap-text-white easyleap-border-[1.5px] easyleap-border-[#DBDBDB]/60",
+                    "easyleap-mx-auto easyleap-flex easyleap-w-fit easyleap-items-center easyleap-justify-start easyleap-gap-3 easyleap-font-medium hover:easyleap-bg-transparent easyleap-rounded-[50px]",
                     className
                   )}
                 >
@@ -304,7 +307,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                       border: theme?.bridgeMode?.evmButton?.border,
                       borderRadius: theme?.bridgeMode?.evmButton?.borderRadius
                     }}
-                    className="easyleap-z-20 easyleap-flex easyleap-w-fit easyleap-scale-110 easyleap-items-center easyleap-justify-start easyleap-gap-3 easyleap-rounded-xl hover:easyleap-bg-[#1C182B] easyleap-text-white easyleap-border-[1.5px] easyleap-border-[#DBDBDB]/60"
+                    className="easyleap-z-20 easyleap-flex easyleap-w-fit easyleap-scale-110 easyleap-items-center easyleap-justify-start easyleap-gap-3 easyleap-rounded-[50px] hover:easyleap-bg-[#1B182B] easyleap-text-white easyleap-border-[1.5px] easyleap-border-[#DBDBDB]/60"
                   >
                     <span className="easyleap-rounded-full easyleap-bg-white easyleap-p-1">
                       {connectedEvmWalletName &&
@@ -323,7 +326,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                         theme?.bridgeMode?.starknetButton?.borderRadius
                     }}
                     className={cn(
-                      "easyleap-z-0 easyleap-flex easyleap-w-fit easyleap-items-center easyleap-justify-start easyleap-gap-3 easyleap-rounded-xl easyleap-font-semibold hover:easyleap-bg-[#35314F] easyleap-text-white",
+                      "easyleap-z-0 easyleap-flex easyleap-w-fit easyleap-items-center easyleap-justify-start easyleap-gap-3 easyleap-rounded-[50px] easyleap-font-semibold hover:easyleap-bg-[#35314F] easyleap-text-white",
                       className
                     )}
                   >
@@ -363,7 +366,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                   <p className="easyleap-text-xs easyleap-font-medium easyleap-text-[#8E8E8E]">
                     Connected to {connector?.name}
                   </p>
-                  <Button className="easyleap-flex easyleap-w-[98.2%] easyleap-items-center !easyleap-rounded-xl !easyleap-font-firaCode easyleap-font-semibold easyleap-text-white easyleap-w-full !easyleap-justify-between [&_svg]:easyleap-pointer-events-auto !easyleap-bg-black hover:!easyleap-bg-[#2F2F2F] !easyleap-shadow-md !easyleap-shadow-[#1C182B]">
+                  <Button className="easyleap-flex easyleap-w-[98.2%] easyleap-items-center !easyleap-rounded-xl easyleap-font-firaCode easyleap-font-semibold easyleap-text-white easyleap-w-full easyleap-justify-between [&_svg]:easyleap-pointer-events-auto easyleap-bg-black hover:easyleap-bg-[#2F2F2F] easyleap-shadow-md easyleap-shadow-gray-500">
                     <div className="easyleap-flex easyleap-items-center easyleap-justify-start easyleap-gap-3">
                       <span
                         className={cn("easyleap-rounded-full easyleap-p-1", {
@@ -390,7 +393,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
             </div>
 
             <div className="easyleap-mt-3 easyleap-w-full">
-              <h5 className="easyleap-text-center easyleap-text-base easyleap-font-medium easyleap-text-[#8E8E8E]">
+              <h5 className="easyleap-text-center easyleap-text-base easyleap-font-medium easyleap-text-[#2F2F2F]">
                 Optional
               </h5>
               <p className="easyleap-mt-1 easyleap-text-center easyleap-text-sm easyleap-font-normal easyleap-text-[#8E8E8E]">
@@ -412,7 +415,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                       hideChevron
                       className="easyleap-w-full easyleap-py-0"
                     >
-                      <div className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between hover:easyleap-text-[#2f2f2f]">
+                      <div className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between easyleap-text-[#2f2f2f]">
                         EVM Wallets
                         <div className="easyleap-flex easyleap-items-center easyleap--space-x-[0.8rem]">
                           <div className="easyleap-rounded-full easyleap-border easyleap-border-[#B9AFF11A] easyleap-bg-[#211D31] easyleap-p-1">
@@ -441,7 +444,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                     Connected to {connectedEvmWalletName}
                   </p>
 
-                  <Button className="easyleap-flex easyleap-w-[98.2%] easyleap-items-center !easyleap-rounded-xl !easyleap-font-firaCode easyleap-font-semibold easyleap-text-white easyleap-w-full !easyleap-justify-between [&_svg]:easyleap-pointer-events-auto !easyleap-bg-black hover:!easyleap-bg-[#2F2F2F] !easyleap-shadow-md !easyleap-shadow-[#1C182B]">
+                  <Button className="easyleap-flex easyleap-w-[98.2%] easyleap-items-center easyleap-rounded-xl easyleap-font-firaCode easyleap-font-semibold easyleap-text-white easyleap-w-full easyleap-justify-between [&_svg]:easyleap-pointer-events-auto easyleap-bg-black hover:easyleap-bg-[#2F2F2F] easyleap-shadow-md easyleap-shadow-gray-500">
                     <div className="easyleap-flex easyleap-items-center easyleap-justify-start easyleap-gap-3">
                       <span className="easyleap-flex easyleap-items-center easyleap-justify-start easyleap-gap-3">
                         {connectedEvmWalletName &&
@@ -463,7 +466,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
 
               {(addressSource || addressDestination) && (
                 <DialogTrigger className="easyleap-mt-8 easyleap-w-full md:easyleap-w-full">
-                  <Button className="easyleap-flex easyleap-w-[98.2%] !easyleap-items-center !easyleap-rounded-xl !easyleap-font-firaCode easyleap-font-semibold easyleap-text-white easyleap-w-full !easyleap-justify-center [&_svg]:easyleap-pointer-events-auto !easyleap-bg-black hover:!easyleap-bg-[#2F2F2F] !easyleap-shadow-md !easyleap-shadow-[#1C182B]">
+                  <Button className="easyleap-flex easyleap-w-[98.2%] easyleap-items-center easyleap-rounded-xl easyleap-font-firaCode easyleap-font-semibold easyleap-text-white easyleap-w-full easyleap-justify-center [&_svg]:easyleap-pointer-events-auto easyleap-bg-black hover:easyleap-bg-[#2F2F2F] easyleap-shadow-md easyleap-shadow-gray-500">
                     Done
                   </Button>
                 </DialogTrigger>

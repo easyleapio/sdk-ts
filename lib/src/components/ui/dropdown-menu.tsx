@@ -25,7 +25,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
   <DropdownMenuPrimitive.SubTrigger
     ref={ref}
     className={cn(
-      "easyleap-flex easyleap-cursor-default easyleap-select-none easyleap-items-center easyleap-gap-2 easyleap-rounded-sm easyleap-px-2 easyleap-py-1.5 easyleap-text-sm easyleap-outline-none focus:easyleap-bg-accent data-[state=open]:easyleap-bg-accent [&_svg]:easyleap-pointer-events-none [&_svg]:easyleap-size-4 [&_svg]:easyleap-shrink-0",
+      "easyleap-flex easyleap-cursor-default easyleap-select-none easyleap-items-center easyleap-gap-2 easyleap-rounded-sm easyleap-px-2 easyleap-py-1.5 easyleap-text-sm easyleap-outline-none focus:easyleap-bg-[#454545] data-[state=open]:easyleap-bg-[#454545] [&_svg]:easyleap-pointer-events-none [&_svg]:easyleap-size-4 [&_svg]:easyleap-shrink-0",
       inset && "easyleap-pl-8",
       className
     )}
@@ -45,7 +45,7 @@ const DropdownMenuSubContent = React.forwardRef<
   <DropdownMenuPrimitive.SubContent
     ref={ref}
     className={cn(
-      "easyleap-z-50 easyleap-min-w-[8rem] easyleap-overflow-hidden easyleap-rounded-md easyleap-border easyleap-bg-popover easyleap-p-1 easyleap-text-popover-foreground easyleap-shadow-lg data-[state=open]:easyleap-animate-in data-[state=closed]:easyleap-animate-out data-[state=closed]:easyleap-fade-out-0 data-[state=open]:easyleap-fade-in-0 data-[state=closed]:easyleap-zoom-out-95 data-[state=open]:easyleap-zoom-in-95 data-[side=bottom]:easyleap-slide-in-from-top-2 data-[side=left]:easyleap-slide-in-from-right-2 data-[side=right]:easyleap-slide-in-from-left-2 data-[side=top]:easyleap-slide-in-from-bottom-2",
+      "easyleap-z-50 easyleap-min-w-[8rem] easyleap-overflow-hidden easyleap-rounded-md easyleap-border easyleap-bg-white easyleap-p-1 easyleap-text-[#0A0A0A] easyleap-shadow-lg data-[state=open]:easyleap-animate-in data-[state=closed]:easyleap-animate-out data-[state=closed]:easyleap-fade-out-0 data-[state=open]:easyleap-fade-in-0 data-[state=closed]:easyleap-zoom-out-95 data-[state=open]:easyleap-zoom-in-95 data-[side=bottom]:easyleap-slide-in-from-top-2 data-[side=left]:easyleap-slide-in-from-right-2 data-[side=right]:easyleap-slide-in-from-left-2 data-[side=top]:easyleap-slide-in-from-bottom-2",
       className
     )}
     {...props}
@@ -63,7 +63,7 @@ const DropdownMenuContent = React.forwardRef<
       ref={ref}
       sideOffset={sideOffset}
       className={cn(
-        "easyleap-z-50 easyleap-min-w-[8rem] easyleap-overflow-hidden easyleap-rounded-md easyleap-border easyleap-bg-popover easyleap-p-1 easyleap-text-popover-foreground easyleap-shadow-md",
+        "easyleap-z-50 easyleap-min-w-[8rem] easyleap-overflow-hidden easyleap-rounded-md easyleap-border easyleap-bg- easyleap-p-1 easyleap-text-[#0A0A0A] easyleap-shadow-md",
         "data-[state=open]:easyleap-animate-in data-[state=closed]:easyleap-animate-out data-[state=closed]:easyleap-fade-out-0 data-[state=open]:easyleap-fade-in-0 data-[state=closed]:easyleap-zoom-out-95 data-[state=open]:easyleap-zoom-in-95 data-[side=bottom]:easyleap-slide-in-from-top-2 data-[side=left]:easyleap-slide-in-from-right-2 data-[side=right]:easyleap-slide-in-from-left-2 data-[side=top]:easyleap-slide-in-from-bottom-2",
         className
       )}
@@ -82,7 +82,7 @@ const DropdownMenuItem = React.forwardRef<
   <DropdownMenuPrimitive.Item
     ref={ref}
     className={cn(
-      "easyleap-relative easyleap-flex easyleap-cursor-default easyleap-select-none easyleap-items-center easyleap-gap-2 easyleap-rounded-sm easyleap-px-2 easyleap-py-1.5 easyleap-text-sm easyleap-outline-none easyleap-transition-colors focus:easyleap-bg-accent focus:easyleap-text-accent-foreground data-[disabled]:easyleap-pointer-events-none data-[disabled]:easyleap-opacity-50 [&>svg]:easyleap-size-4 [&>svg]:easyleap-shrink-0",
+      "easyleap-relative easyleap-flex easyleap-cursor-default easyleap-select-none easyleap-items-center easyleap-gap-2 easyleap-rounded-sm easyleap-px-2 easyleap-py-1.5 easyleap-text-sm easyleap-outline-none easyleap-transition-colors focus:easyleap-bg-[#454545] focus:easyleap-text-[#1A1A1A] data-[disabled]:easyleap-pointer-events-none data-[disabled]:easyleap-opacity-50 [&>svg]:easyleap-size-4 [&>svg]:easyleap-shrink-0",
       inset && "easyleap-pl-8",
       className
     )}
@@ -98,7 +98,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   <DropdownMenuPrimitive.CheckboxItem
     ref={ref}
     className={cn(
-      "easyleap-relative easyleap-flex easyleap-cursor-default easyleap-select-none easyleap-items-center easyleap-rounded-sm easyleap-py-1.5 easyleap-pl-8 easyleap-pr-2 easyleap-text-sm easyleap-outline-none easyleap-transition-colors focus:easyleap-bg-accent focus:easyleap-text-accent-foreground data-[disabled]:easyleap-pointer-events-none data-[disabled]:easyleap-opacity-50",
+      "easyleap-relative easyleap-flex easyleap-cursor-default easyleap-select-none easyleap-items-center easyleap-rounded-sm easyleap-py-1.5 easyleap-pl-8 easyleap-pr-2 easyleap-text-sm easyleap-outline-none easyleap-transition-colors focus:easyleap-bg-[#454545] focus:easyleap-text-[#1A1A1A] data-[disabled]:easyleap-pointer-events-none data-[disabled]:easyleap-opacity-50",
       className
     )}
     checked={checked}
@@ -122,7 +122,7 @@ const DropdownMenuRadioItem = React.forwardRef<
   <DropdownMenuPrimitive.RadioItem
     ref={ref}
     className={cn(
-      "easyleap-relative easyleap-flex easyleap-cursor-default easyleap-select-none easyleap-items-center easyleap-rounded-sm easyleap-py-1.5 easyleap-pl-8 easyleap-pr-2 easyleap-text-sm easyleap-outline-none easyleap-transition-colors focus:easyleap-bg-accent focus:easyleap-text-accent-foreground data-[disabled]:easyleap-pointer-events-none data-[disabled]:easyleap-opacity-50",
+      "easyleap-relative easyleap-flex easyleap-cursor-default easyleap-select-none easyleap-items-center easyleap-rounded-sm easyleap-py-1.5 easyleap-pl-8 easyleap-pr-2 easyleap-text-sm easyleap-outline-none easyleap-transition-colors focus:easyleap-bg-[#454545] focus:easyleap-text-[#1A1A1A] data-[disabled]:easyleap-pointer-events-none data-[disabled]:easyleap-opacity-50",
       className
     )}
     {...props}
@@ -162,7 +162,7 @@ const DropdownMenuSeparator = React.forwardRef<
   <DropdownMenuPrimitive.Separator
     ref={ref}
     className={cn(
-      "easyleap-mx-1 easyleap-my-1 easyleap-h-px easyleap-bg-muted",
+      "easyleap-mx-1 easyleap-my-1 easyleap-h-px easyleap-bg-[#F5F5F6]",
       className
     )}
     {...props}

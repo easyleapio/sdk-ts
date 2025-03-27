@@ -29,10 +29,9 @@ const toastVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          "easyleap-border easyleap-bg-background easyleap-text-foreground",
+        default: "easyleap-border easyleap-bg-white easyleap-text-[#0A0A0A]",
         destructive:
-          "easyleap-destructive easyleap-group easyleap-border-destructive easyleap-bg-destructive easyleap-text-destructive-foreground",
+          "easyleap-[#EF4444] easyleap-group easyleap-border-[#EF4444] easyleap-bg-[#EF4444] easyleap-text-[#FAFAFA]",
         pending:
           "easyleap-max-w-[298px] easyleap-right-0 easyleap-ml-auto easyleap-bg-white easyleap-rounded-[16px] easyleap-border-none",
         complete:
@@ -67,7 +66,7 @@ const ToastAction = React.forwardRef<
   <ToastPrimitives.Action
     ref={ref}
     className={cn(
-      "easyleap-inline-flex easyleap-h-8 easyleap-shrink-0 easyleap-items-center easyleap-justify-center easyleap-rounded-md easyleap-border easyleap-bg-transparent easyleap-px-3 easyleap-text-sm easyleap-font-medium easyleap-transition-colors hover:easyleap-bg-secondary focus:easyleap-outline-none focus:easyleap-ring-1 focus:easyleap-ring-ring disabled:easyleap-pointer-events-none disabled:easyleap-opacity-50 group-[.destructive]:easyleap-border-muted/40 group-[.destructive]:hover:easyleap-border-destructive/30 group-[.destructive]:hover:easyleap-bg-destructive group-[.destructive]:hover:easyleap-text-destructive-foreground group-[.destructive]:focus:easyleap-ring-destructive",
+      "easyleap-inline-flex easyleap-h-8 easyleap-shrink-0 easyleap-items-center easyleap-justify-center easyleap-rounded-md easyleap-border easyleap-bg-transparent easyleap-px-3 easyleap-text-sm easyleap-font-medium easyleap-transition-colors hover:easyleap-bg-[#F5F5F6] focus:easyleap-outline-none focus:easyleap-ring-1 focus:easyleap-ring-[#0A0A0A] disabled:easyleap-pointer-events-none disabled:easyleap-opacity-50 group-[.destructive]:easyleap-border-[#F5F5F6]/40 group-[.destructive]:hover:easyleap-border-[#EF4444]/30 group-[.destructive]:hover:easyleap-bg-[#EF4444] group-[.destructive]:hover:easyleap-text-[#FAFAFA] group-[.destructive]:focus:easyleap-ring-[#EF4444]",
       className
     )}
     {...props}
@@ -82,7 +81,7 @@ const ToastClose = React.forwardRef<
   <ToastPrimitives.Close
     ref={ref}
     className={cn(
-      "easyleap-absolute easyleap-right-1 easyleap-top-1 easyleap-rounded-md easyleap-p-1 easyleap-text-foreground/50 easyleap-opacity-0 easyleap-transition-opacity hover:easyleap-text-foreground focus:easyleap-opacity-100 focus:easyleap-outline-none focus:easyleap-ring-1 group-hover:easyleap-opacity-100 group-[.destructive]:easyleap-text-red-300 group-[.destructive]:hover:easyleap-text-red-50 group-[.destructive]:focus:easyleap-ring-red-400 group-[.destructive]:focus:easyleap-ring-offset-red-600",
+      "easyleap-absolute easyleap-right-1 easyleap-top-1 easyleap-rounded-md easyleap-p-1 easyleap-text-[#0A0A0A]/50 easyleap-opacity-0 easyleap-transition-opacity hover:easyleap-text-[#0A0A0A] focus:easyleap-opacity-100 focus:easyleap-outline-none focus:easyleap-ring-1 group-hover:easyleap-opacity-100 group-[.destructive]:easyleap-text-red-300 group-[.destructive]:hover:easyleap-text-red-500 group-[.destructive]:focus:easyleap-ring-red-400 group-[.destructive]:focus:easyleap-ring-offset-red-600",
       className
     )}
     toast-close=""

@@ -4,7 +4,7 @@ import { fn } from "@storybook/test";
 import { ConnectButton } from "./index";
 
 const meta = {
-  title: "ConnectButton",
+  title: "Components/ConnectButton",
   component: ConnectButton,
   parameters: {
     layout: "centered"
@@ -22,13 +22,15 @@ const meta = {
     onDisconnectStarknet: fn(),
     onConnectEVM: fn(),
     onDisconnectEVM: fn()
-  }
+  },
+
+  decorators: [(Story) => <Story />]
 } satisfies Meta<typeof ConnectButton>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
+export const Default: Story = {
   args: {
     style: {
       buttonStyles: { backgroundColor: "" },

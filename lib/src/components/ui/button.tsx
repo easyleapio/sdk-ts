@@ -16,7 +16,7 @@ const buttonVariants = cva(
     "easyleap-transition-colors",
     "focus-visible:easyleap-outline-none",
     "focus-visible:easyleap-ring-1",
-    "focus-visible:easyleap-ring-ring",
+    "focus-visible:easyleap-ring-[#0A0A0A]",
     "disabled:easyleap-pointer-events-none",
     "disabled:easyleap-opacity-50",
     "[&_svg]:easyleap-pointer-events-none",
@@ -26,15 +26,15 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "easyleap-bg-primary easyleap-text-primary-foreground easyleap-shadow hover:easyleap-bg-primary/90",
+          "easyleap-bg-[#1A1A1A] easyleap-text-[#FAFAFA] easyleap-shadow hover:easyleap-bg-[#1A1A1A]/90",
         destructive:
-          "easyleap-bg-destructive easyleap-text-destructive-foreground easyleap-shadow-sm hover:easyleap-bg-destructive/90",
+          "easyleap-bg-[#EF4444] easyleap-text-[#FAFAFA] easyleap-shadow-sm hover:easyleap-bg-[#EF4444]/90",
         outline:
-          "easyleap-border easyleap-border-input easyleap-bg-background easyleap-shadow-sm hover:easyleap-bg-accent hover:easyleap-text-accent-foreground",
+          "easyleap-border-2 easyleap-border-white easyleap-bg-transparent easyleap-shadow-md easyleap-shadow-shadow hover:easyleap-bg-[#454545] hover:easyleap-text-[#1A1A1A]",
         secondary:
-          "easyleap-bg-secondary easyleap-text-secondary-foreground easyleap-shadow-sm hover:easyleap-bg-secondary/80",
-        ghost: "hover:easyleap-bg-accent hover:easyleap-text-accent-foreground",
-        link: "easyleap-text-primary easyleap-underline-offset-4 hover:easyleap-underline"
+          "easyleap-bg-[#F5F5F6] easyleap-text-[#1A1A1A] easyleap-shadow-sm hover:easyleap-bg-[#F5F5F6]/80",
+        ghost: "hover:easyleap-bg-[#454545] hover:easyleap-text-[#1A1A1A]",
+        link: "easyleap-text-[#1A1A1A] easyleap-underline-offset-4 hover:easyleap-underline"
       },
       size: {
         default: "easyleap-h-9 easyleap-px-4 easyleap-py-2",

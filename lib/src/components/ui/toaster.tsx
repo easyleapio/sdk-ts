@@ -20,7 +20,7 @@ export function Toaster() {
           <Toast
             key={id}
             {...props}
-            className="easyleap-h-fit easyleap-rounded-xl easyleap-bg-[#b5abdf] easyleap-backdrop-blur-lg"
+            className="easyleap-h-fit easyleap-rounded-xl easyleap-bg-white easyleap-backdrop-blur-lg"
           >
             <div className="easyleap-grid easyleap-gap-1">
               {title && (
@@ -29,7 +29,7 @@ export function Toaster() {
                 </ToastTitle>
               )}
               {description && (
-                <ToastDescription className="easyleap-text-[#1C182B]">
+                <ToastDescription className="easyleap-text-[#1B182B]">
                   {description}
                 </ToastDescription>
               )}

@@ -46,7 +46,7 @@ const DialogContent = React.forwardRef<
       {children}
       <DialogPrimitive.Close
         className={cn(
-          "easyleap-absolute easyleap-right-4 easyleap-top-4 easyleap-rounded-sm easyleap-opacity-70 easyleap-ring-offset-background easyleap-transition-opacity hover:easyleap-opacity-100 focus:easyleap-outline-none focus:easyleap-ring-2 focus:easyleap-ring-ring focus:easyleap-ring-offset-2 disabled:easyleap-pointer-events-none data-[state=open]:easyleap-bg-accent data-[state=open]:easyleap-text-muted-foreground",
+          "easyleap-absolute easyleap-right-4 easyleap-top-4 easyleap-rounded-sm easyleap-opacity-70 easyleap-ring-offset-black easyleap-transition-opacity hover:easyleap-opacity-100 focus:easyleap-outline-none focus:easyleap-ring-2 focus:easyleap-ring-[#0A0A0A] focus:easyleap-ring-offset-2 disabled:easyleap-pointer-events-none data-[state=open]:easyleap-bg-[#454545] data-[state=open]:easyleap-text-[#757575]",
           closeClassName
         )}
       >
@@ -104,7 +104,7 @@ const DialogDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Description
     ref={ref}
-    className={cn("easyleap-text-sm easyleap-text-muted-foreground", className)}
+    className={cn("easyleap-text-sm easyleap-text-[#757575]", className)}
     {...props}
   />
 ));
