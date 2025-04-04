@@ -1,6 +1,6 @@
 import {
   useAccount as useAccountSn,
-  useSwitchChain,
+  useSwitchChain
 } from "@starknet-react/core";
 import { createConfig, http, switchChain as switchChainEVM } from "@wagmi/core";
 import { mainnet, sepolia } from "@wagmi/core/chains";
@@ -12,7 +12,7 @@ import { useTransactionHistory } from "./useTransactionHistory";
 
 export enum Chains {
   ETH_MAINNET = "ETH_MAINNET",
-  STARKNET = "STARKNET",
+  STARKNET = "STARKNET"
 }
 
 /** Return type of  */
@@ -29,8 +29,8 @@ export const evmConfig = createConfig({
   chains: [mainnet, sepolia],
   transports: {
     [mainnet.id]: http(),
-    [sepolia.id]: http(),
-  },
+    [sepolia.id]: http()
+  }
 });
 
 /**
@@ -55,8 +55,8 @@ export function useAccount(): useAccountResult {
 
   const result = useSwitchChain({
     params: {
-      chainId: num.getHexString(sharedState.chains.starknet.id.toString()),
-    },
+      chainId: num.getHexString(sharedState.chains.starknet.id.toString())
+    }
   });
 
   useEffect(() => {
@@ -97,6 +97,6 @@ export function useAccount(): useAccountResult {
     source,
     destination,
     chainIdEVM,
-    chainIdSN,
+    chainIdSN
   };
 }

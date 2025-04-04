@@ -27,6 +27,10 @@ export interface ReviewModalProps {
   tokensOut: TokenTransfer[];
   destinationDapp: DestinationDapp;
   onContinue: () => void;
+  needsApproval?: boolean;
+  isApprovalPending?: boolean;
+  isApprovalSuccess?: boolean;
+  onApprove?: () => void;
 }
 
 export function ReviewModal() {
@@ -52,10 +56,12 @@ export function ReviewModal() {
     <Dialog
       open={context.reviewModalProps.isOpen}
       onOpenChange={(value) => {
-        context.setReviewModalProps({
-          ...context.reviewModalProps,
-          isOpen: value
-        });
+        if (!context.reviewModalProps.isApprovalPending) {
+          context.setReviewModalProps({
+            ...context.reviewModalProps,
+            isOpen: value
+          });
+        }
       }}
     >
       <DialogTrigger className=""></DialogTrigger>
@@ -166,10 +172,7 @@ export function ReviewModal() {
                   )
                 )}
               </p>
-              <p
-                className="easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-base"
-                style={{ color: "#38EF7D" }}
-              >
+              <p className="easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-green-600">
                 {context.reviewModalProps.tokensIn.map(
                   (token: any, index: any) => getTokenItem(token, index, true)
                 )}
@@ -193,25 +196,31 @@ export function ReviewModal() {
               </p>
               <p className="easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-black/60">
                 0.05%
-                {/* <img
-                  src="/tokens/eth.svg"
-                  alt="eth logo"
-                  className="size-3 shrink-0"
-                /> */}
               </p>
             </div>
-
-            {/* <div className="flex w-full items-center justify-between text-xs">
-              <p className="flex items-center gap-2 text-[#B9AFF1]">Gas fees</p>
-              <p className="flex items-center gap-2 text-[#B9AFF1]">$1.0</p>
-            </div> */}
           </div>
 
           <Button
-            onClick={context.reviewModalProps.onContinue}
+            onClick={
+              context.reviewModalProps.needsApproval &&
+              !context.reviewModalProps.isApprovalSuccess
+                ? context.reviewModalProps.onApprove
+                : context.reviewModalProps.onContinue
+            }
             className="easyleap-mt-5 easyleap-h-11 easyleap-w-full easyleap-rounded-[40px] easyleap-bg-[#2F2F2F] easyleap-px-6 easyleap-text-white"
+            disabled={context.reviewModalProps.isApprovalPending}
           >
-            Continue
+            {context.reviewModalProps.isApprovalPending ? (
+              <div className="easyleap-flex easyleap-items-center easyleap-justify-center easyleap-gap-2">
+                <div className="easyleap-h-4 easyleap-w-4 easyleap-animate-spin easyleap-rounded-full easyleap-border-2 easyleap-border-white easyleap-border-t-transparent"></div>
+                Approving...
+              </div>
+            ) : !context.reviewModalProps.isApprovalSuccess &&
+              context.reviewModalProps.needsApproval ? (
+              "Approve"
+            ) : (
+              "Continue"
+            )}
           </Button>
         </div>
       </DialogContent>

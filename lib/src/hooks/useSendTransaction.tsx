@@ -2,9 +2,16 @@ import { useSendTransaction as useSendTransactionSN } from "@starknet-react/core
 import React, { useEffect } from "react";
 import { Call, hash, num } from "starknet";
 import { encodeFunctionData } from "viem";
-import { useSendTransaction as useSendTransactionEVM } from "wagmi";
+import {
+  useSendTransaction as useSendTransactionEVM,
+  useTransactionReceipt
+} from "wagmi";
 
-import { DestinationDapp, TokenTransfer } from "@lib/components/review-modal";
+import {
+  DestinationDapp,
+  ReviewModalProps,
+  TokenTransfer
+} from "@lib/components/review-modal";
 import { ADDRESSES, ZERO_ADDRESS_EVM } from "@lib/utils/constants";
 
 import { InteractionMode, useSharedState } from "../contexts/SharedState";
@@ -33,6 +40,16 @@ export function useSendTransaction(
   props: EUseSendTransactionArgs_EasyLeap
 ): any {
   const mode = useMode();
+  const context = useSharedState();
+  const [approvalTxHash, setApprovalTxHash] = React.useState<
+    string | undefined
+  >();
+  const [isBridgeTransaction, setIsBridgeTransaction] = React.useState(false);
+  const { addressDestination, addressSource } = useAccount();
+  const sourceTokenInfo = useSourceBridgeInfo(
+    props.bridgeConfig.l2_token_address
+  );
+
   const {
     send: sendSN,
     error: errorSN,
@@ -42,10 +59,6 @@ export function useSendTransaction(
   } = useSendTransactionSN({
     calls: props.calls
   });
-  const { addressDestination, addressSource } = useAccount();
-  const sourceTokenInfo = useSourceBridgeInfo(
-    props.bridgeConfig.l2_token_address
-  );
   const {
     sendTransaction,
     error: errorEVM,
@@ -158,13 +171,19 @@ export function useSendTransaction(
   ]);
 
   useEffect(() => {
-    console.log("useSendTransactionn", {
+    console.log("useSendTransaction", {
       dataEVM,
       isErrorEVM,
       isSuccessEVM,
       isPendingEVM
     });
-    if (dataEVM) {
+
+    if (dataEVM && context.reviewModalProps.isApprovalPending) {
+      setApprovalTxHash(dataEVM);
+      return;
+    }
+
+    if (dataEVM && isBridgeTransaction) {
       context.setSourceTransactions(
         mergeSortArrays(context.sourceTransactions, [
           {
@@ -184,8 +203,72 @@ export function useSendTransaction(
           }
         ])
       );
+
+      // Update isSuccessEVM when bridge transaction completes
+      if (isSuccessEVM) {
+        context.setIsSuccessEVM(true);
+      }
     }
-  }, [dataEVM, isPendingEVM, isSuccessEVM, isErrorEVM]);
+  }, [
+    dataEVM,
+    isPendingEVM,
+    isSuccessEVM,
+    isErrorEVM,
+    context.reviewModalProps.isApprovalPending,
+    isBridgeTransaction
+  ]);
+
+  const approve = async (reviewModalProps: ReviewModalProps) => {
+    // If the token is not ETH, we need to approve first
+    if (
+      sourceTokenInfo &&
+      sourceTokenInfo.l1_token_address !== ZERO_ADDRESS_EVM &&
+      !context.reviewModalProps.isApprovalSuccess &&
+      !context.reviewModalProps.isApprovalPending
+    ) {
+      setIsBridgeTransaction(false);
+
+      context.setReviewModalProps({
+        ...reviewModalProps,
+        isApprovalPending: true,
+        isOpen: true
+      });
+
+      try {
+        sendTransaction({
+          to: sourceTokenInfo.l1_token_address as `0x${string}`,
+          data: encodeFunctionData({
+            abi: [
+              {
+                type: "function",
+                name: "approve",
+                inputs: [
+                  { name: "spender", type: "address" },
+                  { name: "amount", type: "uint256" }
+                ],
+                outputs: [{ type: "bool" }],
+                stateMutability: "nonpayable"
+              }
+            ],
+            functionName: "approve",
+            args: [
+              ADDRESSES.ETH_MAINNET.BRIDGE_MANAGER as `0x${string}`,
+              props.bridgeConfig.amount
+            ]
+          })
+        });
+      } catch (error) {
+        context.setReviewModalProps({
+          ...context.reviewModalProps,
+          isApprovalPending: false,
+          isOpen: true
+        });
+        throw error;
+      }
+    }
+
+    return null;
+  };
 
   const send = async (calls?: Call[]) => {
     // Early return if no calls provided
@@ -199,37 +282,7 @@ export function useSendTransaction(
 
     // Handle Bridge mode
     if (mode === InteractionMode.Bridge) {
-      // If the token is not ETH, we need to approve first
-      if (
-        sourceTokenInfo &&
-        sourceTokenInfo.l1_token_address !== ZERO_ADDRESS_EVM
-      ) {
-        // First approve the bridge manager to spend the tokens
-        await sendTransaction({
-          to: sourceTokenInfo.l1_token_address as `0x${string}`,
-          data: encodeFunctionData({
-            abi: [
-              {
-                type: "function",
-                name: "approve",
-                inputs: [
-                  { name: "spender", type: "address" },
-                  { name: "amount", type: "uint256" }
-                ],
-                outputs: [{ type: "bool" }],
-                stateMutability: "nonpayable"
-              }
-            ],
-            functionName: "approve",
-            args: [
-              ADDRESSES.ETH_MAINNET.BRIDGE_MANAGER as `0x${string}`,
-              props.bridgeConfig.amount
-            ]
-          })
-        });
-      }
-
-      // Then send the bridge transaction
+      setIsBridgeTransaction(true);
       return sendTransaction({
         to: ADDRESSES.ETH_MAINNET.BRIDGE_MANAGER as `0x${string}`,
         value: ethValue,
@@ -240,70 +293,51 @@ export function useSendTransaction(
     return null;
   };
 
-  const approve = async () => {
-    // Handle Bridge mode
-    if (mode === InteractionMode.Bridge) {
-      // If the token is not ETH, we need to approve first
-      if (
-        sourceTokenInfo &&
-        sourceTokenInfo.l1_token_address !== ZERO_ADDRESS_EVM
-      ) {
-        // First approve the bridge manager to spend the tokens
-        return sendTransaction({
-          to: sourceTokenInfo.l1_token_address as `0x${string}`,
-          data: encodeFunctionData({
-            abi: [
-              {
-                type: "function",
-                name: "approve",
-                inputs: [
-                  { name: "spender", type: "address" },
-                  { name: "amount", type: "uint256" }
-                ],
-                outputs: [{ type: "bool" }],
-                stateMutability: "nonpayable"
-              }
-            ],
-            functionName: "approve",
-            args: [
-              ADDRESSES.ETH_MAINNET.BRIDGE_MANAGER as `0x${string}`,
-              props.bridgeConfig.amount
-            ]
-          })
-        });
-      }
-
-      // Then send the bridge transaction
-      return sendTransaction({
-        to: ADDRESSES.ETH_MAINNET.BRIDGE_MANAGER as `0x${string}`,
-        value: ethValue,
-        data: calldata
-      });
-    }
-
-    return null;
-  };
-
-  const context = useSharedState();
-
-  function openReviewMoal(
+  function openReviewModal(
     tokensIn: TokenTransfer[],
     tokensOut: TokenTransfer[],
     destinationDapp: DestinationDapp,
     calls?: Call[]
   ) {
     if (mode == InteractionMode.Bridge) {
+      const needsApproval =
+        sourceTokenInfo &&
+        sourceTokenInfo.l1_token_address !== ZERO_ADDRESS_EVM &&
+        !context.reviewModalProps.isApprovalSuccess;
+
       context.setReviewModalProps({
         isOpen: true,
         tokensIn,
         tokensOut,
         destinationDapp,
-        onContinue: () => {
-          approve();
-          send(calls);
+        needsApproval,
+        isApprovalPending: false,
+        isApprovalSuccess: context.reviewModalProps.isApprovalSuccess,
+        onContinue: async () => {
+          await send(calls);
+
           context.setReviewModalProps({
             ...context.reviewModalProps,
             isOpen: false
+          });
+        },
+        onApprove: async () => {
+          await approve({
+            isOpen: true,
+            tokensIn,
+            tokensOut,
+            destinationDapp,
+            needsApproval,
+            isApprovalPending: false,
+            isApprovalSuccess: context.reviewModalProps.isApprovalSuccess,
+            onContinue: async () => {
+              await send(calls);
+
+              context.setReviewModalProps({
+                ...context.reviewModalProps,
+                isOpen: false
+              });
+            }
           });
         }
       });
@@ -312,10 +346,27 @@ export function useSendTransaction(
     }
   }
 
-  context.setIsSuccessEVM(isSuccessEVM);
+  // Watch for approval transaction completion
+  const { isSuccess: isApprovalTxSuccess } = useTransactionReceipt({
+    hash: approvalTxHash as `0x${string}`,
+    query: {
+      enabled: !!approvalTxHash
+    }
+  });
+
+  // Watch for approval transaction completion
+  useEffect(() => {
+    if (isApprovalTxSuccess) {
+      context.setReviewModalProps({
+        ...context.reviewModalProps,
+        isApprovalSuccess: true,
+        isApprovalPending: false
+      });
+    }
+  }, [isApprovalTxSuccess]);
 
   return {
-    send: openReviewMoal,
+    send: openReviewModal,
     error: errorSN || errorEVM,
     isPending: isPendingSN || isPendingEVM,
     dataSN,
