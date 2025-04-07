@@ -1,6 +1,6 @@
 {
   "name": "@easyleap/sdk",
-  "version": "0.0.6-beta.16",
+  "version": "0.0.6-beta.17",
   "type": "module",
   "main": "dist/easyleap.umd.cjs",
   "module": "dist/easyleap.js",
