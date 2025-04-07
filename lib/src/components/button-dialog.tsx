@@ -9,6 +9,7 @@ import {
   useConnect as useConnectWagmi,
   useDisconnect as useDisconnectWagmi
 } from "wagmi";
+import { getAccount } from "@wagmi/core";
 
 import { Icons } from "@lib/components/Icons";
 import {
@@ -34,7 +35,7 @@ import { ScrollArea } from "@lib/components/ui/scroll-area";
 import { InteractionMode, useSharedState } from "@lib/contexts/SharedState";
 import { useTheme } from "@lib/contexts/ThemeContext";
 import { toast, useToast } from "@lib/hooks/use-toast";
-import { useAccount } from "@lib/hooks/useAccount";
+import { useAccount, evmConfig } from "@lib/hooks/useAccount";
 import { useMode } from "@lib/hooks/useMode";
 import { cn, shortAddress } from "@lib/utils";
 
@@ -58,6 +59,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
   const { dismiss } = useToast();
 
   const { connector } = useConnectSN();
+  const { connector: connectorEVM } = getAccount(evmConfig);
 
   const theme = useTheme();
 
@@ -116,7 +118,6 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                   });
                 connect({ connector });
                 onConnectEVM?.();
-                localStorage.setItem("STARKPULL_WALLET_EVM", connector.name);
               }}
               className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between easyleap-text-xs"
             >
@@ -225,8 +226,6 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
     }
   }, [addressSource, addressDestination, mode]);
 
-  const connectedEvmWalletName = localStorage.getItem("STARKPULL_WALLET_EVM");
-
   return (
     <div
       className={cn(
@@ -312,8 +311,9 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                     className="easyleap-z-20 easyleap-flex easyleap-scale-105 easyleap-items-center easyleap-justify-start easyleap-gap-3 easyleap-rounded-[50px] hover:easyleap-bg-[#1B182B] easyleap-text-white easyleap-border-[1.5px] easyleap-border-[#DBDBDB]/60"
                   >
                     <span className="easyleap-rounded-full easyleap-bg-white easyleap-p-1">
-                      {connectedEvmWalletName &&
-                        getWalletIcon(connectedEvmWalletName.toLowerCase())}
+                      {getWalletIcon(
+                        connectorEVM?.name.toLocaleLowerCase() ?? "metamask"
+                      )}
                     </span>
                     {shortAddress(addressSource, 4, 4)}
                   </Button>
@@ -443,14 +443,15 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
               ) : (
                 <div className="easyleap-mt-7 easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-2">
                   <p className="easyleap-text-xs easyleap-font-medium easyleap-text-[#8E8E8E]">
-                    Connected to {connectedEvmWalletName}
+                    Connected to {connectorEVM?.name}
                   </p>
 
                   <Button className="easyleap-flex easyleap-w-[98.2%] easyleap-items-center easyleap-rounded-xl easyleap-font-firaCode easyleap-font-semibold easyleap-text-white easyleap-w-full easyleap-justify-between [&_svg]:easyleap-pointer-events-auto easyleap-bg-black hover:easyleap-bg-[#2F2F2F] easyleap-shadow-md easyleap-shadow-gray-500">
                     <div className="easyleap-flex easyleap-items-center easyleap-justify-start easyleap-gap-3">
                       <span className="easyleap-flex easyleap-items-center easyleap-justify-start easyleap-gap-3">
-                        {connectedEvmWalletName &&
-                          getWalletIcon(connectedEvmWalletName.toLowerCase())}
+                        {getWalletIcon(
+                          connectorEVM?.name.toLocaleLowerCase() ?? "metamask"
+                        )}
                       </span>
                       {shortAddress(addressSource, 14, 14)}
                     </div>
