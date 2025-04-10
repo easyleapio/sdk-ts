@@ -46,7 +46,7 @@ export const ModeSwitcher: React.FC<ModeSwitcherProps> = ({ className }) => {
                   sharedState.setModeSwitchedManually(true);
                 }}
                 className={cn(
-                  "easyleap-h-9 easyleap-w-28 easyleap-font-firaCode easyleap-ml-4 easyleap-border-[1.5px] easyleap-border-[#DBDBDB]/60",
+                  "easyleap-w-28 easyleap-font-firaCode easyleap-ml-4 easyleap-border-[1.5px] easyleap-border-[#DBDBDB]/60",
                   className
                 )}
                 style={{

@@ -9,7 +9,9 @@ import { getDefaultConfig } from "connectkit";
 import React from "react";
 import { sepolia as sepoliaEVM } from "viem/chains";
 import {
+  cookieStorage,
   createConfig,
+  createStorage,
   http,
   Config as WagmiConfig,
   WagmiProvider
@@ -38,6 +40,12 @@ export function defaultEasyleapConfig() {
           // RPC URL for each chain
           [sepoliaEVM.id]: http(`https://eth-sepolia.public.blastapi.io`)
         },
+
+        // Server Side Rendering
+        ssr: true,
+
+        // Enable persistence
+        storage: createStorage({ storage: cookieStorage }),
 
         // Required API Keys
         walletConnectProjectId: WALLET_CONNECT_DEFAULT_PROJECT_ID,
@@ -101,6 +109,7 @@ export function EasyleapProvider(
             provider={starknetConfig.provider}
             explorer={starknetConfig.explorer}
             connectors={starknetConfig?.connectors || []}
+            autoConnect
           >
             {props.children}
             <Toaster />

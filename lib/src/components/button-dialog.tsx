@@ -9,6 +9,7 @@ import {
   useConnect as useConnectWagmi,
   useDisconnect as useDisconnectWagmi
 } from "wagmi";
+import { getAccount } from "@wagmi/core";
 
 import { Icons } from "@lib/components/Icons";
 import {
@@ -34,7 +35,7 @@ import { ScrollArea } from "@lib/components/ui/scroll-area";
 import { InteractionMode, useSharedState } from "@lib/contexts/SharedState";
 import { useTheme } from "@lib/contexts/ThemeContext";
 import { toast, useToast } from "@lib/hooks/use-toast";
-import { useAccount } from "@lib/hooks/useAccount";
+import { useAccount, evmConfig } from "@lib/hooks/useAccount";
 import { useMode } from "@lib/hooks/useMode";
 import { cn, shortAddress } from "@lib/utils";
 
@@ -58,6 +59,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
   const { dismiss } = useToast();
 
   const { connector } = useConnectSN();
+  const { connector: connectorEVM } = getAccount(evmConfig);
 
   const theme = useTheme();
 
@@ -66,27 +68,30 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
     { Icon: React.ElementType; size?: string }
   > = {
     // Starknet wallets
-    braavos: { Icon: Icons.braavos, size: "size-12" },
-    argentX: { Icon: Icons.argentX, size: "size-12" },
-    argentWebWallet: { Icon: MailIcon, size: "size-12" },
-    keplr: { Icon: Icons.keplr, size: "size-12" },
-    "argent-mobile": { Icon: Icons.argentMobile, size: "size-12" },
+    braavos: { Icon: Icons.braavos, size: "easyleap-size-5" },
+    argentX: { Icon: Icons.argentX, size: "easyleap-size-5" },
+    argentWebWallet: { Icon: MailIcon, size: "easyleap-size-5" },
+    keplr: { Icon: Icons.keplr, size: "easyleap-size-5" },
+    "argent-mobile": { Icon: Icons.argentMobile, size: "easyleap-size-5" },
 
     // EVM wallets
-    metamask: { Icon: Icons.metamask, size: "size-16" },
-    "coinbase wallet": { Icon: Icons.coinbase, size: "size-6" },
-    subwallet: { Icon: Icons.subwallet, size: "size-16" },
-    trust: { Icon: Icons.trust, size: "size-12" },
-    rainbow: { Icon: Icons.rainbow, size: "size-16" },
-    phantom: { Icon: Icons.phantom, size: "size-16" },
-    walletconnect: { Icon: Icons.wallet, size: "size-16" }
+    metamask: { Icon: Icons.metamask, size: "easyleap-size-5" },
+    "coinbase wallet": { Icon: Icons.coinbase, size: "easyleap-size-5" },
+    subwallet: { Icon: Icons.subwallet, size: "easyleap-size-5" },
+    trust: { Icon: Icons.trust, size: "easyleap-size-5" },
+    rainbow: { Icon: Icons.rainbow, size: "easyleap-size-5" },
+    phantom: { Icon: Icons.phantom, size: "easyleap-size-5" },
+    walletconnect: { Icon: Icons.wallet, size: "easyleap-size-5" }
   };
 
   const getWalletIcon = (walletId: string) => {
     const wallet = walletIconMap[walletId];
 
     return wallet ? (
-      <wallet.Icon key={walletId} className={wallet.size || "size-3"} />
+      <wallet.Icon
+        key={walletId}
+        className={wallet.size || "easyleap-size-5"}
+      />
     ) : null;
   };
 
@@ -113,7 +118,6 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                   });
                 connect({ connector });
                 onConnectEVM?.();
-                localStorage.setItem("STARKPULL_WALLET_EVM", connector.name);
               }}
               className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between easyleap-text-xs"
             >
@@ -222,16 +226,13 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
     }
   }, [addressSource, addressDestination, mode]);
 
-  const connectedEvmWalletName = localStorage.getItem("STARKPULL_WALLET_EVM");
-
   return (
     <div
       className={cn(
         "easyleap-w-full easyleap-z-10 easyleap-flex easyleap-items-center easyleap-gap-4 md:easyleap-flex-row easyleap-rounded-[50px]",
         {
-          "easyleap-bg-white easyleap-px-2 easyleap-py-1":
-            addressSource || addressDestination,
-          "easyleap-px-4": mode === InteractionMode.Bridge
+          "easyleap-bg-white easyleap-px-2 easyleap-pt-1.5 easyleap-pb-1":
+            addressSource || addressDestination
         }
       )}
       style={{
@@ -247,7 +248,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
         open={sharedState.connectWalletModalOpen}
         onOpenChange={sharedState.setConnectWalletModalOpen}
       >
-        <div className="easyleap-w-full easyleap-flex easyleap-items-center md:easyleap-flex-row">
+        <div className="easyleap-w-full easyleap-flex md:easyleap-flex-row">
           <DialogTrigger asChild>
             <div className="easyleap-w-full easyleap-font-firaCode">
               {!addressSource && !addressDestination && (
@@ -295,7 +296,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
               {mode == InteractionMode.Bridge && (
                 <div
                   className={cn(
-                    "easyleap-mx-auto easyleap-flex easyleap-w-fit easyleap-cursor-pointer easyleap-items-center easyleap-justify-center easyleap--space-x-[2.6rem]",
+                    "easyleap-mx-auto easyleap-px-1 easyleap-flex easyleap-cursor-pointer easyleap-items-center easyleap-justify-center easyleap--space-x-[3rem]",
                     className
                   )}
                 >
@@ -307,11 +308,12 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                       border: theme?.bridgeMode?.evmButton?.border,
                       borderRadius: theme?.bridgeMode?.evmButton?.borderRadius
                     }}
-                    className="easyleap-z-20 easyleap-flex easyleap-w-fit easyleap-scale-110 easyleap-items-center easyleap-justify-start easyleap-gap-3 easyleap-rounded-[50px] hover:easyleap-bg-[#1B182B] easyleap-text-white easyleap-border-[1.5px] easyleap-border-[#DBDBDB]/60"
+                    className="easyleap-z-20 easyleap-flex easyleap-scale-105 easyleap-items-center easyleap-justify-start easyleap-gap-3 easyleap-rounded-[50px] hover:easyleap-bg-[#1B182B] easyleap-text-white easyleap-border-[1.5px] easyleap-border-[#DBDBDB]/60"
                   >
                     <span className="easyleap-rounded-full easyleap-bg-white easyleap-p-1">
-                      {connectedEvmWalletName &&
-                        getWalletIcon(connectedEvmWalletName.toLowerCase())}
+                      {getWalletIcon(
+                        connectorEVM?.name.toLocaleLowerCase() ?? "metamask"
+                      )}
                     </span>
                     {shortAddress(addressSource, 4, 4)}
                   </Button>
@@ -441,14 +443,15 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
               ) : (
                 <div className="easyleap-mt-7 easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-2">
                   <p className="easyleap-text-xs easyleap-font-medium easyleap-text-[#8E8E8E]">
-                    Connected to {connectedEvmWalletName}
+                    Connected to {connectorEVM?.name}
                   </p>
 
                   <Button className="easyleap-flex easyleap-w-[98.2%] easyleap-items-center easyleap-rounded-xl easyleap-font-firaCode easyleap-font-semibold easyleap-text-white easyleap-w-full easyleap-justify-between [&_svg]:easyleap-pointer-events-auto easyleap-bg-black hover:easyleap-bg-[#2F2F2F] easyleap-shadow-md easyleap-shadow-gray-500">
                     <div className="easyleap-flex easyleap-items-center easyleap-justify-start easyleap-gap-3">
                       <span className="easyleap-flex easyleap-items-center easyleap-justify-start easyleap-gap-3">
-                        {connectedEvmWalletName &&
-                          getWalletIcon(connectedEvmWalletName.toLowerCase())}
+                        {getWalletIcon(
+                          connectorEVM?.name.toLocaleLowerCase() ?? "metamask"
+                        )}
                       </span>
                       {shortAddress(addressSource, 14, 14)}
                     </div>
@@ -504,11 +507,13 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
               )}
 
               {sharedState.isSuccessEVM &&
-                getDestinationTxn(sharedState.sourceTransactions[0]).status ===
-                  "" && (
+                getDestinationTxn(sharedState.sourceTransactions[0]).status !==
+                  "pending" &&
+                getDestinationTxn(sharedState.sourceTransactions[0]).status !==
+                  "confirmed" && (
                   <div
                     className={cn("easyleap-rounded-full", {
-                      "easyleap-animate-pulse easyleap-bg-green-500 easyleap-p-px":
+                      "easyleap-animate-pulse easyleap-bg-green-500 easyleap-p-2":
                         sharedState.isSuccessEVM
                     })}
                   >

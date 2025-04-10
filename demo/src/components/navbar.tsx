@@ -32,7 +32,6 @@ const Navbar: React.FC = () => {
         <ConnectButton
           style={{
             buttonStyles: {
-              // backgroundColor: "transparent",
               background: "transparent"
             }
           }}

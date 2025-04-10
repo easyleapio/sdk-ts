@@ -61,13 +61,17 @@ const SharedStateContext = React.createContext({
   setChains: () => {},
   reviewModalProps: {
     isOpen: false,
+    needsApproval: false,
+    isApprovalPending: false,
+    isApprovalSuccess: false,
     tokensIn: [],
     tokensOut: [],
     destinationDapp: {
       name: "",
       logo: ""
     },
-    onContinue: () => {}
+    onContinue: () => {},
+    onApprove: () => {}
   },
   setReviewModalProps: () => {},
   connectWalletModalOpen: false,
@@ -105,14 +109,26 @@ export const SharedStateProvider = ({
   const [reviewModalProps, setReviewModalProps] =
     React.useState<ReviewModalProps>({
       isOpen: false,
+      needsApproval: false,
+      isApprovalPending: false,
+      isApprovalSuccess: false,
       tokensIn: [],
       tokensOut: [],
       destinationDapp: {
         name: "",
         logo: ""
       },
-      onContinue: () => {}
+      onContinue: () => {},
+      onApprove: () => {}
     });
+
+  const memoizedSetReviewModalProps = React.useCallback(
+    (value: ReviewModalProps) => {
+      console.log("Setting review modal props:", value);
+      setReviewModalProps(value);
+    },
+    []
+  );
 
   const [connectWalletModalOpen, setConnectWalletModalOpen] =
     React.useState(false);
@@ -149,7 +165,7 @@ export const SharedStateProvider = ({
         mode,
         chains,
         reviewModalProps,
-        setReviewModalProps,
+        setReviewModalProps: memoizedSetReviewModalProps,
         setChains,
         setMode,
         isModeSwitchedManually,

@@ -663,8 +663,8 @@ export const Icons = {
   starknetLogo: (props: LucideProps) => (
     <svg
       {...props}
-      width="18"
-      height="18"
+      width="50"
+      height="50"
       viewBox="0 0 18 18"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -1002,8 +1002,8 @@ export const Icons = {
   argentX: (props: LucideProps) => (
     <svg
       {...props}
-      width="28"
-      height="28"
+      width="18"
+      height="18"
       viewBox="0 0 28 28"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
