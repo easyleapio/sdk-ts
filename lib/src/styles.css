@@ -3,3 +3,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --inner-theme-bg: #ffffff;
+  --inner-theme-hover-background: #dddddd;
+
+  --inner-theme-active-border: black;
+  --inner-theme-inactive-border: #dddddd;
+
+  --inner-theme-text-color: black;
+  --inner-theme-active-text-color: black;
+}
+
+.my-button {
+  @apply easyleap-rounded-full easyleap-bg-[var(--inner-theme-bg)] hover:easyleap-bg-[var(--inner-theme-hover-background)] easyleap-border easyleap-border-[var(--inner-theme-inactive-border)] easyleap-text-[var(--inner-theme-text-color)]
+}
+
+.my-active-button {
+  @apply easyleap-bg-[var(--inner-theme-bg)] hover:easyleap-bg-[var(--inner-theme-hover-background)] easyleap-border easyleap-border-[var(--inner-theme-active-border)] easyleap-text-[var(--inner-theme-active-text-color)] easyleap-rounded-full
+}
+
+.inner-theme-text {
+  @apply easyleap-text-[var(--inner-theme-text-color)]
+}

@@ -26,7 +26,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "easyleap-bg-[#1A1A1A] easyleap-text-[#FAFAFA] easyleap-shadow hover:easyleap-bg-[#1A1A1A]/90",
+          "my-active-button",
         destructive:
           "easyleap-bg-[#EF4444] easyleap-text-[#FAFAFA] easyleap-shadow-sm hover:easyleap-bg-[#EF4444]/90",
         outline:

@@ -1,6 +1,8 @@
+import { useIsMobile } from "./ui/use-mobile";
 import VesuDeposit from "./vesu-deposit";
 
 export const DemoSection: React.FC = () => {
+  const isMobile = useIsMobile();
   return (
     <div
       className="flex h-full min-h-screen w-full flex-col items-center justify-between gap-5 md:flex-row"
@@ -18,11 +20,11 @@ export const DemoSection: React.FC = () => {
             <br className="hidden md:block" />
             starknet-react and easy to integrate
           </p>
-          <img
+          {!isMobile && <img
             src="/strk-laid-coin.svg"
             className="pointer-events-none absolute -bottom-[10rem] left-1/2 z-0 -translate-x-1/2 select-none md:-bottom-[12rem]"
             alt="coins"
-          />
+          />}
         </h1>
       </div>
 

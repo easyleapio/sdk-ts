@@ -78,7 +78,7 @@ export function ReviewModal() {
       <DialogTrigger className=""></DialogTrigger>
 
       <DialogContent
-        className="easyleap-max-h-[100vh] easyleap-overflow-y-auto easyleap-overflow-x-hidden easyleap-border easyleap-border-[#675E99] easyleap-bg-white easyleap-font-dmSans easyleap-sm:easyleap-max-w-[425px] easyleap-lg:easyleap-max-h-none"
+        className="easyleap-max-h-[100vh] easyleap-overflow-y-auto easyleap-overflow-x-hidden easyleap-border easyleap-border-[#675E99] easyleap-bg-white easyleap-font-dmSans easyleap-sm:easyleap-max-w-screen easyleap-lg:easyleap-max-h-none"
         closeClassName="text-[#B9AFF1]"
         onClickClose={() => {
           context.setReviewModalProps({

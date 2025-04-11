@@ -7,6 +7,7 @@ import {
 } from "@lib/components/ui/tooltip";
 import { useTheme } from "@lib/contexts/ThemeContext";
 import { InteractionMode, useSharedState } from "@lib/hooks";
+import { useIsMobile } from "@lib/hooks/use-mobile";
 import { toast } from "@lib/hooks/use-toast";
 import { useAccount } from "@lib/hooks/useAccount";
 import { useMode } from "@lib/hooks/useMode";
@@ -20,13 +21,12 @@ export const ModeSwitcher: React.FC<ModeSwitcherProps> = ({ className }) => {
   const { addressDestination, addressSource } = useAccount();
 
   const sharedState = useSharedState();
-
   const mode = useMode();
-
   const theme = useTheme();
+  const isMobile = useIsMobile();
 
   return (
-    <div>
+    <div className="easylea-items-center easyleap-flex">
       {(addressDestination || addressSource) && (
         <TooltipProvider delayDuration={0}>
           <Tooltip>
@@ -46,8 +46,9 @@ export const ModeSwitcher: React.FC<ModeSwitcherProps> = ({ className }) => {
                   sharedState.setModeSwitchedManually(true);
                 }}
                 className={cn(
-                  "easyleap-w-28 easyleap-font-firaCode easyleap-ml-4 easyleap-border-[1.5px] easyleap-border-[#DBDBDB]/60",
-                  className
+                  "easyleap-font-firaCode easyleap-border-[1.5px] easyleap-border-[#DBDBDB]/60",
+                  className,
+                  isMobile ? "easyleap-w-16" : "easyleap-w-28"
                 )}
                 style={{
                   border:
@@ -65,7 +66,7 @@ export const ModeSwitcher: React.FC<ModeSwitcherProps> = ({ className }) => {
                 }}
               />
             </TooltipTrigger>
-            <TooltipContent className="easyleap-mr-5 easyleap-mt-2 easyleap-max-w-[20rem] easyleap-border easyleap-border-[#211d31] easyleap-bg-[#b5abdf] easyleap-px-4 easyleap-py-2 easyleap-text-[#211d31]">
+            <TooltipContent className="easyleap-mr-5 easyleap-mt-2 easyleap-max-w-[20rem] easyleap-border easyleap-bg-[white] easyleap-px-4 easyleap-py-2 easyleap-text-[black]">
               <p>
                 Switch to Bridge mode to deposit directly from ETH Mainnet into
                 your starknet wallet in a single step.

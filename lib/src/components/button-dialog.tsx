@@ -37,9 +37,10 @@ import { useTheme } from "@lib/contexts/ThemeContext";
 import { toast, useToast } from "@lib/hooks/use-toast";
 import { useAccount, evmConfig } from "@lib/hooks/useAccount";
 import { useMode } from "@lib/hooks/useMode";
-import { cn, shortAddress } from "@lib/utils";
+import { cn, EASYLEAP_EXPLORER, shortAddress, standariseAddress } from "@lib/utils";
 
 import { ModeSwitcher, type ConnectButtonProps } from ".";
+import { useSupportedTokens } from "@lib/hooks/useSupportedTokens";
 
 export const ButtonDialog: React.FC<ConnectButtonProps> = ({
   onConnectStarknet,
@@ -63,13 +64,20 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
 
   const theme = useTheme();
 
+  const supportedTokens = useSupportedTokens();
+  
+  function getTokenInfo(l2Addr: string) {
+    const tokenInfo = supportedTokens.find((token) => standariseAddress(token.l2_token_address) == standariseAddress(l2Addr));
+    return tokenInfo?.symbol || "Unknown";
+  }
+
   const walletIconMap: Record<
     string,
     { Icon: React.ElementType; size?: string }
   > = {
     // Starknet wallets
     braavos: { Icon: Icons.braavos, size: "easyleap-size-5" },
-    argentX: { Icon: Icons.argentX, size: "easyleap-size-5" },
+    argentX: { Icon: Icons.argentX, size: "easyleap-size-15" },
     argentWebWallet: { Icon: MailIcon, size: "easyleap-size-5" },
     keplr: { Icon: Icons.keplr, size: "easyleap-size-5" },
     "argent-mobile": { Icon: Icons.argentMobile, size: "easyleap-size-5" },
@@ -104,31 +112,27 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
     );
 
     return (
-      <ul className="easyleap-space-y-2">
+      <div className="easyleap-space-y-2">
         {uniqueConnectors.map((connector) => (
-          <li
-            key={connector.uid}
-            className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-rounded-xl easyleap-border-[1.5px] easyleap-border-[#DBDBDB] easyleap-px-3 easyleap-py-1.5"
+          <button
+            onClick={() => {
+              if (!addressDestination)
+                return toast({
+                  title: "Connect Starknet wallet first",
+                  duration: 3000
+                });
+              connect({ connector });
+              onConnectEVM?.();
+            }}
+            className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between easyleap-text-xs easyleap-px-[15px] easyleap-py-[5px] my-button"
           >
-            <button
-              onClick={() => {
-                if (!addressDestination)
-                  return toast({
-                    title: "Connect Starknet wallet first"
-                  });
-                connect({ connector });
-                onConnectEVM?.();
-              }}
-              className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between easyleap-text-xs"
-            >
-              {connector.name}
-              <span className="easyleap-rounded-full easyleap-border easyleap-border-[#DBDBDB] easyleap-p-1">
-                {getWalletIcon(connector.name.toLowerCase())}
-              </span>
-            </button>
-          </li>
+            {connector.name}
+            <span className="easyleap-rounded-full easyleap-border easyleap-border-[#DBDBDB] easyleap-p-1">
+              {getWalletIcon(connector.name.toLowerCase())}
+            </span>
+          </button>
         ))}
-      </ul>
+      </div>
     );
   }
 
@@ -141,35 +145,28 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
     );
 
     return (
-      <ul className="easyleap-space-y-2.5">
+      <div className="easyleap-space-y-2.5">
         {uniqueConnectors.map((connector) => (
-          <li
+          <button
             key={connector.id}
-            className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-rounded-xl easyleap-border-[1.5px] easyleap-border-[#DBDBDB] easyleap-px-3 easyleap-py-1.5 easyleap-text-sm easyleap-text-[#2F2F2F] hover:easyleap-bg-[#E8E8E8]"
+            onClick={() => {
+              connect({ connector });
+              onConnectStarknet?.();
+            }}
+            className={"easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between easyleap-px-[15px] easyleap-py-[5px] my-button"}
           >
-            <button
-              onClick={() => {
-                connect({ connector });
-                onConnectStarknet?.();
-              }}
-              className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between"
+            {connector.name}
+            <div
+              className={cn(
+                "easyleap-rounded-full easyleap-border-2 easyleap-border-[#F4F4F4] easyleap-bg-transparent",
+                "easyleap-p-1.5"
+              )}
             >
-              {connector.name}
-              <div
-                className={cn(
-                  "easyleap-rounded-full easyleap-border-2 easyleap-border-[#F4F4F4] easyleap-bg-transparent",
-                  {
-                    "easyleap-p-1.5": connector.id !== "argentX",
-                    "easyleap-p-0": connector.id === "argentX"
-                  }
-                )}
-              >
-                {getWalletIcon(connector.id)}
-              </div>
-            </button>
-          </li>
+              {getWalletIcon(connector.id)}
+            </div>
+          </button>
         ))}
-      </ul>
+      </div>
     );
   }
 
@@ -203,7 +200,8 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
       toast({
         title: "Wallets Connected!",
         description:
-          "Starknet and EVM wallets are linked. move L1 funds to this dApp."
+          "Starknet and EVM wallets are linked. move L1 funds to this dApp.",
+          duration: 3000
       });
     }
 
@@ -215,7 +213,8 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
     if (mode === InteractionMode.Bridge) {
       dismiss();
       toast({
-        title: "Bridge mode is enabled"
+        title: "Bridge mode is enabled",
+        duration: 3000
       });
     } else {
       dismiss();
@@ -227,7 +226,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
       className={cn(
         "easyleap-w-full easyleap-z-10 easyleap-flex easyleap-items-center easyleap-gap-4 md:easyleap-flex-row easyleap-rounded-[50px]",
         {
-          "easyleap-bg-white easyleap-px-2 easyleap-pt-1.5 easyleap-pb-1":
+          "easyleap-bg-white easyleap-px-2 easyleap-pt-1 easyleap-pb-1":
             addressSource || addressDestination
         }
       )}
@@ -244,9 +243,9 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
         open={sharedState.connectWalletModalOpen}
         onOpenChange={sharedState.setConnectWalletModalOpen}
       >
-        <div className="easyleap-w-full easyleap-flex md:easyleap-flex-row">
+        <div className="easyleap-w-full easyleap-flex md:easyleap-flex-row gap-2">
           <DialogTrigger asChild>
-            <div className="easyleap-w-full easyleap-font-firaCode">
+            <div className="easyleap-w-full easyleap-font-firaCode easylea-items-center easyleap-flex">
               {!addressSource && !addressDestination && (
                 <Button
                   variant="outline"
@@ -260,7 +259,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                     ...style?.buttonStyles
                   }}
                   className={cn(
-                    "easyleap-rounded-[50px] easyleap-text-center easyleap-text-white",
+                    "easyleap-rounded-[50px] easyleap-text-center easyleap-text-white easyleap-h-full",
                     className
                   )}
                 >
@@ -282,10 +281,10 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                     className
                   )}
                 >
-                  <span className="easyleap-rounded-full easyleap-bg-[#fff] easyleap-p-1">
+                  <span className="easyleap-rounded-full easyleap-bg-[#fff] easyleap-p-1 easyleap--ml-[15px]">
                     {getWalletIcon(connector?.id ?? "braavos")}
                   </span>
-                  {shortAddress(addressDestination || "", 8, 8)}
+                  {shortAddress(addressDestination || "", 4, 4)}
                 </Button>
               )}
 
@@ -306,7 +305,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                     }}
                     className="easyleap-z-20 easyleap-flex easyleap-scale-105 easyleap-items-center easyleap-justify-start easyleap-gap-3 easyleap-rounded-[50px] hover:easyleap-bg-[#1B182B] easyleap-text-white easyleap-border-[1.5px] easyleap-border-[#DBDBDB]/60"
                   >
-                    <span className="easyleap-rounded-full easyleap-bg-white easyleap-p-1">
+                    <span className="easyleap-rounded-full easyleap-bg-white easyleap-p-1 easyleap--ml-[15px]">
                       {getWalletIcon(
                         connectorEVM?.name.toLocaleLowerCase() ?? "metamask"
                       )}
@@ -329,7 +328,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                     )}
                   >
                     {shortAddress(addressDestination, 4, 4)}
-                    <span className="easyleap-rounded-full easyleap-bg-[#fff] easyleap-p-1">
+                    <span className="easyleap-rounded-full easyleap-bg-[#fff] easyleap-p-1 easyleap--mr-[13px]">
                       {getWalletIcon(connector?.id ?? "braavos")}
                     </span>
                   </Button>
@@ -339,10 +338,357 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
           </DialogTrigger>
 
           <ModeSwitcher />
+
+          {(addressDestination || addressDestination) && (
+            <Popover
+              open={sharedState.isTxnPopoverOpen}
+              onOpenChange={sharedState.setIsTxnPopoverOpen}
+            >
+              <PopoverTrigger className="easyleap-relative">
+                <>
+                  {getPendingTxnCount() > 0 && (
+                    <div className="easyleap-absolute easyleap--right-0 easyleap--top-1.5 easyleap-flex easyleap-size-4 easyleap-items-center easyleap-justify-center easyleap-rounded-full easyleap-bg-red-500 easyleap-p-1 easyleap-text-[9px] easyleap-font-semibold easyleap-text-white">
+                      {getPendingTxnCount()}
+                    </div>
+                  )}
+
+                  {!sharedState.isSuccessEVM && (
+                    <div
+                      style={{
+                        backgroundColor:
+                          mode === InteractionMode.Starknet
+                            ? theme?.starknetMode?.historyButton?.backgroundColor
+                            : theme?.bridgeMode?.historyButton?.backgroundColor
+                      }}
+                      className="easyleap-rounded-full easyleap-p-2"
+                    >
+                      <Icons.historyIcon className="easyleap-shrink-0" />
+                    </div>
+                  )}
+
+                  {sharedState.isSuccessEVM &&
+                    getDestinationTxn(sharedState.sourceTransactions[0]).status !==
+                      "pending" &&
+                    getDestinationTxn(sharedState.sourceTransactions[0]).status !==
+                      "confirmed" && (
+                      <div
+                        className={cn("easyleap-rounded-full", {
+                          "easyleap-animate-pulse easyleap-bg-green-500 easyleap-p-2":
+                            sharedState.isSuccessEVM
+                        })}
+                      >
+                        <div className="easyleap-rounded-full easyleap-bg-[#35314F] easyleap-p-2">
+                          <Icons.historyIcon className="easyleap-shrink-0" />
+                        </div>
+                      </div>
+                    )}
+
+                  {sharedState.isSuccessEVM &&
+                    getDestinationTxn(sharedState.sourceTransactions[0]).status ===
+                      "pending" && (
+                      <div className="easyleap-rounded-full easyleap-bg-[#35314F] easyleap-p-2">
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M8.25 21.6399C6.25 20.8399 4.49999 19.3899 3.33999 17.3799C2.19999 15.4099 1.81999 13.2199 2.08999 11.1299"
+                            stroke="#1C182B"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M5.8501 4.47986C7.5501 3.14986 9.68009 2.35986 12.0001 2.35986C14.2701 2.35986 16.3601 3.12985 18.0401 4.40985"
+                            stroke="#B9AFF1"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M15.75 21.6399C17.75 20.8399 19.5 19.3899 20.66 17.3799C21.8 15.4099 22.18 13.2199 21.91 11.1299"
+                            stroke="#1C182B"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M8.25 21.6399C6.25 20.8399 4.49999 19.3899 3.33999 17.3799C2.19999 15.4099 1.81999 13.2199 2.08999 11.1299"
+                            stroke="#1C182B"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M5.8501 4.47986C7.5501 3.14986 9.68009 2.35986 12.0001 2.35986C14.2701 2.35986 16.3601 3.12985 18.0401 4.40985"
+                            stroke="#38EF7D"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M15.75 21.6399C17.75 20.8399 19.5 19.3899 20.66 17.3799C21.8 15.4099 22.18 13.2199 21.91 11.1299"
+                            stroke="#38EF7D"
+                            stroke-opacity="0.5"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M12 17C14.75 17 17 14.75 17 12C17 9.25 14.75 7 12 7C9.25 7 7 9.25 7 12C7 14.75 9.25 17 12 17Z"
+                            stroke="#1C182B"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M9.875 12L11.29 13.415L14.125 10.585"
+                            stroke="#1C182B"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                    )}
+
+                  {sharedState.isSuccessEVM &&
+                    getDestinationTxn(sharedState.sourceTransactions[0]).status ===
+                      "confirmed" && (
+                      <div className="easyleap-rounded-full easyleap-bg-[#35314F] easyleap-p-2">
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M8.25 21.6399C6.25 20.8399 4.49999 19.3899 3.33999 17.3799C2.19999 15.4099 1.81999 13.2199 2.08999 11.1299"
+                            stroke="#38EF7D"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M5.84961 4.47986C7.54961 3.14986 9.6796 2.35986 11.9996 2.35986C14.2696 2.35986 16.3596 3.12985 18.0396 4.40985"
+                            stroke="#38EF7D"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M15.75 21.6399C17.75 20.8399 19.5 19.3899 20.66 17.3799C21.8 15.4099 22.18 13.2199 21.91 11.1299"
+                            stroke="#38EF7D"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M12 17C14.75 17 17 14.75 17 12C17 9.25 14.75 7 12 7C9.25 7 7 9.25 7 12C7 14.75 9.25 17 12 17Z"
+                            stroke="#38EF7D"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M9.875 12L11.29 13.415L14.125 10.585"
+                            stroke="#38EF7D"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                    )}
+                </>
+              </PopoverTrigger>
+              <PopoverContent className="easyleap-mr-[5.37rem] easyleap-mt-4 easyleap-w-[484px] easyleap-max-w-[100vw] easyleap-border easyleap-border-[#675E99] easyleap-bg-white easyleap-px-8 easyleap-py-6 easyleap-font-dmSans">
+                <h4 className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between easyleap-text-lg easyleap-font-bold easyleap-text-black">
+                  Bridge transaction history
+                  <Icons.crossIcon
+                    className="easyleap-cursor-pointer"
+                    onClick={() => sharedState.setIsTxnPopoverOpen(false)}
+                  />
+                </h4>
+
+                <ScrollArea className="easyleap-mt-5 easyleap-h-[40vh]">
+                  <Accordion type="single" collapsible>
+                    {sharedState.sourceTransactions.map((txn: any, i: any) => (
+                      <AccordionItem
+                        key={i}
+                        value={`txn-${i + 1}`}
+                        className="easyleap-mt-2 easyleap-rounded-xl easyleap-border-0 easyleap-bg-[#E6E6E6] easyleap-px-4 easyleap-py-2 easyleap-text-[#B9AFF1]"
+                      >
+                        <AccordionTrigger
+                          className="easyleap-w-full easyleap-items-start easyleap-px-2.5 easyleap-py-1 hover:easyleap-no-underline"
+                          customChevron={
+                            <Icons.chevronIcon className="easyleap-size-5" />
+                          }
+                        >
+                          <div className="easyleap-flex easyleap-w-full easyleap-flex-col easyleap-items-center easyleap-gap-6">
+                            <div className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-gap-8">
+                              <div className="easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-0.5">
+                                <p className="easyleap-flex easyleap-items-center easyleap-gap-1 easyleap-text-base easyleap-text-black">
+                                  <Icons.ethereumLogo className="easyleap-size-5 easyleap-shrink-0" />
+                                  Ethereum
+                                </p>
+                                <span className="easyleap-text-xs easyleap-text-black/60">
+                                  Sepolia
+                                </span>
+                              </div>
+
+                              <Icons.arrowRight className="!easyleap-rotate-0" />
+
+                              <div className="easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-0.5">
+                                <p className="easyleap-flex easyleap-items-center easyleap-gap-1 easyleap-text-base easyleap-text-black">
+                                  <Icons.starknetLogo className="easyleap-size-5 easyleap-shrink-0" />
+                                  Starknet
+                                </p>
+                                <span className="easyleap-text-xs easyleap-text-black/60">
+                                  Sepolia
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between easyleap-text-xs easyleap-text-black/60">
+                              {format(
+                                new Date(txn?.timestamp * 1000),
+                                "dd MMM, yyyy h:mm a"
+                              )}
+
+                              <div className="easyleap--mr-5 easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-flex-wrap">
+                                <div>#{txn.request_id}</div>
+                                {getDestinationTxn(txn)?.status === "pending" && <div className="font-bold easyleap-text-nowrap easyleap-rounded-full easyleap-bg-[white] easyleap-p-1 easyleap-px-2 easyleap-text-[10px] easyleap-text-black/60">
+                                  Pending
+                                </div>}
+                                {getDestinationTxn(txn)?.status === "confirmed" && <div className="font-bold easyleap-text-nowrap easyleap-rounded-full easyleap-bg-[#38EF7D80] easyleap-p-1 easyleap-px-2 easyleap-text-[10px] easyleap-text-[#000]">
+                                  Success
+                                </div>}
+                                {getDestinationTxn(txn)?.status === "failed" && <div className="font-bold easyleap-text-nowrap easyleap-rounded-full easyleap-bg-[#ef383880] easyleap-p-1 easyleap-px-2 easyleap-text-[10px] easyleap-text-[#000]">
+                                  Refunded
+                                </div>}
+                                <a
+                                  href={EASYLEAP_EXPLORER}
+                                  target="_blank"
+                                  className="easyleap-rounded-3xl easyleap-bg-[#35314F] easyleap-p-1"
+                                >
+                                  <Icons.externalLinkIcon className="easyleap-size-4" />
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </AccordionTrigger>
+
+                        <AccordionContent className="easyleap-mx-5 easyleap-mt-4 easyleap-border-t easyleap-border-[#675E9933]">
+                          <div className="easyleap-mt-5 easyleap-flex easyleap-items-center easyleap-justify-start easyleap-gap-3">
+                            <div className="easyleap-flex easyleap-flex-col easyleap-items-center easyleap-justify-center easyleap-gap-3">
+                              {txn?.status === "pending" && (
+                                <Loader2 className="easyleap-size-6 easyleap-animate-spin" />
+                              )}
+                              {txn?.status === "confirmed" && (
+                                <Icons.checkIcon className="easyleap-size-6" />
+                              )}
+
+                              {getDestinationTxn(txn)?.status === "pending" && (
+                                <>
+                                  <div className="easyleap-h-6 easyleap-w-px easyleap-rounded-full easyleap-bg-[#675E9933]" />
+                                  <Loader2 className="easyleap-size-6 easyleap-animate-spin" />
+                                  <div className="easyleap-h-6 easyleap-w-px easyleap-rounded-full easyleap-bg-[#675E9933]" />
+                                  <Loader2 className="easyleap-size-6 easyleap-animate-spin" />
+                                </>
+                              )}
+
+                              {getDestinationTxn(txn)?.status === "confirmed" && (
+                                <>
+                                  <div className="easyleap-h-6 easyleap-w-px easyleap-rounded-full easyleap-bg-[#675E9933]" />
+                                  <Icons.checkIcon className="easyleap-size-6" />
+                                  <div className="easyleap-h-6 easyleap-w-px easyleap-rounded-full easyleap-bg-[#675E9933]" />
+                                  <Icons.checkIcon className="easyleap-size-6" />
+                                </>
+                              )}
+                            </div>
+
+                            <div className="easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-6">
+                              <a
+                                href={`https://sepolia.etherscan.io/tx/${txn?.txHash}`}
+                                target="_blank"
+                                className="easyleap-group easyleap-flex easyleap-cursor-pointer easyleap-flex-col easyleap-items-start easyleap-gap-1"
+                              >
+                                <p
+                                  className={cn(
+                                    "easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-base easyleap-text-[#B9AFF1]",
+                                    {
+                                      "easyleap-font-bold easyleap-text-black":
+                                        txn?.status === "confirmed"
+                                    }
+                                  )}
+                                >
+                                  Initiated transfer from EVM wallet{" "}
+                                </p>
+                                <span className="easyleap-text-xs easyleap-text-black/60">
+                                  The deposit was submitted on Ethereum.
+                                </span>
+                              </a>
+
+                              <div className="easyleap-group easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-1">
+                                <p
+                                  className={cn(
+                                    "easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-base easyleap-text-black",
+                                    {
+                                      "easyleap-font-bold easyleap-text-black":
+                                        getDestinationTxn(txn)?.status ===
+                                        "confirmed"
+                                    }
+                                  )}
+                                >
+                                  Bridging to Starknet
+                                </p>
+                                <span className="easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-xs easyleap-text-black/60">
+                                  Bridged {(txn?.amount_raw / 10 ** 18).toFixed(5)} {getTokenInfo(getDestinationTxn(txn)?.token)} 
+                                  <Icons.ethereumLogo className="easyleap-size-4" />
+                                </span>
+                              </div>
+
+                              <a
+                                href={`https://sepolia.voyager.online/tx/${getDestinationTxn(txn)?.txHash}`}
+                                target="_blank"
+                                className="easyleap-group easyleap-mt-2 easyleap-flex easyleap-cursor-pointer easyleap-flex-col easyleap-items-start easyleap-gap-1"
+                              >
+                                <p
+                                  className={cn(
+                                    "easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-base easyleap-text-black",
+                                    {
+                                      "easyleap-font-bold easyleap-text-black":
+                                        getDestinationTxn(txn)?.status ===
+                                        "confirmed"
+                                    }
+                                  )}
+                                >
+                                  Deposited
+                                </p>
+                              </a>
+                            </div>
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+
+                    {sharedState.sourceTransactions.length === 0 && (
+                      <div className="easyleap-flex easyleap-h-40 easyleap-w-full easyleap-items-center easyleap-justify-center">
+                        <p className="easyleap-text-[#B9AFF1]">
+                          No transactions yet
+                        </p>
+                      </div>
+                    )}
+                  </Accordion>
+                </ScrollArea>
+              </PopoverContent>
+            </Popover>
+          )}
         </div>
 
         <DialogContent
-          className="easyleap-max-h-[100vh] easyleap-overflow-y-auto easyleap-overflow-x-hidden easyleap-bg-white easyleap-p-2 easyleap-font-dmSans md:easyleap-p-6 lg:easyleap-max-h-none"
+          className="easyleap-max-h-[100vh] easyleap-max-w-[300px] easyleap-bg-white easyleap-p-2 easyleap-font-dmSans md:easyleap-p-6 lg:easyleap-max-h-none"
           closeClassName="easyleap-text-[#B9AFF1]"
         >
           <DialogHeader>
@@ -364,7 +710,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                   <p className="easyleap-text-xs easyleap-font-medium easyleap-text-[#8E8E8E]">
                     Connected to {connector?.name}
                   </p>
-                  <Button className="easyleap-flex easyleap-w-[98.2%] easyleap-items-center !easyleap-rounded-xl easyleap-font-firaCode easyleap-font-semibold easyleap-text-white easyleap-w-full easyleap-justify-between [&_svg]:easyleap-pointer-events-auto easyleap-bg-black hover:easyleap-bg-[#2F2F2F] easyleap-shadow-md easyleap-shadow-gray-500">
+                  <Button className="easyleap-flex easyleap-w-[98.2%] easyleap-items-center easyleap-font-firaCode easyleap-font-semibold easyleap-w-full easyleap-justify-between [&_svg]:easyleap-pointer-events-auto my-active-button">
                     <div className="easyleap-flex easyleap-items-center easyleap-justify-start easyleap-gap-3">
                       <span
                         className={cn("easyleap-rounded-full easyleap-p-1", {
@@ -373,11 +719,11 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                       >
                         {getWalletIcon(connector?.id ?? "braavos")}
                       </span>
-                      {shortAddress(addressDestination, 14, 14)}
+                      {shortAddress(addressDestination, 8, 8)}
                     </div>
 
                     <X
-                      className="easyleap-size-4 easyleap-text-white"
+                      className="easyleap-size-4 inner-theme-text"
                       onClick={() => {
                         disconnectSN();
                         disconnectWagmi();
@@ -394,9 +740,8 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
               <h5 className="easyleap-text-center easyleap-text-base easyleap-font-medium easyleap-text-[#2F2F2F]">
                 Optional
               </h5>
-              <p className="easyleap-mt-1 easyleap-text-center easyleap-text-sm easyleap-font-normal easyleap-text-[#8E8E8E]">
-                Link your EVM wallet to transfer L1 tokens seamlessly <br />{" "}
-                into the DApp!
+              <p className="easyleap-mt-1 easyleap-text-center easyleap-text-sm easyleap-font-normal easyleap-text-[#8E8E8E] wrap-anywhere">
+                Link your EVM wallet to transfer L1 tokens seamlessly into the DApp!
               </p>
 
               {!addressSource ? (
@@ -407,11 +752,11 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                 >
                   <AccordionItem
                     value="evm-wallets"
-                    className="easyleap-mt-2 easyleap-rounded-xl easyleap-border-[1.5px] easyleap-border-[#DBDBDB] easyleap-bg-transparent easyleap-px-4 easyleap-py-2 easyleap-text-[#B1B1B1] hover:easyleap-bg-[#E8E8E8] hover:easyleap-text-[#2f2f2f]"
+                    className="easyleap-mt-2 easyleap-rounded-xl easyleap-border-[1.5px] easyleap-border-[#DBDBDB] easyleap-bg-transparent easyleap-pt-2 easyleap-text-[#B1B1B1] hover:easyleap-bg-[#E8E8E8] hover:easyleap-text-[#2f2f2f]"
                   >
                     <AccordionTrigger
                       hideChevron
-                      className="easyleap-w-full easyleap-py-0"
+                      className="easyleap-w-full easyleap-py-0 easyleap-px-4 easyleap-pb-2"
                     >
                       <div className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between easyleap-text-[#2f2f2f]">
                         EVM Wallets
@@ -431,7 +776,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                         </div>
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className="easyleap-mt-5 easyleap-pb-0">
+                    <AccordionContent className="easyleap-pt-2 easyleap-pb-0 easyleap-px-4 easyleap-bg-white">
                       <EVMWalletOptions />
                     </AccordionContent>
                   </AccordionItem>
@@ -442,18 +787,18 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                     Connected to {connectorEVM?.name}
                   </p>
 
-                  <Button className="easyleap-flex easyleap-w-[98.2%] easyleap-items-center easyleap-rounded-xl easyleap-font-firaCode easyleap-font-semibold easyleap-text-white easyleap-w-full easyleap-justify-between [&_svg]:easyleap-pointer-events-auto easyleap-bg-black hover:easyleap-bg-[#2F2F2F] easyleap-shadow-md easyleap-shadow-gray-500">
+                  <Button className="easyleap-flex easyleap-w-[98.2%] easyleap-items-center easyleap-font-firaCode easyleap-font-semibold easyleap-w-full easyleap-justify-between [&_svg]:easyleap-pointer-events-auto my-active-button">
                     <div className="easyleap-flex easyleap-items-center easyleap-justify-start easyleap-gap-3">
                       <span className="easyleap-flex easyleap-items-center easyleap-justify-start easyleap-gap-3">
                         {getWalletIcon(
                           connectorEVM?.name.toLocaleLowerCase() ?? "metamask"
                         )}
                       </span>
-                      {shortAddress(addressSource, 14, 14)}
+                      {shortAddress(addressSource, 8, 8)}
                     </div>
 
                     <X
-                      className="easyleap-size-4 easyleap-text-white"
+                      className="easyleap-size-4 inner-theme-text"
                       onClick={() => {
                         disconnectWagmi();
                         onDisconnectEVM?.();
@@ -465,7 +810,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
 
               {(addressSource || addressDestination) && (
                 <DialogTrigger className="easyleap-mt-8 easyleap-w-full md:easyleap-w-full">
-                  <Button className="easyleap-flex easyleap-w-[98.2%] easyleap-items-center easyleap-rounded-xl easyleap-font-firaCode easyleap-font-semibold easyleap-text-white easyleap-w-full easyleap-justify-center [&_svg]:easyleap-pointer-events-auto easyleap-bg-black hover:easyleap-bg-[#2F2F2F] easyleap-shadow-md easyleap-shadow-gray-500">
+                  <Button className="easyleap-flex easyleap-w-[98.2%] easyleap-items-center easyleap-font-firaCode easyleap-font-semibold easyleap-w-full easyleap-justify-center [&_svg]:easyleap-pointer-events-auto my-active-button">
                     Done
                   </Button>
                 </DialogTrigger>
@@ -475,359 +820,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
         </DialogContent>
       </Dialog>
 
-      {(addressDestination || addressDestination) && (
-        <Popover
-          open={sharedState.isTxnPopoverOpen}
-          onOpenChange={sharedState.setIsTxnPopoverOpen}
-        >
-          <PopoverTrigger className="easyleap-relative">
-            <>
-              {getPendingTxnCount() > 0 && (
-                <div className="easyleap-absolute easyleap--right-0 easyleap--top-1.5 easyleap-flex easyleap-size-4 easyleap-items-center easyleap-justify-center easyleap-rounded-full easyleap-bg-red-500 easyleap-p-1 easyleap-text-[9px] easyleap-font-semibold easyleap-text-white">
-                  {getPendingTxnCount()}
-                </div>
-              )}
-
-              {!sharedState.isSuccessEVM && (
-                <div
-                  style={{
-                    backgroundColor:
-                      mode === InteractionMode.Starknet
-                        ? theme?.starknetMode?.historyButton?.backgroundColor
-                        : theme?.bridgeMode?.historyButton?.backgroundColor
-                  }}
-                  className="easyleap-rounded-full easyleap-bg-[#35314F] easyleap-p-2"
-                >
-                  <Icons.historyIcon className="easyleap-shrink-0" />
-                </div>
-              )}
-
-              {sharedState.isSuccessEVM &&
-                getDestinationTxn(sharedState.sourceTransactions[0]).status !==
-                  "pending" &&
-                getDestinationTxn(sharedState.sourceTransactions[0]).status !==
-                  "confirmed" && (
-                  <div
-                    className={cn("easyleap-rounded-full", {
-                      "easyleap-animate-pulse easyleap-bg-green-500 easyleap-p-2":
-                        sharedState.isSuccessEVM
-                    })}
-                  >
-                    <div className="easyleap-rounded-full easyleap-bg-[#35314F] easyleap-p-2">
-                      <Icons.historyIcon className="easyleap-shrink-0" />
-                    </div>
-                  </div>
-                )}
-
-              {sharedState.isSuccessEVM &&
-                getDestinationTxn(sharedState.sourceTransactions[0]).status ===
-                  "pending" && (
-                  <div className="easyleap-rounded-full easyleap-bg-[#35314F] easyleap-p-2">
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M8.25 21.6399C6.25 20.8399 4.49999 19.3899 3.33999 17.3799C2.19999 15.4099 1.81999 13.2199 2.08999 11.1299"
-                        stroke="#1C182B"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M5.8501 4.47986C7.5501 3.14986 9.68009 2.35986 12.0001 2.35986C14.2701 2.35986 16.3601 3.12985 18.0401 4.40985"
-                        stroke="#B9AFF1"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M15.75 21.6399C17.75 20.8399 19.5 19.3899 20.66 17.3799C21.8 15.4099 22.18 13.2199 21.91 11.1299"
-                        stroke="#1C182B"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M8.25 21.6399C6.25 20.8399 4.49999 19.3899 3.33999 17.3799C2.19999 15.4099 1.81999 13.2199 2.08999 11.1299"
-                        stroke="#1C182B"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M5.8501 4.47986C7.5501 3.14986 9.68009 2.35986 12.0001 2.35986C14.2701 2.35986 16.3601 3.12985 18.0401 4.40985"
-                        stroke="#38EF7D"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M15.75 21.6399C17.75 20.8399 19.5 19.3899 20.66 17.3799C21.8 15.4099 22.18 13.2199 21.91 11.1299"
-                        stroke="#38EF7D"
-                        stroke-opacity="0.5"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M12 17C14.75 17 17 14.75 17 12C17 9.25 14.75 7 12 7C9.25 7 7 9.25 7 12C7 14.75 9.25 17 12 17Z"
-                        stroke="#1C182B"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M9.875 12L11.29 13.415L14.125 10.585"
-                        stroke="#1C182B"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
-                )}
-
-              {sharedState.isSuccessEVM &&
-                getDestinationTxn(sharedState.sourceTransactions[0]).status ===
-                  "confirmed" && (
-                  <div className="easyleap-rounded-full easyleap-bg-[#35314F] easyleap-p-2">
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M8.25 21.6399C6.25 20.8399 4.49999 19.3899 3.33999 17.3799C2.19999 15.4099 1.81999 13.2199 2.08999 11.1299"
-                        stroke="#38EF7D"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M5.84961 4.47986C7.54961 3.14986 9.6796 2.35986 11.9996 2.35986C14.2696 2.35986 16.3596 3.12985 18.0396 4.40985"
-                        stroke="#38EF7D"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M15.75 21.6399C17.75 20.8399 19.5 19.3899 20.66 17.3799C21.8 15.4099 22.18 13.2199 21.91 11.1299"
-                        stroke="#38EF7D"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M12 17C14.75 17 17 14.75 17 12C17 9.25 14.75 7 12 7C9.25 7 7 9.25 7 12C7 14.75 9.25 17 12 17Z"
-                        stroke="#38EF7D"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M9.875 12L11.29 13.415L14.125 10.585"
-                        stroke="#38EF7D"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
-                )}
-            </>
-          </PopoverTrigger>
-          <PopoverContent className="easyleap-mr-[5.37rem] easyleap-mt-4 easyleap-w-[484px] easyleap-border easyleap-border-[#675E99] easyleap-bg-white easyleap-px-8 easyleap-py-6 easyleap-font-dmSans">
-            <h4 className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between easyleap-text-lg easyleap-font-bold easyleap-text-black">
-              Bridge transaction history
-              <Icons.crossIcon
-                className="easyleap-cursor-pointer"
-                onClick={() => sharedState.setIsTxnPopoverOpen(false)}
-              />
-            </h4>
-
-            <ScrollArea className="easyleap-mt-5 easyleap-h-[40vh]">
-              <Accordion type="single" collapsible>
-                {sharedState.sourceTransactions.map((txn: any, i: any) => (
-                  <AccordionItem
-                    key={i}
-                    value={`txn-${i + 1}`}
-                    className="easyleap-mt-2 easyleap-rounded-xl easyleap-border-0 easyleap-bg-[#E6E6E6] easyleap-px-4 easyleap-py-2 easyleap-text-[#B9AFF1]"
-                  >
-                    <AccordionTrigger
-                      className="easyleap-w-full easyleap-items-start easyleap-px-2.5 easyleap-py-1 hover:easyleap-no-underline"
-                      customChevron={
-                        <Icons.chevronIcon className="easyleap-size-5" />
-                      }
-                    >
-                      <div className="easyleap-flex easyleap-w-full easyleap-flex-col easyleap-items-center easyleap-gap-6">
-                        <div className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-gap-8">
-                          <div className="easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-0.5">
-                            <p className="easyleap-flex easyleap-items-center easyleap-gap-1 easyleap-text-base easyleap-text-black">
-                              <Icons.ethereumLogo className="easyleap-size-5 easyleap-shrink-0" />
-                              Ethereum
-                            </p>
-                            <span className="easyleap-text-xs easyleap-text-black/60">
-                              Sepolia
-                            </span>
-                          </div>
-
-                          <Icons.arrowRight className="!easyleap-rotate-0" />
-
-                          <div className="easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-0.5">
-                            <p className="easyleap-flex easyleap-items-center easyleap-gap-1 easyleap-text-base easyleap-text-black">
-                              <Icons.starknetLogo className="easyleap-size-5 easyleap-shrink-0" />
-                              Starknet
-                            </p>
-                            <span className="easyleap-text-xs easyleap-text-black/60">
-                              Sepolia
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between easyleap-text-xs easyleap-text-black/60">
-                          {format(
-                            new Date(txn?.timestamp * 1000),
-                            "dd MMM, yyyy h:mm a"
-                          )}
-
-                          {getDestinationTxn(txn)?.status === "pending" && (
-                            <div className="easyleap--mr-5 easyleap-text-nowrap easyleap-rounded-full easyleap-bg-[#261A8DCC] easyleap-p-1 easyleap-px-2 easyleap-text-[10px] easyleap-text-black/60">
-                              Pending Submission
-                            </div>
-                          )}
-
-                          {getDestinationTxn(txn)?.status === "confirmed" && (
-                            <div className="easyleap--mr-5 easyleap-flex easyleap-items-center easyleap-gap-2">
-                              <div className="easyleap-text-nowrap easyleap-rounded-full easyleap-bg-[#38EF7D80] easyleap-p-1 easyleap-px-2 easyleap-text-[10px] easyleap-text-[#000]">
-                                Success
-                              </div>
-                              <a
-                                href={`https://sepolia.etherscan.io/tx/${txn.txHash}`}
-                                target="_blank"
-                                className="easyleap-rounded-3xl easyleap-bg-[#35314F] easyleap-p-1"
-                              >
-                                <Icons.externalLinkIcon className="easyleap-size-4" />
-                              </a>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </AccordionTrigger>
-
-                    <AccordionContent className="easyleap-mx-5 easyleap-mt-4 easyleap-border-t easyleap-border-[#675E9933]">
-                      <div className="easyleap-mt-5 easyleap-flex easyleap-items-center easyleap-justify-start easyleap-gap-3">
-                        <div className="easyleap-flex easyleap-flex-col easyleap-items-center easyleap-justify-center easyleap-gap-3">
-                          {txn?.status === "pending" && (
-                            <Loader2 className="easyleap-size-6 easyleap-animate-spin" />
-                          )}
-                          {txn?.status === "confirmed" && (
-                            <Icons.checkIcon className="easyleap-size-6" />
-                          )}
-
-                          {getDestinationTxn(txn)?.status === "pending" && (
-                            <>
-                              <div className="easyleap-h-6 easyleap-w-px easyleap-rounded-full easyleap-bg-[#675E9933]" />
-                              <Loader2 className="easyleap-size-6 easyleap-animate-spin" />
-                              <div className="easyleap-h-6 easyleap-w-px easyleap-rounded-full easyleap-bg-[#675E9933]" />
-                              <Loader2 className="easyleap-size-6 easyleap-animate-spin" />
-                            </>
-                          )}
-
-                          {getDestinationTxn(txn)?.status === "confirmed" && (
-                            <>
-                              <div className="easyleap-h-6 easyleap-w-px easyleap-rounded-full easyleap-bg-[#675E9933]" />
-                              <Icons.checkIcon className="easyleap-size-6" />
-                              <div className="easyleap-h-6 easyleap-w-px easyleap-rounded-full easyleap-bg-[#675E9933]" />
-                              <Icons.checkIcon className="easyleap-size-6" />
-                            </>
-                          )}
-                        </div>
-
-                        <div className="easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-6">
-                          <a
-                            href={`https://sepolia.etherscan.io/tx/${txn?.txHash}`}
-                            target="_blank"
-                            className="easyleap-group easyleap-flex easyleap-cursor-pointer easyleap-flex-col easyleap-items-start easyleap-gap-1"
-                          >
-                            <p
-                              className={cn(
-                                "easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-base easyleap-text-[#B9AFF1]",
-                                {
-                                  "easyleap-font-bold easyleap-text-black":
-                                    txn?.status === "confirmed"
-                                }
-                              )}
-                            >
-                              Initiated transfer from EVM wallet{" "}
-                              <Icons.externalLinkIcon className="easyleap-transition-all group-hover:easyleap-brightness-125" />
-                            </p>
-                            <span className="easyleap-text-xs easyleap-text-black/60">
-                              The deposit was submitted on Ethereum.
-                            </span>
-                          </a>
-
-                          <div className="easyleap-group easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-1">
-                            <p
-                              className={cn(
-                                "easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-base easyleap-text-black",
-                                {
-                                  "easyleap-font-bold easyleap-text-black":
-                                    getDestinationTxn(txn)?.status ===
-                                    "confirmed"
-                                }
-                              )}
-                            >
-                              Bridging to Starknet
-                            </p>
-                            <span className="easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-xs easyleap-text-black/60">
-                              Bridged {(txn?.amount_raw / 10 ** 18).toFixed(5)}
-                              <Icons.ethereumLogo className="easyleap-size-4" />
-                            </span>
-                          </div>
-
-                          <a
-                            href={`https://sepolia.voyager.online/tx/${getDestinationTxn(txn)?.txHash}`}
-                            target="_blank"
-                            className="easyleap-group easyleap-mt-2 easyleap-flex easyleap-cursor-pointer easyleap-flex-col easyleap-items-start easyleap-gap-1"
-                          >
-                            <p
-                              className={cn(
-                                "easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-base easyleap-text-black",
-                                {
-                                  "easyleap-font-bold easyleap-text-black":
-                                    getDestinationTxn(txn)?.status ===
-                                    "confirmed"
-                                }
-                              )}
-                            >
-                              Deposited on{" "}
-                              {
-                                sharedState.reviewModalProps.destinationDapp
-                                  .name
-                              }
-                              <Icons.externalLinkIcon className="easyleap-transition-all group-hover:easyleap-brightness-125" />
-                            </p>
-                          </a>
-                        </div>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-
-                {sharedState.sourceTransactions.length === 0 && (
-                  <div className="easyleap-flex easyleap-h-40 easyleap-w-full easyleap-items-center easyleap-justify-center">
-                    <p className="easyleap-text-[#B9AFF1]">
-                      No transactions yet
-                    </p>
-                  </div>
-                )}
-              </Accordion>
-            </ScrollArea>
-          </PopoverContent>
-        </Popover>
-      )}
+    
     </div>
   );
 };

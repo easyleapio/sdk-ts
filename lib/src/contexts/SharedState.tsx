@@ -151,12 +151,14 @@ export const SharedStateProvider = ({
     if (mode === InteractionMode.Bridge) {
       setMode(InteractionMode.Starknet);
       return toast({
-        title: "Switched to Starknet mode"
+        title: "Switched to Starknet mode",
+        duration: 3000
       });
     } else if (mode === InteractionMode.Starknet) {
       setMode(InteractionMode.Bridge);
       return toast({
-        title: "Switched to Bridge mode"
+        title: "Switched to Bridge mode",
+        duration: 3000
       });
     }
   };

@@ -68,7 +68,7 @@ const defaultTheme: GlobalTheme = {
     border: "2px solid #423F52"
   },
   starknetMode: {
-    mainBgColor: "#FFFFFF",
+    mainBgColor: "#1B182B",
 
     button: {
       backgroundColor: "#1B182B",
@@ -84,13 +84,13 @@ const defaultTheme: GlobalTheme = {
     },
 
     historyButton: {
-      backgroundColor: "#1B182B",
+      backgroundColor: "#423F52",
       color: "#FFFFFF",
       border: "2px solid #423F52"
     }
   },
   bridgeMode: {
-    mainBgColor: "#FFFFFF",
+    mainBgColor: "#1B182B",
 
     starknetButton: {
       backgroundColor: "#35314F",
@@ -110,7 +110,7 @@ const defaultTheme: GlobalTheme = {
     },
 
     historyButton: {
-      backgroundColor: "#1B182B",
+      backgroundColor: "#423F52",
       color: "#FFFFFF",
       border: "2px solid #423F52"
     }

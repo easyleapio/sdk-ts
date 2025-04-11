@@ -16,3 +16,5 @@ export const ADDRESSES = {
 
 export const SOURCE_FEE_ETH = 0.0001;
 export const MESSAGE_FEE_ETH = 0.001;
+
+export const EASYLEAP_EXPLORER = "https://sepolia.explorer.easyleap.io/"
