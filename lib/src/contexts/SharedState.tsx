@@ -20,7 +20,7 @@ export interface ChainsConfig {
   starknet: ChainSN;
 }
 
-interface SharedContext {
+export interface SharedContext {
   mode: InteractionMode;
   setMode: (value: InteractionMode) => void;
   isModeSwitchedManually: boolean;
@@ -61,9 +61,6 @@ const SharedStateContext = React.createContext({
   setChains: () => {},
   reviewModalProps: {
     isOpen: false,
-    needsApproval: false,
-    isApprovalPending: false,
-    isApprovalSuccess: false,
     tokensIn: [],
     tokensOut: [],
     destinationDapp: {
@@ -71,7 +68,11 @@ const SharedStateContext = React.createContext({
       logo: ""
     },
     onContinue: () => {},
-    onApprove: () => {}
+    hookProps: {
+      sourceTokenInfo: undefined,
+      amount: BigInt(0),
+      address: "0x0",
+    }
   },
   setReviewModalProps: () => {},
   connectWalletModalOpen: false,
@@ -109,9 +110,6 @@ export const SharedStateProvider = ({
   const [reviewModalProps, setReviewModalProps] =
     React.useState<ReviewModalProps>({
       isOpen: false,
-      needsApproval: false,
-      isApprovalPending: false,
-      isApprovalSuccess: false,
       tokensIn: [],
       tokensOut: [],
       destinationDapp: {
@@ -119,7 +117,11 @@ export const SharedStateProvider = ({
         logo: ""
       },
       onContinue: () => {},
-      onApprove: () => {}
+      hookProps: {
+        sourceTokenInfo: undefined,
+        amount: BigInt(0),
+        address: "0x0"
+      }
     });
 
   const memoizedSetReviewModalProps = React.useCallback(

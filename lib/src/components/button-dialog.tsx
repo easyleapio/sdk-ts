@@ -199,10 +199,6 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
   };
 
   React.useEffect(() => {
-    console.log("useAccount22 mode", mode);
-  }, [mode]);
-
-  React.useEffect(() => {
     if (addressSource && addressDestination) {
       toast({
         title: "Wallets Connected!",

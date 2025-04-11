@@ -8,6 +8,10 @@ import {
   DialogTrigger
 } from "@lib/components/ui/dialog";
 import { useSharedState } from "@lib/main";
+import { useMemo } from "react";
+import { useEVMPreSubmit } from "@lib/hooks/evm/useEVMPreSubmit";
+import { SourceBridgeInfo } from "@lib/hooks/useSourceBridgeInfo";
+import { Address } from "viem";
 
 export interface TokenTransfer {
   name: string;
@@ -20,6 +24,11 @@ export interface DestinationDapp {
   logo: string;
 }
 
+export interface PreTxHookProps {
+  sourceTokenInfo?: SourceBridgeInfo,
+  amount: bigint;
+  address: Address;
+}
 export interface ReviewModalProps {
   isOpen: boolean;
   onClose?: () => void;
@@ -27,14 +36,23 @@ export interface ReviewModalProps {
   tokensOut: TokenTransfer[];
   destinationDapp: DestinationDapp;
   onContinue: () => void;
-  needsApproval?: boolean;
-  isApprovalPending?: boolean;
-  isApprovalSuccess?: boolean;
-  onApprove?: () => void;
+  hookProps: PreTxHookProps
 }
 
 export function ReviewModal() {
   const context = useSharedState();
+
+  // Prepare the pre-submission hook for EVM transactions.
+  const preSubmitTxHook = useEVMPreSubmit(context.reviewModalProps.hookProps);
+
+  const isPreHookExecution = useMemo(() => {
+    if (!preSubmitTxHook) {
+      return false;
+    }
+    return preSubmitTxHook.isLoading || (
+      !preSubmitTxHook.isSuccess && !preSubmitTxHook.isError
+    );
+  }, [preSubmitTxHook]);
 
   function getTokenItem(token: TokenTransfer, index: number, isIn: boolean) {
     return (
@@ -47,6 +65,7 @@ export function ReviewModal() {
           src={token.logo}
           alt={token.name}
           style={{ width: "20px", height: "20px", marginLeft: "5px" }}
+          className="size-6 shrink-0"
         />
       </li>
     );
@@ -55,20 +74,19 @@ export function ReviewModal() {
   return (
     <Dialog
       open={context.reviewModalProps.isOpen}
-      onOpenChange={(value) => {
-        if (!context.reviewModalProps.isApprovalPending) {
-          context.setReviewModalProps({
-            ...context.reviewModalProps,
-            isOpen: value
-          });
-        }
-      }}
     >
       <DialogTrigger className=""></DialogTrigger>
 
       <DialogContent
         className="easyleap-max-h-[100vh] easyleap-overflow-y-auto easyleap-overflow-x-hidden easyleap-border easyleap-border-[#675E99] easyleap-bg-white easyleap-font-dmSans easyleap-sm:easyleap-max-w-[425px] easyleap-lg:easyleap-max-h-none"
         closeClassName="text-[#B9AFF1]"
+        onClickClose={() => {
+          context.setReviewModalProps({
+            ...context.reviewModalProps,
+            isOpen: false
+          });
+          preSubmitTxHook?.reset();
+        }}
       >
         <h4 className="easyleap-text-center easyleap-text-2xl easyleap-font-normal easyleap-text-black">
           Confirmation
@@ -77,8 +95,8 @@ export function ReviewModal() {
         <p className="easyleap-mt-[-2px] easyleap-text-center easyleap-text-sm easyleap-font-normal easyleap-text-black">
           You are about to perform the deposit with bridge mode.{" "}
           <br className="hidden md:block" /> Funds are automatically bridged
-          from L1 to L2 and sent to <br className="hidden md:block" />{" "}
-          <b className="text-white">Vesu</b> on your behalf.
+          from L1 to Starknet and sent to <br className="hidden md:block" />{" "}
+          <b>{context.reviewModalProps.destinationDapp.name}</b> on your behalf.
         </p>
 
         <div
@@ -136,6 +154,7 @@ export function ReviewModal() {
                         src={token.logo}
                         alt={token.name}
                         className="size-6 shrink-0"
+                        width={"25px"}
                       />
                       {token.name}
                     </span>
@@ -166,6 +185,7 @@ export function ReviewModal() {
                         src={token.logo}
                         alt={token.name}
                         className="size-6 shrink-0"
+                        width={"25px"}
                       />
                       {token.name}
                     </span>
@@ -200,28 +220,30 @@ export function ReviewModal() {
             </div>
           </div>
 
+          {/* <p>Has pre hook: {preSubmitTxHook ? true : false}</p>
+          <p className="wrap-anywhere [overflow-wrap:anywhere]">pre hook: {JSON.stringify(preSubmitTxHook)}</p> */}
+
           <Button
             onClick={
-              context.reviewModalProps.needsApproval &&
-              !context.reviewModalProps.isApprovalSuccess
-                ? context.reviewModalProps.onApprove
+              isPreHookExecution
+                ? preSubmitTxHook?.onClick
                 : context.reviewModalProps.onContinue
             }
-            className="easyleap-mt-5 easyleap-h-11 easyleap-w-full easyleap-rounded-[40px] easyleap-bg-[#2F2F2F] easyleap-px-6 easyleap-text-white"
-            disabled={context.reviewModalProps.isApprovalPending}
+            className="easyleap-mt-5 easyleap-h-11 easyleap-w-full easyleap-rounded-[40px] easyleap-bg-[white] easyleap-px-6 easyleap-text-black easyleap-border-2 easyleap-border-black "
+            disabled={isPreHookExecution && preSubmitTxHook?.isDisabled}
           >
-            {context.reviewModalProps.isApprovalPending ? (
+            {preSubmitTxHook?.isLoading ? (
               <div className="easyleap-flex easyleap-items-center easyleap-justify-center easyleap-gap-2">
-                <div className="easyleap-h-4 easyleap-w-4 easyleap-animate-spin easyleap-rounded-full easyleap-border-2 easyleap-border-white easyleap-border-t-transparent"></div>
-                Approving...
+                <div className="easyleap-h-4 easyleap-w-4 easyleap-animate-spin easyleap-rounded-full easyleap-border-2 easyleap-border-black easyleap-border-t-transparent"></div>
+                {preSubmitTxHook?.buttonText}
               </div>
-            ) : !context.reviewModalProps.isApprovalSuccess &&
-              context.reviewModalProps.needsApproval ? (
-              "Approve"
+            ) : isPreHookExecution ? (
+              preSubmitTxHook?.buttonText
             ) : (
               "Continue"
             )}
           </Button>
+          {preSubmitTxHook?.isError && <p className="text-[#ff0000] text-xs">Error: {preSubmitTxHook.errorMessage}</p>}
         </div>
       </DialogContent>
     </Dialog>

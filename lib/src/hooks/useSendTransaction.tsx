@@ -1,377 +1,343 @@
-import { useSendTransaction as useSendTransactionSN } from "@starknet-react/core";
-import React, { useEffect } from "react";
+import { Address, UseSendTransactionProps, UseSendTransactionResult, useSendTransaction as useSendTransactionSN } from "@starknet-react/core";
+import React, { useEffect, useMemo } from "react";
 import { Call, hash, num } from "starknet";
 import { encodeFunctionData } from "viem";
 import {
+  Config,
   useSendTransaction as useSendTransactionEVM,
-  useTransactionReceipt
+  UseSendTransactionReturnType,
 } from "wagmi";
 
 import {
   DestinationDapp,
-  ReviewModalProps,
+  PreTxHookProps,
   TokenTransfer
 } from "@lib/components/review-modal";
-import { ADDRESSES, ZERO_ADDRESS_EVM } from "@lib/utils/constants";
+import { ADDRESSES, MESSAGE_FEE_ETH, SOURCE_FEE_ETH, ZERO_ADDRESS_EVM } from "@lib/utils/constants";
 
-import { InteractionMode, useSharedState } from "../contexts/SharedState";
+import { InteractionMode, SharedContext, useSharedState } from "../contexts/SharedState";
 import { useAccount } from "./useAccount";
-import { useSourceBridgeInfo } from "./useBalance";
 import { useMode } from "./useMode";
 import { mergeSortArrays } from "./useTransactionHistory";
+import { SourceBridgeInfo, useSourceBridgeInfo } from "./useSourceBridgeInfo";
 
-export interface EUseSendTransactionArgs_EasyLeap {
-  calls?: Call[];
+
+/**
+ * Interface for the arguments required by the `useSendTransaction` hook.
+ */
+export interface EUseSendTransactionArgs_EasyLeap extends UseSendTransactionProps {
   bridgeConfig: {
-    l2_token_address: `0x${string}`;
-    amount: bigint;
+    l2_token_address: `0x${string}`; // The L2 token address in hexadecimal format.
+    amount: bigint; // The amount to be transferred.
   };
 }
 
-export function useSourceFee() {
-  return BigInt((0.00001 * 10 ** 18).toString());
+/**
+ * Utility function to calculate the source and message fees.
+ *
+ * @returns An object containing the source fee and message fee as BigInt values.
+ */
+function getFees() {
+  const sourceFee = BigInt((SOURCE_FEE_ETH * 10 ** 18).toString());
+  const msgFee = BigInt((MESSAGE_FEE_ETH * 10 ** 18).toString());
+  return { sourceFee, msgFee };
 }
 
-export function useSNMsgFee() {
-  return BigInt((0.001 * 10 ** 18).toString());
+/**
+ * Calculates the total ETH value required for a transaction.
+ *
+ * @param sourceTokenInfo - Information about the source token.
+ * @param bridgeConfig - Configuration for the bridge, including the amount to be transferred.
+ * @returns The total ETH value required for the transaction.
+ */
+function calculateEthValue(
+  sourceTokenInfo: SourceBridgeInfo,
+  bridgeConfig: { amount: bigint },
+) {
+  const { sourceFee, msgFee } = getFees();
+
+  // If the token is ETH (ZERO_ADDRESS_EVM), include the transfer amount in the total.
+  if (sourceTokenInfo && sourceTokenInfo.l1_token_address === ZERO_ADDRESS_EVM) {
+    return bridgeConfig.amount + sourceFee + msgFee;
+  }
+
+  // Otherwise, only include the fees.
+  return sourceFee + msgFee;
 }
 
-export function useSendTransaction(
-  props: EUseSendTransactionArgs_EasyLeap
-): any {
-  const mode = useMode();
-  const context = useSharedState();
-  const [approvalTxHash, setApprovalTxHash] = React.useState<
-    string | undefined
-  >();
-  const [isBridgeTransaction, setIsBridgeTransaction] = React.useState(false);
-  const { addressDestination, addressSource } = useAccount();
-  const sourceTokenInfo = useSourceBridgeInfo(
-    props.bridgeConfig.l2_token_address
-  );
-
-  const {
-    send: sendSN,
-    error: errorSN,
-    isPending: isPendingSN,
-    isSuccess: isSuccessSN,
-    data: dataSN
-  } = useSendTransactionSN({
-    calls: props.calls
-  });
-  const {
-    sendTransaction,
-    error: errorEVM,
-    isPending: isPendingEVM,
-    isSuccess: isSuccessEVM,
-    isError: isErrorEVM,
-    data: dataEVM
-  } = useSendTransactionEVM();
-
-  const calldata = React.useMemo(() => {
-    const flat_calls = props.calls?.map((call) => [
-      BigInt(num.getDecimalString(call.contractAddress)),
-      BigInt(num.getDecimalString(hash.getSelectorFromName(call.entrypoint))),
-      call.calldata ? BigInt(call.calldata.length.toString()) : 0n,
-      ...((call.calldata as Array<bigint>) || [])
-    ]);
-    const flat_calls_final = flat_calls ? flat_calls.flat() : [];
-    const fullCalldata = [
-      0n, // some id
-      BigInt(
-        num.getDecimalString(props.bridgeConfig.l2_token_address.toString())
-      ),
-      props.bridgeConfig.amount,
-      BigInt(num.getDecimalString(addressDestination || "0")), // l2 user address (l2 owner)
-      BigInt(flat_calls_final.length.toString()) + 1n,
-      BigInt(props.calls?.length.toString() || 0), // may fail with 0 calldata
-      ...flat_calls_final
-    ];
-    console.log("calldata", fullCalldata);
-    return encodeFunctionData({
-      abi: [
-        {
-          type: "function",
-          name: "push",
-          inputs: [
-            {
-              name: "tokenConfig",
-              type: "tuple",
-              internalType: "struct L1Manager.TokenConfig",
-              components: [
-                {
-                  name: "l1_token_address",
-                  type: "address",
-                  internalType: "address"
-                },
-                {
-                  name: "l2_token_address",
-                  type: "uint256",
-                  internalType: "uint256"
-                },
-                {
-                  name: "bridge_address",
-                  type: "address",
-                  internalType: "address"
-                }
-              ]
-            },
-            {
-              name: "amount",
-              type: "uint256",
-              internalType: "uint256"
-            },
-            {
-              name: "_calldata",
-              type: "uint256[]",
-              internalType: "uint256[]"
-            }
-          ],
-          outputs: [],
-          stateMutability: "payable"
-        }
-      ],
-      functionName: "push",
-      args: [
-        {
-          l1_token_address:
-            (sourceTokenInfo?.l1_token_address as `0x${string}`) ||
-            ZERO_ADDRESS_EVM,
-          l2_token_address: BigInt(
-            num.getDecimalString(props.bridgeConfig.l2_token_address.toString())
-          ),
-          bridge_address:
-            (sourceTokenInfo?.l1_bridge_address as `0x${string}`) ||
-            ZERO_ADDRESS_EVM
-        },
-        props.bridgeConfig.amount,
-        fullCalldata
-      ]
-    });
-  }, [props.calls, props.bridgeConfig, addressDestination, sourceTokenInfo]);
-
-  const mySourceFee = useSourceFee();
-  const msgFee = useSNMsgFee();
-
-  const ethValue = React.useMemo(() => {
-    if (
-      sourceTokenInfo &&
-      sourceTokenInfo.l1_token_address == ZERO_ADDRESS_EVM
-    ) {
-      return props.bridgeConfig.amount + mySourceFee + msgFee;
-    }
-    return mySourceFee + msgFee;
-  }, [
-    sourceTokenInfo,
-    props.bridgeConfig.amount,
-    props.bridgeConfig,
-    props,
-    mySourceFee,
-    msgFee
+/**
+ * Generates EVM calldata for the transaction.
+ *
+ * @param calls - An array of SN calls to be included in the transaction, used to execute tx on SN post bridge
+ * @param bridgeConfig - Configuration for the bridge, including the L2 token address and amount.
+ * @param addressDestination - The destination address on L2.
+ * @param sourceTokenInfo - Information about the source token.
+ * @returns The encoded calldata as a string.
+ */
+function generateCalldata(
+  calls: Call[],
+  bridgeConfig: { l2_token_address: `0x${string}`; amount: bigint },
+  addressDestination: Address,
+  sourceTokenInfo: SourceBridgeInfo
+) {
+  // Flatten the calls into a single array of BigInt values.
+  const flat_calls = calls.map((call) => [
+    BigInt(num.getDecimalString(call.contractAddress)), // Contract address
+    BigInt(num.getDecimalString(hash.getSelectorFromName(call.entrypoint))), // Function selector
+    call.calldata ? BigInt(call.calldata.length.toString()) : 0n, // Calldata length
+    ...((call.calldata as Array<bigint>) || []) // Calldata
   ]);
 
-  useEffect(() => {
-    console.log("useSendTransaction", {
-      dataEVM,
-      isErrorEVM,
-      isSuccessEVM,
-      isPendingEVM
-    });
+  const flat_calls_final = flat_calls ? flat_calls.flat() : [];
 
-    if (dataEVM && context.reviewModalProps.isApprovalPending) {
-      setApprovalTxHash(dataEVM);
-      return;
-    }
+  // Construct the full calldata array.
+  const fullCalldata = [
+    0n, // Some ID (placeholder)
+    BigInt(num.getDecimalString(bridgeConfig.l2_token_address.toString())), // L2 token address
+    bridgeConfig.amount, // Amount to transfer
+    BigInt(num.getDecimalString(addressDestination || "0")), // L2 user address (destination)
+    BigInt(flat_calls_final.length.toString()) + 1n, // Total calldata length
+    BigInt(calls?.length.toString() || 0), // Number of calls
+    ...flat_calls_final // Flattened calls
+  ];
 
-    if (dataEVM && isBridgeTransaction) {
-      context.setSourceTransactions(
-        mergeSortArrays(context.sourceTransactions, [
+  // Encode the calldata using the ABI and function signature.
+  return encodeFunctionData({
+    abi: [
+      {
+        type: "function",
+        name: "push",
+        inputs: [
           {
-            amount_raw: props.bridgeConfig.amount.toString(),
-            receiver: addressDestination,
-            block_number: 0,
-            chain: "ethereum",
-            cursor: 0,
-            eventIndex: 0,
-            request_id: 0,
-            sender: addressSource,
-            status: isPendingEVM ? "pending" : "confirmed",
-            timestamp: Math.round(new Date().getTime() / 1000),
-            token: props.bridgeConfig.l2_token_address,
-            txHash: dataEVM,
-            txIndex: 0
-          }
-        ])
-      );
-
-      // Update isSuccessEVM when bridge transaction completes
-      if (isSuccessEVM) {
-        context.setIsSuccessEVM(true);
-      }
-    }
-  }, [
-    dataEVM,
-    isPendingEVM,
-    isSuccessEVM,
-    isErrorEVM,
-    context.reviewModalProps.isApprovalPending,
-    isBridgeTransaction
-  ]);
-
-  const approve = async (reviewModalProps: ReviewModalProps) => {
-    // If the token is not ETH, we need to approve first
-    if (
-      sourceTokenInfo &&
-      sourceTokenInfo.l1_token_address !== ZERO_ADDRESS_EVM &&
-      !context.reviewModalProps.isApprovalSuccess &&
-      !context.reviewModalProps.isApprovalPending
-    ) {
-      setIsBridgeTransaction(false);
-
-      context.setReviewModalProps({
-        ...reviewModalProps,
-        isApprovalPending: true,
-        isOpen: true
-      });
-
-      try {
-        sendTransaction({
-          to: sourceTokenInfo.l1_token_address as `0x${string}`,
-          data: encodeFunctionData({
-            abi: [
-              {
-                type: "function",
-                name: "approve",
-                inputs: [
-                  { name: "spender", type: "address" },
-                  { name: "amount", type: "uint256" }
-                ],
-                outputs: [{ type: "bool" }],
-                stateMutability: "nonpayable"
-              }
-            ],
-            functionName: "approve",
-            args: [
-              ADDRESSES.ETH_MAINNET.BRIDGE_MANAGER as `0x${string}`,
-              props.bridgeConfig.amount
+            name: "tokenConfig",
+            type: "tuple",
+            internalType: "struct L1Manager.TokenConfig",
+            components: [
+              { name: "l1_token_address", type: "address", internalType: "address" },
+              { name: "l2_token_address", type: "uint256", internalType: "uint256" },
+              { name: "bridge_address", type: "address", internalType: "address" }
             ]
-          })
-        });
-      } catch (error) {
-        context.setReviewModalProps({
-          ...context.reviewModalProps,
-          isApprovalPending: false,
-          isOpen: true
-        });
-        throw error;
+          },
+          { name: "amount", type: "uint256", internalType: "uint256" },
+          { name: "_calldata", type: "uint256[]", internalType: "uint256[]" }
+        ],
+        outputs: [],
+        stateMutability: "payable"
       }
-    }
+    ],
+    functionName: "push",
+    args: [
+      {
+        l1_token_address: sourceTokenInfo.l1_token_address, // L1 token address
+        l2_token_address: BigInt(
+          num.getDecimalString(bridgeConfig.l2_token_address.toString())
+        ), // L2 token address
+        bridge_address: sourceTokenInfo.l1_bridge_address, // Bridge address
+      },
+      bridgeConfig.amount, // Amount to transfer
+      fullCalldata // Full calldata array
+    ]
+  });
+}
 
-    return null;
-  };
-
-  const send = async (calls?: Call[]) => {
-    // Early return if no calls provided
-    const hasNoCalls = !props.calls?.length && !calls?.length;
-    if (hasNoCalls) return null;
-
-    // Handle Starknet mode
-    if (mode === InteractionMode.Starknet) {
-      return calls ? sendSN(calls) : sendSN();
-    }
-
-    // Handle Bridge mode
-    if (mode === InteractionMode.Bridge) {
-      setIsBridgeTransaction(true);
-      return sendTransaction({
-        to: ADDRESSES.ETH_MAINNET.BRIDGE_MANAGER as `0x${string}`,
-        value: ethValue,
-        data: calldata
-      });
-    }
-
-    return null;
-  };
-
-  function openReviewModal(
+function getSendTransactionCallback(
+  mode: InteractionMode,
+  context: SharedContext,
+  snOutput: UseSendTransactionResult,
+  evmOutput: UseSendTransactionReturnType<Config, unknown>,
+  sourceAmount: bigint,
+  sourceCalldata: `0x${string}`,
+  hookProps: PreTxHookProps
+) {
+  return async function openReviewModal(
     tokensIn: TokenTransfer[],
     tokensOut: TokenTransfer[],
     destinationDapp: DestinationDapp,
-    calls?: Call[]
-  ) {
+    calls?: Call[],
+  ): Promise<void> {
     if (mode == InteractionMode.Bridge) {
-      const needsApproval =
-        sourceTokenInfo &&
-        sourceTokenInfo.l1_token_address !== ZERO_ADDRESS_EVM &&
-        !context.reviewModalProps.isApprovalSuccess;
-
       context.setReviewModalProps({
         isOpen: true,
         tokensIn,
         tokensOut,
         destinationDapp,
-        needsApproval,
-        isApprovalPending: false,
-        isApprovalSuccess: context.reviewModalProps.isApprovalSuccess,
+        hookProps,
         onContinue: async () => {
-          await send(calls);
-
+          await evmOutput.sendTransactionAsync({
+            to: ADDRESSES.ETH_MAINNET.BRIDGE_MANAGER as `0x${string}`,
+            value: sourceAmount,
+            data: sourceCalldata
+          });
           context.setReviewModalProps({
             ...context.reviewModalProps,
             isOpen: false
           });
         },
-        onApprove: async () => {
-          await approve({
-            isOpen: true,
-            tokensIn,
-            tokensOut,
-            destinationDapp,
-            needsApproval,
-            isApprovalPending: false,
-            isApprovalSuccess: context.reviewModalProps.isApprovalSuccess,
-            onContinue: async () => {
-              await send(calls);
-
-              context.setReviewModalProps({
-                ...context.reviewModalProps,
-                isOpen: false
-              });
-            }
-          });
-        }
       });
     } else {
-      send(calls);
+      await snOutput.sendAsync(calls);
     }
   }
+};
 
-  // Watch for approval transaction completion
-  const { isSuccess: isApprovalTxSuccess } = useTransactionReceipt({
-    hash: approvalTxHash as `0x${string}`,
-    query: {
-      enabled: !!approvalTxHash
-    }
+export interface UseSendTransactionResult_EasyLeap {
+  send: (tokensIn: TokenTransfer[], tokensOut: TokenTransfer[], destinationDapp: DestinationDapp, calls?: Call[]) => void,
+  sendAsync: (tokensIn: TokenTransfer[], tokensOut: TokenTransfer[], destinationDapp: DestinationDapp, calls?: Call[]) => Promise<void>,
+  isPaused: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+  error: Error | null;
+  data?: `0x${string}`, // tx hash
+  isPending: boolean;
+  isIdle: boolean;
+  status?: string;
+  reset: () => void;
+}
+
+/**
+ * A custom hook that provides functionality for sending transactions in different modes (e.g., Bridge mode).
+ * It handles transaction preparation, submission, and state management for both StarkNet and EVM environments.
+ *
+ * @param props - The arguments required for sending a transaction, including bridge configuration and call data.
+ *
+ * @returns An object containing:
+ * - `send`: A callback function to send the transaction.
+ * - `sendAsync`: An Async alias for the `send` function.
+ * - `isPaused`: A boolean indicating whether the transaction process is paused.
+ * - `isSuccess`: A boolean indicating whether the transaction was successful.
+ * - `isError`: A boolean indicating whether there was an error during the transaction.
+ * - `error`: The error object, if any, encountered during the transaction.
+ * - `data`: The transaction hash
+ * - `isPending`: A boolean indicating whether the transaction is currently pending.
+ * - `isIdle`: A boolean indicating whether the transaction process is idle.
+ * - `status`: The current status of the transaction.
+ * - `reset`: A function to reset the transaction state.
+ *
+ * @remarks
+ * - The hook determines the mode of operation (e.g., Bridge mode) and adjusts its behavior accordingly.
+ * - It uses memoization and side effects to manage transaction state and ensure efficient updates.
+ * - The `context.setSourceTransactions` function is used to update the shared state with new transaction details.
+ *
+ * @example
+ * ```tsx
+ * const { send, isSuccess, isError, reset } = useSendTransaction({
+ *   bridgeConfig: {
+ *     l2_token_address: "0x123...",
+ *     amount: BigInt(1000),
+ *   },
+ *   calls: [...],
+ * });
+ *
+ * send();
+ * if (isSuccess) {
+ *   console.log("Transaction successful!");
+ * }
+ * if (isError) {
+ *   console.error("Transaction failed!");
+ * }
+ * reset();
+ * ```
+ */
+export function useSendTransaction(
+  props: EUseSendTransactionArgs_EasyLeap
+): UseSendTransactionResult_EasyLeap {
+  const mode = useMode(); // Determine the current interaction mode (e.g., Bridge mode).
+  const context = useSharedState(); // Access the shared state context.
+  const { addressDestination, addressSource } = useAccount(); // Retrieve the source and destination addresses.
+  const sourceTokenInfo = useSourceBridgeInfo({
+    l2TokenAddress: props.bridgeConfig.l2_token_address
+  }); // Fetch information about the source token.
+
+  // Check if the current mode is Bridge mode.
+  const isBridgeMode = useMemo(() => {
+    return mode == InteractionMode.Bridge;
+  }, [mode]);
+
+  // Generate the calldata for the source transaction.
+  const sourceCalldata = React.useMemo(() => {
+    if (!addressDestination || !props.calls || !sourceTokenInfo) return `0x0`;
+    return generateCalldata(
+      props.calls || [],
+      props.bridgeConfig,
+      addressDestination,
+      sourceTokenInfo
+    );
+  }, [props.calls, props.bridgeConfig, addressDestination, sourceTokenInfo]);
+
+  // Calculate the total ETH value required for the transaction.
+  const sourceAmount = React.useMemo(() => {
+    if (!sourceTokenInfo) return BigInt(0);
+    return calculateEthValue(sourceTokenInfo, props.bridgeConfig);
+  }, [sourceTokenInfo, props.bridgeConfig]);
+
+  // Initialize the StarkNet transaction hook.
+  const snOutput = useSendTransactionSN({
+    calls: props.calls,
   });
 
-  // Watch for approval transaction completion
-  useEffect(() => {
-    if (isApprovalTxSuccess) {
-      context.setReviewModalProps({
-        ...context.reviewModalProps,
-        isApprovalSuccess: true,
-        isApprovalPending: false
-      });
-    }
-  }, [isApprovalTxSuccess]);
+  // Initialize the EVM transaction hook.
+  const evmOutput = useSendTransactionEVM();
 
+  // Update the shared state with the source transaction details when in Bridge mode.
+  useEffect(() => {
+    if (!isBridgeMode || !evmOutput || !evmOutput.isSuccess) {
+      return;
+    }
+    context.setSourceTransactions(
+      mergeSortArrays(context.sourceTransactions, [
+        {
+          amount_raw: props.bridgeConfig.amount.toString(),
+          receiver: addressDestination,
+          block_number: 0,
+          chain: "ethereum",
+          cursor: 0,
+          eventIndex: 0,
+          request_id: 0,
+          sender: addressSource,
+          status: "confirmed",
+          timestamp: Math.round(new Date().getTime() / 1000),
+          token: props.bridgeConfig.l2_token_address,
+          txHash: evmOutput.data,
+          txIndex: 0
+        }
+      ])
+    );
+  }, [
+    evmOutput, isBridgeMode
+  ]);
+
+  // Create the callback function for sending transactions.
+  const sendCallback = useMemo(() => {
+    return getSendTransactionCallback(
+      mode,
+      context,
+      snOutput,
+      evmOutput,
+      sourceAmount,
+      sourceCalldata,
+      {
+        sourceTokenInfo,
+        amount: props.bridgeConfig.amount,
+        address: addressSource || '0x0'
+      }
+    );
+  }, [mode, sourceTokenInfo, context, snOutput, evmOutput, props.bridgeConfig.amount, addressSource]);
+
+  // Return the transaction-related state and functions.
   return {
-    send: openReviewModal,
-    error: errorSN || errorEVM,
-    isPending: isPendingSN || isPendingEVM,
-    dataSN,
-    dataEVM,
-    isSuccessSN,
-    isSuccessEVM
+    send: sendCallback, // Function to send the transaction.
+    sendAsync: sendCallback, // Alias for the send function.
+    isPaused: isBridgeMode ? evmOutput.isPaused : snOutput.isPaused, // Indicates if the transaction is paused.
+    isSuccess: isBridgeMode ? evmOutput.isSuccess : snOutput.isSuccess, // Indicates if the transaction was successful.
+    isError: isBridgeMode ? evmOutput.isError : snOutput.isError, // Indicates if there was an error.
+    error: isBridgeMode ? evmOutput.error : snOutput.error, // The error object, if any.
+    data: (isBridgeMode ? evmOutput.data : snOutput.data ? snOutput.data.transaction_hash as Address : undefined), // The transaction data or result.
+    isPending: isBridgeMode ? evmOutput.isPending : snOutput.isPending, // Indicates if the transaction is pending.
+    isIdle: isBridgeMode ? evmOutput.isIdle : snOutput.isIdle, // Indicates if the transaction process is idle.
+    status: isBridgeMode ? evmOutput.status : snOutput.status, // The current status of the transaction.
+    reset: () => {
+      evmOutput.reset(); // Reset the EVM transaction state.
+      snOutput.reset(); // Reset the StarkNet transaction state.
+    },
   };
 }

@@ -1,4 +1,18 @@
-[
+import { Address } from "@starknet-react/chains";
+
+export interface SupportedToken {
+    l1_token_address: Address;
+    l2_token_address: Address;
+    l1_bridge_address: Address;
+    l2_bridge_address: Address;
+    name: string;
+    symbol: string;
+    decimals: number;
+    id: string;
+    comment?: string;
+}
+
+const TOKENS: SupportedToken[] = [
     {
         "id": "strk",
         "name": "Starknet Token",
@@ -8,13 +22,6 @@
         "l1_bridge_address": "0xcE5485Cfb26914C5dcE00B9BAF0580364daFC7a4",
         "l2_bridge_address": "0x0594c1582459ea03f77deaf9eb7e3917d6994a03c13405ba42867f83d85f085d",
         "l2_token_address": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"
-    },
-    {
-        "name": "Starknet Voting Token",
-        "symbol": "vSTRK",
-        "decimals": 18,
-        "l2_token_address": "0x0782f0ddca11d9950bc3220e35ac82cf868778edb67a5e58b39838544bc4cd0f",
-        "l2_locked_token": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"
     },
     {
         "id": "wbtc",
@@ -846,13 +853,6 @@
         "l2_token_address": "0x0343222014d664860a84cbf3dff729bf6863a135c3c032360ef6aaf5e82e76bf"
     },
     {
-        "name": "MultiBridge",
-        "StarkgateManager": "0x0c5aE94f8939182F2D06097025324D1E537d5B60",
-        "StarkgateRegistry": "0x1268cc171c54F2000402DfF20E93E60DF4c96812",
-        "StarknetTokenBridge": "0xF5b6Ee2CAEb6769659f6C091D209DfdCaF3F69Eb",
-        "l2_token_bridge": "0x0616757a151c21f9be8775098d591c2807316d992bbc3bb1a5c1821630589256"
-    },
-    {
         "id": "crv",
         "name": "Curve DAO Token",
         "symbol": "CRV",
@@ -1103,3 +1103,5 @@
         "l2_token_address": "0x060f47b96b525c1014fed595e87e98edc3ce0731627a0670e1804ee1a3ca0ee9"
     }
 ]
+
+export default TOKENS;

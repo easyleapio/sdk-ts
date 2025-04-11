@@ -13,3 +13,6 @@ export const ADDRESSES = {
     BRIDGE_MANAGER: "0x2B7f5d9982d4f7AD67Adb0F7a29D2147E78572ac"
   }
 };
+
+export const SOURCE_FEE_ETH = 0.0001;
+export const MESSAGE_FEE_ETH = 0.001;

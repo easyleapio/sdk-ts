@@ -3,49 +3,16 @@ import {
   useBalance as useBalanceSN
 } from "@starknet-react/core";
 import { useEffect, useMemo } from "react";
-import { constants } from "starknet";
 import { useBalance as useBalanceWagmi } from "wagmi";
-
-import { standardise } from "@lib/utils";
-import { ZERO_ADDRESS_EVM } from "@lib/utils/constants";
-import TokensInfo from "@lib/utils/tokens.json";
-import TokensInfoSepolia from "@lib/utils/tokens.sepolia.json";
-
 import { InteractionMode } from "../contexts/SharedState";
 import { useAccount, Chains } from "./useAccount";
 import { useMode } from "./useMode";
+import { useSourceBridgeInfo } from "./useSourceBridgeInfo";
+import { logger } from "@lib/utils/logger";
+
 
 export interface UseBalanceProps {
   l2TokenAddress: `0x${string}`;
-}
-
-export function useSourceBridgeInfo(l2TokenAddress: `0x${string}`):
-  | {
-      l1_bridge_address: string;
-      l1_token_address: string;
-    }
-  | undefined {
-  const { chainIdSN } = useAccount();
-  const output = useMemo(() => {
-    const tokens =
-      chainIdSN == BigInt(constants.StarknetChainId.SN_MAIN)
-        ? TokensInfo
-        : TokensInfoSepolia;
-    const tokensInfo = tokens.filter((token) => {
-      if (!token.l2_token_address) return false;
-      return standardise(token.l2_token_address) == standardise(l2TokenAddress);
-    });
-    const tokenInfo = tokensInfo.length ? tokensInfo[0] : undefined;
-    if (tokenInfo != undefined && tokensInfo[0].name == "Ether") {
-      tokenInfo.l1_token_address = ZERO_ADDRESS_EVM;
-    }
-    return tokenInfo;
-  }, [chainIdSN, l2TokenAddress]);
-
-  if (!output || !output.l1_token_address || !output.l1_bridge_address) {
-    return undefined;
-  }
-  return output;
 }
 
 export function useBalance(props: UseBalanceProps): UseBalanceResult {
@@ -54,15 +21,17 @@ export function useBalance(props: UseBalanceProps): UseBalanceResult {
   const { source, addressSource, addressDestination } = useAccount();
   const resultSN = useBalanceSN({
     token: l2TokenAddress,
-    address: addressDestination
+    address: addressDestination,
   });
 
   // Find corresponding EVM token address
-  const sourceTokenInfo = useSourceBridgeInfo(l2TokenAddress);
+  const sourceTokenInfo = useSourceBridgeInfo({
+    l2TokenAddress,
+  });
 
   const resultWagmi = useBalanceWagmi({
     address: addressSource,
-    token: sourceTokenInfo?.l1_token_address as `0x${string}` | undefined
+    token: !sourceTokenInfo || !sourceTokenInfo.requireApproval ? undefined : sourceTokenInfo.l1_token_address,
   });
 
   const result = useMemo(() => {
@@ -73,25 +42,25 @@ export function useBalance(props: UseBalanceProps): UseBalanceResult {
     if (mode == InteractionMode.Bridge && source == Chains.ETH_MAINNET) {
       // If token is not found in the tokens.json file, return the Starknet balance
       if (!sourceTokenInfo) {
-        // todo return error
-        return resultSN;
+        logger.warn("EasyLeap::useBalance", `Source token info not found for L2 token address ${l2TokenAddress}`);
+        throw new Error("Source token info not found");
       }
 
       return resultWagmi;
     }
 
-    // todo return error
-    return resultSN;
+    throw new Error("In Bridge mode, only ETH network is supported");
   }, [mode, source, sourceTokenInfo?.l1_token_address, resultSN, resultWagmi]);
 
   useEffect(() => {
-    console.log("useBalance", {
+    logger.verbose("useBalance", {
       result,
       mode,
       addressDestination,
       source,
       resultWagmi,
       addressSource,
+      l2TokenAddress,
       error: result.error,
       sourceTokenAddr: sourceTokenInfo?.l1_token_address
     });

@@ -173,6 +173,9 @@ importers:
       '@apollo/client':
         specifier: ^3.12.8
         version: 3.13.2(@types/react@18.3.18)(graphql@16.10.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@easyleap/sdk':
+        specifier: ^0.0.6-beta.17
+        version: 'link:'
       '@emotion/is-prop-valid':
         specifier: ^1.3.1
         version: 1.3.1

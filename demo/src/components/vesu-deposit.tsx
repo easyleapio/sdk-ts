@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Info } from "lucide-react";
-import React, { useMemo } from "react";
+import React, { ReactElement, ReactNode, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Call, CallData } from "starknet";
 import * as z from "zod";
@@ -29,6 +29,7 @@ import { ADDRESSES } from "@easyleap/sdk";
 import { Icons } from "./Icons";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { Address } from "@starknet-react/chains";
 
 const formSchema = z.object({
   depositAmount: z.string().refine(
@@ -42,14 +43,49 @@ const formSchema = z.object({
 
 export type FormValues = z.infer<typeof formSchema>;
 
+interface DAppInfo {
+  dappIcon: ReactElement, asset: Address, assetName: string, id: string,
+  receivingToken: string,
+  logoIn: string,
+  logoOut: string,
+  destinationDapp: DestinationDapp
+}
+
 const VesuDeposit: React.FC = () => {
   const { addressSource, addressDestination } = useAccount();
+  const DApps: DAppInfo[] = [{
+    dappIcon: <Icons.endurNamedLogo className="" />,
+    asset: '0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d',
+    assetName: "STRK",
+    id: 'endur',
+    receivingToken: 'vSTRK',
+    logoIn: 'https://app.strkfarm.com/zklend/icons/tokens/strk.svg?w=20',
+    logoOut: 'https://endur.fi/logo.svg',
+    destinationDapp: {
+      name: "Endur",
+      logo: "https://endur.fi/logo.svg"
+    }
+    
+  }, {
+    dappIcon: <Icons.vesuNamedLogo className="" />,
+    asset: '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
+    assetName: "ETH",
+    id: 'vesu',
+    receivingToken: 'vETH',
+    logoIn: 'https://app.strkfarm.com/zklend/icons/tokens/eth.svg?w=20',
+    logoOut: 'https://app.strkfarm.com/zklend/icons/tokens/eth.svg?w=20',
+    destinationDapp: {
+      name: "Vesu",
+      logo: "https://app.vesu.xyz/favicon.ico"
+    }
+  }];
 
+  const [selectedDapp, setSelectedDapp] = useState(DApps[0]);
   const sharedState = useSharedState();
 
   const balanceInfo = useBalance({
     l2TokenAddress:
-      "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7"
+      selectedDapp.asset,
   });
 
   const form = useForm<FormValues>({
@@ -105,23 +141,23 @@ const VesuDeposit: React.FC = () => {
   const mode = useMode();
 
   const calls = useMemo(() => {
-    return getCalls(amountOutRes.amountOut, addressDestination, mode);
-  }, [amountOutRes, amountOutRes.amountOut, addressDestination, mode]);
+    if (selectedDapp.id == 'vesu')
+      return getCalls(amountOutRes.amountOut, addressDestination, mode);
+    else if (selectedDapp.id == 'endur')
+      return getEndurCalls(amountOutRes.amountOut, addressDestination, mode);
+    else return [];
+  }, [amountOutRes, amountOutRes.amountOut, addressDestination, mode, selectedDapp]);
 
   const {
     send,
     error,
     isPending,
-    dataSN,
-    dataEVM: _,
-    isSuccessSN,
-    isSuccessEVM
+    isSuccess,
   } = useSendTransaction({
     calls: calls,
     bridgeConfig: {
       // ! This is L2 ETH address. Dont change
-      l2_token_address:
-        "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+      l2_token_address: selectedDapp.asset,
       amount: rawAmount
     }
   });
@@ -161,7 +197,7 @@ const VesuDeposit: React.FC = () => {
         });
       }
 
-      if (dataSN?.transaction_hash) {
+      if (isSuccess) {
         toast({
           itemID: "stake",
           variant: "complete",
@@ -170,24 +206,7 @@ const VesuDeposit: React.FC = () => {
             <div className="flex items-center gap-2 bg-[#b5abdf] text-[#1C182B]">
               <div className="flex flex-col items-start gap-2 text-sm font-medium">
                 <span className="text-[18px] font-semibold">Success 🎉</span>
-                Deposited {form.getValues("depositAmount")} ETH
-              </div>
-            </div>
-          )
-        });
-        form.reset();
-      }
-
-      if (isSuccessEVM) {
-        toast({
-          itemID: "stake",
-          variant: "complete",
-          duration: 3000,
-          description: (
-            <div className="flex items-center gap-2 bg-[#b5abdf] text-[#1C182B]">
-              <div className="flex flex-col items-start gap-2 text-sm font-medium">
-                <span className="text-[18px] font-semibold">Success 🎉</span>
-                Bridge transaction sent 🚀
+                Transaction submitted successfully
               </div>
             </div>
           )
@@ -195,15 +214,15 @@ const VesuDeposit: React.FC = () => {
         form.reset();
       }
     })();
-  }, [dataSN, error, form, isPending, isSuccessEVM, isSuccessSN]);
+  }, [error, form, isPending, isSuccess]);
 
   // Deposit calls
   const tokensOut: TokenTransfer[] = React.useMemo(() => {
     return [
       {
-        name: "ETH",
+        name: selectedDapp.assetName,
         amount: (Number(rawAmount) / 1e18).toFixed(4),
-        logo: "https://app.strkfarm.com/zklend/icons/tokens/eth.svg?w=20"
+        logo: selectedDapp.logoIn
       }
     ];
   }, [rawAmount]);
@@ -211,17 +230,12 @@ const VesuDeposit: React.FC = () => {
   const tokensIn: TokenTransfer[] = React.useMemo(() => {
     return [
       {
-        name: "vETH",
+        name: selectedDapp.receivingToken,
         amount: (Number(amountOutRes.amountOut) / 1e18).toFixed(4),
-        logo: "https://app.strkfarm.com/zklend/icons/tokens/eth.svg?w=20"
+        logo: selectedDapp.logoOut
       }
     ];
-  }, [amountOutRes.amountOut]);
-
-  const destinationDapp: DestinationDapp = {
-    name: "Vesu",
-    logo: "https://app.vesu.xyz/favicon.ico"
-  };
+  }, [amountOutRes.amountOut, amountOutRes.isLoading]);
 
   const onSubmit = async (values: FormValues) => {
     if (Number(values.depositAmount) > Number(balanceInfo?.data?.formatted)) {
@@ -235,7 +249,7 @@ const VesuDeposit: React.FC = () => {
       });
     }
 
-    send(tokensIn, tokensOut, destinationDapp);
+    send(tokensIn, tokensOut, selectedDapp.destinationDapp);
   };
 
   return (
@@ -255,8 +269,14 @@ const VesuDeposit: React.FC = () => {
 
           <div className="mt-7 flex w-full flex-col items-start gap-2">
             <span className="text-xs text-[#EDDFFDCC]">dapp</span>
-            <div className="w-full rounded-md border border-[#B9AFF133] bg-[#B9AFF10D] p-2 px-5 font-normal text-[#EDDFFDCC]">
-              <Icons.vesuNamedLogo className="" />
+            <div className="w-full flex gap-2">
+              {DApps.map((dapp) => {
+                return <div className={`flex items-center rounded-md border bg-[#B9AFF10D] cursor-pointer p-2 px-5 font-normal text-[#EDDFFDCC] ${dapp.id == selectedDapp.id ? "border-2 border-[#604297]" : "border-[#B9AFF133]"}`} onClick={() => {
+                  setSelectedDapp(dapp);
+                }}>
+                  {dapp.dappIcon}
+                </div>
+              })}
             </div>
           </div>
 
@@ -264,29 +284,31 @@ const VesuDeposit: React.FC = () => {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="flex w-full gap-2"
+                className="flex gap-2"
               >
-                <FormField
-                  control={form.control}
-                  name="depositAmount"
-                  render={({ field }) => (
-                    <FormItem className="relative w-full space-y-0">
-                      <FormLabel className="text-xs text-[#EDDFFDCC]">
-                        Enter Amount
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          className="h-fit border-none px-0 pr-1 text-2xl text-white shadow-none outline-none placeholder:text-white/70 focus-visible:ring-0 lg:pr-0 lg:!text-3xl"
-                          placeholder="0.123"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage className="absolute -bottom-4 left-0 text-xs lg:left-1" />
-                    </FormItem>
-                  )}
-                />
+                <div className="w-[70%]">
+                  <FormField
+                    control={form.control}
+                    name="depositAmount"
+                    render={({ field }) => (
+                      <FormItem className="relative w-full space-y-0">
+                        <FormLabel className="text-xs text-[#EDDFFDCC]">
+                          Enter Amount
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            className="h-fit border-none px-0 pr-1 text-2xl text-white shadow-none outline-none placeholder:text-white/70 focus-visible:ring-0 lg:pr-0 lg:!text-3xl"
+                            placeholder="0.123"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage className="absolute -bottom-4 left-0 text-xs lg:left-1" />
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
-                <div className="flex flex-col items-end gap-0.5 text-xs font-medium text-white/60 lg:text-sm">
+                <div className="flex flex-col items-end gap-0.5 text-xs font-medium text-white/60 lg:text-sm w-[30%]">
                   <div className="mt-1.5 flex flex-row-reverse items-center gap-1 text-[#EDDFFD]">
                     <span className="text-start">Balance</span>
                     <Icons.wallet className="size-3" />
@@ -295,7 +317,7 @@ const VesuDeposit: React.FC = () => {
                     {balanceInfo?.data?.formatted
                       ? Number(balanceInfo?.data?.formatted).toFixed(2)
                       : "0"}{" "}
-                    ETH
+                    {selectedDapp.assetName}
                   </span>
                 </div>
               </form>
@@ -365,14 +387,6 @@ const VesuDeposit: React.FC = () => {
             </Button>
           )}
         </div>
-        <small className="text-[grey]">
-          We chose Vesu because it's active on Sepolia and supports ETH
-          deposits.
-        </small>
-        <small className="text-[grey]">
-          It's used only for demo purposes and the SDK will work with any dApp.
-        </small>
-
         {/* <div className="text-[grey]">
           Amount you get: {(Number(amountOutRes.amountOut) / 1e18).toFixed(8)}{" "}
           ETH
@@ -438,4 +452,32 @@ function getCalls(
   };
 
   return [call1, call2, call3, call4];
+}
+
+function getEndurCalls(postBridgeFeeAmount: bigint,
+  user: string | undefined,
+  mode: InteractionMode
+): Call[] {
+  if (!user) return [];
+
+  const SEPOLIA_SN_STRK = "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d";
+  const ENDUR_xSTRK = "0x7918c06ae6cdf3bdedf9c3999f3f02f2cb8daa98a7734c43b65dba0d509c692";
+  const call1: Call = {
+    contractAddress: SEPOLIA_SN_STRK,
+    entrypoint: "approve",
+    // receiver is some random address to simulate spend of bridged ETH
+    calldata: CallData.compile([
+      ENDUR_xSTRK,
+      postBridgeFeeAmount,
+      0
+    ])
+  };
+
+  const call2: Call = {
+    contractAddress: ENDUR_xSTRK,
+    entrypoint: "deposit",
+    calldata: CallData.compile([postBridgeFeeAmount, 0, user])
+  };
+
+  return [call1, call2];
 }
