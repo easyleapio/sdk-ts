@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Info } from "lucide-react";
-import React, { ReactElement, ReactNode, useMemo, useState } from "react";
+import React, { ReactElement, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Call, CallData } from "starknet";
 import * as z from "zod";
@@ -23,7 +23,7 @@ import { useAccount } from "@easyleap/sdk";
 import { useAmountOut } from "@easyleap/sdk";
 import { useBalance } from "@easyleap/sdk";
 import { useMode } from "@easyleap/sdk";
-import { useSendTransaction } from "@easyleap/sdk";
+import { useSendTransaction, useWaitForTransaction } from "@easyleap/sdk";
 import { ADDRESSES } from "@easyleap/sdk";
 
 import { Icons } from "./Icons";
@@ -58,7 +58,7 @@ const VesuDeposit: React.FC = () => {
     asset: '0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d',
     assetName: "STRK",
     id: 'endur',
-    receivingToken: 'vSTRK',
+    receivingToken: 'xSTRK',
     logoIn: 'https://app.strkfarm.com/zklend/icons/tokens/strk.svg?w=20',
     logoOut: 'https://endur.fi/logo.svg',
     destinationDapp: {
@@ -153,20 +153,26 @@ const VesuDeposit: React.FC = () => {
     error,
     isPending,
     isSuccess,
+    isPaused,
+    data: txData,
   } = useSendTransaction({
     calls: calls,
     bridgeConfig: {
       // ! This is L2 ETH address. Dont change
       l2_token_address: selectedDapp.asset,
-      amount: rawAmount
+      userInputAmount: rawAmount,
+      postFeeAmount: amountOutRes.amountOut,
     }
   });
 
-  React.useEffect(() => {
-    console.log("useSendTransaction error", error);
+  const txReceipt = useWaitForTransaction({
+    hash: txData
+  })
 
+  React.useEffect(() => {
     (async () => {
-      if (isPending) {
+      if (!txData) return;
+      if (isPending || txReceipt.isPending) {
         toast({
           description: (
             <div className="flex items-center gap-2 font-semibold">
@@ -197,7 +203,7 @@ const VesuDeposit: React.FC = () => {
         });
       }
 
-      if (isSuccess) {
+      if (txReceipt.isSuccess) {
         toast({
           itemID: "stake",
           variant: "complete",
@@ -214,7 +220,7 @@ const VesuDeposit: React.FC = () => {
         form.reset();
       }
     })();
-  }, [error, form, isPending, isSuccess]);
+  }, [error, form, isPending, isSuccess, txReceipt.isPending, txReceipt.isSuccess]);
 
   // Deposit calls
   const tokensOut: TokenTransfer[] = React.useMemo(() => {
@@ -361,6 +367,7 @@ const VesuDeposit: React.FC = () => {
               type="submit"
               disabled={
                 Number(form.getValues("depositAmount")) <= 0 ||
+                isPaused || isPending ||
                 isNaN(Number(form.getValues("depositAmount")))
                   ? true
                   : false
@@ -372,7 +379,8 @@ const VesuDeposit: React.FC = () => {
               }}
               className="h-11 w-full rounded-lg text-sm font-semibold text-white disabled:opacity-50"
             >
-              Deposit
+              Deposit 
+              {(isPaused || isPending) && <div className="easyleap-h-4 easyleap-w-4 easyleap-animate-spin easyleap-rounded-full easyleap-border-2 easyleap-border-white easyleap-border-t-transparent"></div>}
             </Button>
           ) : (
             <Button
@@ -387,13 +395,6 @@ const VesuDeposit: React.FC = () => {
             </Button>
           )}
         </div>
-        {/* <div className="text-[grey]">
-          Amount you get: {(Number(amountOutRes.amountOut) / 1e18).toFixed(8)}{" "}
-          ETH
-        </div>
-        <div className="text-[grey]">
-          Service Fee: {(Number(amountOutRes.fee) / 1e18).toFixed(8)} ETH
-        </div> */}
       </div>
     </div>
   );
@@ -456,7 +457,7 @@ function getCalls(
 
 function getEndurCalls(postBridgeFeeAmount: bigint,
   user: string | undefined,
-  mode: InteractionMode
+  _mode: InteractionMode
 ): Call[] {
   if (!user) return [];
 

@@ -1,12 +1,13 @@
 {
   "name": "@easyleap/sdk",
-  "version": "0.0.6-beta.21",
+  "version": "0.0.6-beta.23",
   "type": "module",
-  "main": "dist/easyleap.umd.cjs",
-  "module": "dist/easyleap.js",
+  "main": "dist/easyleap.es.js",
+  "module": "dist/easyleap.es.js",
+  "types": "dist/easyleap.es.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/easyleap.js",
+      "import": "./dist/easyleap.es.js",
       "require": "./dist/easyleap.umd.cjs"
     },
     "./styles.css": {

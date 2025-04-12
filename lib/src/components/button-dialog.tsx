@@ -41,6 +41,7 @@ import { cn, EASYLEAP_EXPLORER, shortAddress, standariseAddress } from "@lib/uti
 
 import { ModeSwitcher, type ConnectButtonProps } from ".";
 import { useSupportedTokens } from "@lib/hooks/useSupportedTokens";
+import ProgressBar from "./ui/progress-bar";
 
 export const ButtonDialog: React.FC<ConnectButtonProps> = ({
   onConnectStarknet,
@@ -514,163 +515,171 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                 <ScrollArea className="easyleap-mt-5 easyleap-h-[40vh]">
                   <Accordion type="single" collapsible>
                     {sharedState.sourceTransactions.map((txn: any, i: any) => (
-                      <AccordionItem
-                        key={i}
-                        value={`txn-${i + 1}`}
-                        className="easyleap-mt-2 easyleap-rounded-xl easyleap-border-0 easyleap-bg-[#E6E6E6] easyleap-px-4 easyleap-py-2 easyleap-text-[#B9AFF1]"
-                      >
-                        <AccordionTrigger
-                          className="easyleap-w-full easyleap-items-start easyleap-px-2.5 easyleap-py-1 hover:easyleap-no-underline"
-                          customChevron={
-                            <Icons.chevronIcon className="easyleap-size-5" />
-                          }
+                      <div className="easyleap-w-full easyleap-bg-[#E6E6E6] easyleap-rounded-xl">
+                        {getDestinationTxn(txn)?.status === "pending" && <div className="easyleap-w-full">
+                          <ProgressBar fromTime={new Date(txn?.timestamp * 1000).getTime()}
+                              toTime={new Date(txn?.timestamp * 1000).getTime() + 3 * 60 * 1000} // 3 minutes later
+                              isCompleted={!(getDestinationTxn(txn)?.status === "pending")}
+                          />
+                        </div>}
+                        <AccordionItem
+                          key={i}
+                          value={`txn-${i + 1}`}
+                          className="easyleap-mb-2 easyleap-rounded-xl easyleap-border-0 easyleap-px-4 easyleap-py-2 easyleap-text-[#B9AFF1]"
                         >
-                          <div className="easyleap-flex easyleap-w-full easyleap-flex-col easyleap-items-center easyleap-gap-6">
-                            <div className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-gap-8">
-                              <div className="easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-0.5">
-                                <p className="easyleap-flex easyleap-items-center easyleap-gap-1 easyleap-text-base easyleap-text-black">
-                                  <Icons.ethereumLogo className="easyleap-size-5 easyleap-shrink-0" />
-                                  Ethereum
-                                </p>
-                                <span className="easyleap-text-xs easyleap-text-black/60">
-                                  Sepolia
-                                </span>
+                          <AccordionTrigger
+                            className="easyleap-w-full easyleap-items-start easyleap-px-2.5 easyleap-py-1 hover:easyleap-no-underline"
+                            customChevron={
+                              <Icons.chevronIcon className="easyleap-size-5" />
+                            }
+                          >
+                            <div className="easyleap-flex easyleap-w-full easyleap-flex-col easyleap-items-center easyleap-gap-6">
+                              <div className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-gap-8">
+                                <div className="easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-0.5">
+                                  <p className="easyleap-flex easyleap-items-center easyleap-gap-1 easyleap-text-base easyleap-text-black">
+                                    <Icons.ethereumLogo className="easyleap-size-5 easyleap-shrink-0" />
+                                    Ethereum
+                                  </p>
+                                  <span className="easyleap-text-xs easyleap-text-black/60">
+                                    Sepolia
+                                  </span>
+                                </div>
+
+                                <Icons.arrowRight className="!easyleap-rotate-0" />
+
+                                <div className="easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-0.5">
+                                  <p className="easyleap-flex easyleap-items-center easyleap-gap-1 easyleap-text-base easyleap-text-black">
+                                    <Icons.starknetLogo className="easyleap-size-5 easyleap-shrink-0" />
+                                    Starknet
+                                  </p>
+                                  <span className="easyleap-text-xs easyleap-text-black/60">
+                                    Sepolia
+                                  </span>
+                                </div>
                               </div>
 
-                              <Icons.arrowRight className="!easyleap-rotate-0" />
+                              <div className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between easyleap-text-xs easyleap-text-black/60">
+                                {format(
+                                  new Date(txn?.timestamp * 1000),
+                                  "dd MMM, yyyy h:mm a"
+                                )}
 
-                              <div className="easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-0.5">
-                                <p className="easyleap-flex easyleap-items-center easyleap-gap-1 easyleap-text-base easyleap-text-black">
-                                  <Icons.starknetLogo className="easyleap-size-5 easyleap-shrink-0" />
-                                  Starknet
-                                </p>
-                                <span className="easyleap-text-xs easyleap-text-black/60">
-                                  Sepolia
-                                </span>
+                                <div className="easyleap--mr-5 easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-flex-wrap">
+                                  <div>#{txn.request_id}</div>
+                                  {getDestinationTxn(txn)?.status === "pending" && <div className="font-bold easyleap-text-nowrap easyleap-rounded-full easyleap-bg-[white] easyleap-p-1 easyleap-px-2 easyleap-text-[10px] easyleap-text-black/60">
+                                    Pending
+                                  </div>}
+                                  {getDestinationTxn(txn)?.status === "confirmed" && <div className="font-bold easyleap-text-nowrap easyleap-rounded-full easyleap-bg-[#38EF7D80] easyleap-p-1 easyleap-px-2 easyleap-text-[10px] easyleap-text-[#000]">
+                                    Success
+                                  </div>}
+                                  {getDestinationTxn(txn)?.status === "failed" && <div className="font-bold easyleap-text-nowrap easyleap-rounded-full easyleap-bg-[#ef383880] easyleap-p-1 easyleap-px-2 easyleap-text-[10px] easyleap-text-[#000]">
+                                    Refunded
+                                  </div>}
+                                  <a
+                                    href={EASYLEAP_EXPLORER}
+                                    target="_blank"
+                                    className="easyleap-rounded-3xl easyleap-bg-[#35314F] easyleap-p-1"
+                                  >
+                                    <Icons.externalLinkIcon className="easyleap-size-4" />
+                                  </a>
+                                </div>
                               </div>
                             </div>
+                          </AccordionTrigger>
 
-                            <div className="easyleap-flex easyleap-w-full easyleap-items-center easyleap-justify-between easyleap-text-xs easyleap-text-black/60">
-                              {format(
-                                new Date(txn?.timestamp * 1000),
-                                "dd MMM, yyyy h:mm a"
-                              )}
+                          <AccordionContent className="easyleap-mx-5 easyleap-mt-4 easyleap-border-t easyleap-border-[#675E9933]">
+                            <div className="easyleap-mt-5 easyleap-flex easyleap-items-center easyleap-justify-start easyleap-gap-3">
+                              <div className="easyleap-flex easyleap-flex-col easyleap-items-center easyleap-justify-center easyleap-gap-3">
+                                {txn?.status === "pending" && (
+                                  <Loader2 className="easyleap-size-6 easyleap-animate-spin" />
+                                )}
+                                {txn?.status === "confirmed" && (
+                                  <Icons.checkIcon className="easyleap-size-6" />
+                                )}
 
-                              <div className="easyleap--mr-5 easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-flex-wrap">
-                                <div>#{txn.request_id}</div>
-                                {getDestinationTxn(txn)?.status === "pending" && <div className="font-bold easyleap-text-nowrap easyleap-rounded-full easyleap-bg-[white] easyleap-p-1 easyleap-px-2 easyleap-text-[10px] easyleap-text-black/60">
-                                  Pending
-                                </div>}
-                                {getDestinationTxn(txn)?.status === "confirmed" && <div className="font-bold easyleap-text-nowrap easyleap-rounded-full easyleap-bg-[#38EF7D80] easyleap-p-1 easyleap-px-2 easyleap-text-[10px] easyleap-text-[#000]">
-                                  Success
-                                </div>}
-                                {getDestinationTxn(txn)?.status === "failed" && <div className="font-bold easyleap-text-nowrap easyleap-rounded-full easyleap-bg-[#ef383880] easyleap-p-1 easyleap-px-2 easyleap-text-[10px] easyleap-text-[#000]">
-                                  Refunded
-                                </div>}
+                                {getDestinationTxn(txn)?.status === "pending" && (
+                                  <>
+                                    <div className="easyleap-h-6 easyleap-w-px easyleap-rounded-full easyleap-bg-[#675E9933]" />
+                                    <Loader2 className="easyleap-size-6 easyleap-animate-spin" />
+                                    <div className="easyleap-h-6 easyleap-w-px easyleap-rounded-full easyleap-bg-[#675E9933]" />
+                                    <Loader2 className="easyleap-size-6 easyleap-animate-spin" />
+                                  </>
+                                )}
+
+                                {(getDestinationTxn(txn)?.status === "confirmed" || getDestinationTxn(txn)?.status === "failed") && (
+                                  <>
+                                    <div className="easyleap-h-6 easyleap-w-px easyleap-rounded-full easyleap-bg-[#675E9933]" />
+                                    <Icons.checkIcon className="easyleap-size-6" />
+                                    <div className="easyleap-h-6 easyleap-w-px easyleap-rounded-full easyleap-bg-[#675E9933]" />
+                                    <Icons.checkIcon className="easyleap-size-6" />
+                                  </>
+                                )}
+                              </div>
+
+                              <div className="easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-6">
                                 <a
-                                  href={EASYLEAP_EXPLORER}
+                                  href={`https://sepolia.etherscan.io/tx/${txn?.txHash}`}
                                   target="_blank"
-                                  className="easyleap-rounded-3xl easyleap-bg-[#35314F] easyleap-p-1"
+                                  className="easyleap-group easyleap-flex easyleap-cursor-pointer easyleap-flex-col easyleap-items-start easyleap-gap-1"
                                 >
-                                  <Icons.externalLinkIcon className="easyleap-size-4" />
+                                  <p
+                                    className={cn(
+                                      "easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-base easyleap-text-[#B9AFF1]",
+                                      {
+                                        "easyleap-font-bold easyleap-text-black":
+                                          txn?.status === "confirmed" || txn?.status === "failed"
+                                      }
+                                    )}
+                                  >
+                                    Initiated transfer from EVM wallet{" "}
+                                  </p>
+                                  <span className="easyleap-text-xs easyleap-text-black/60">
+                                    The deposit was submitted on Ethereum.
+                                  </span>
+                                </a>
+
+                                <div className="easyleap-group easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-1">
+                                  <p
+                                    className={cn(
+                                      "easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-base easyleap-text-black",
+                                      {
+                                        "easyleap-font-bold easyleap-text-black":
+                                          getDestinationTxn(txn)?.status ===
+                                          "confirmed" || getDestinationTxn(txn)?.status === "failed"
+                                      }
+                                    )}
+                                  >
+                                    Bridging to Starknet
+                                  </p>
+                                  <span className="easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-xs easyleap-text-black/60">
+                                    Bridged {(txn?.amount_raw / 10 ** 18).toFixed(5)} {getTokenInfo(getDestinationTxn(txn)?.token)} 
+                                    <Icons.ethereumLogo className="easyleap-size-4" />
+                                  </span>
+                                </div>
+
+                                <a
+                                  href={`https://sepolia.voyager.online/tx/${getDestinationTxn(txn)?.txHash}`}
+                                  target="_blank"
+                                  className="easyleap-group easyleap-mt-2 easyleap-flex easyleap-cursor-pointer easyleap-flex-col easyleap-items-start easyleap-gap-1"
+                                >
+                                  <p
+                                    className={cn(
+                                      "easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-base easyleap-text-black",
+                                      {
+                                        "easyleap-font-bold easyleap-text-black":
+                                          getDestinationTxn(txn)?.status ===
+                                          "confirmed" || getDestinationTxn(txn)?.status === "failed"
+                                      }
+                                    )}
+                                  >
+                                    {getDestinationTxn(txn)?.status === "failed" ? "Refunded" : "Deposited"}
+                                  </p>
                                 </a>
                               </div>
                             </div>
-                          </div>
-                        </AccordionTrigger>
-
-                        <AccordionContent className="easyleap-mx-5 easyleap-mt-4 easyleap-border-t easyleap-border-[#675E9933]">
-                          <div className="easyleap-mt-5 easyleap-flex easyleap-items-center easyleap-justify-start easyleap-gap-3">
-                            <div className="easyleap-flex easyleap-flex-col easyleap-items-center easyleap-justify-center easyleap-gap-3">
-                              {txn?.status === "pending" && (
-                                <Loader2 className="easyleap-size-6 easyleap-animate-spin" />
-                              )}
-                              {txn?.status === "confirmed" && (
-                                <Icons.checkIcon className="easyleap-size-6" />
-                              )}
-
-                              {getDestinationTxn(txn)?.status === "pending" && (
-                                <>
-                                  <div className="easyleap-h-6 easyleap-w-px easyleap-rounded-full easyleap-bg-[#675E9933]" />
-                                  <Loader2 className="easyleap-size-6 easyleap-animate-spin" />
-                                  <div className="easyleap-h-6 easyleap-w-px easyleap-rounded-full easyleap-bg-[#675E9933]" />
-                                  <Loader2 className="easyleap-size-6 easyleap-animate-spin" />
-                                </>
-                              )}
-
-                              {getDestinationTxn(txn)?.status === "confirmed" && (
-                                <>
-                                  <div className="easyleap-h-6 easyleap-w-px easyleap-rounded-full easyleap-bg-[#675E9933]" />
-                                  <Icons.checkIcon className="easyleap-size-6" />
-                                  <div className="easyleap-h-6 easyleap-w-px easyleap-rounded-full easyleap-bg-[#675E9933]" />
-                                  <Icons.checkIcon className="easyleap-size-6" />
-                                </>
-                              )}
-                            </div>
-
-                            <div className="easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-6">
-                              <a
-                                href={`https://sepolia.etherscan.io/tx/${txn?.txHash}`}
-                                target="_blank"
-                                className="easyleap-group easyleap-flex easyleap-cursor-pointer easyleap-flex-col easyleap-items-start easyleap-gap-1"
-                              >
-                                <p
-                                  className={cn(
-                                    "easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-base easyleap-text-[#B9AFF1]",
-                                    {
-                                      "easyleap-font-bold easyleap-text-black":
-                                        txn?.status === "confirmed"
-                                    }
-                                  )}
-                                >
-                                  Initiated transfer from EVM wallet{" "}
-                                </p>
-                                <span className="easyleap-text-xs easyleap-text-black/60">
-                                  The deposit was submitted on Ethereum.
-                                </span>
-                              </a>
-
-                              <div className="easyleap-group easyleap-flex easyleap-flex-col easyleap-items-start easyleap-gap-1">
-                                <p
-                                  className={cn(
-                                    "easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-base easyleap-text-black",
-                                    {
-                                      "easyleap-font-bold easyleap-text-black":
-                                        getDestinationTxn(txn)?.status ===
-                                        "confirmed"
-                                    }
-                                  )}
-                                >
-                                  Bridging to Starknet
-                                </p>
-                                <span className="easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-xs easyleap-text-black/60">
-                                  Bridged {(txn?.amount_raw / 10 ** 18).toFixed(5)} {getTokenInfo(getDestinationTxn(txn)?.token)} 
-                                  <Icons.ethereumLogo className="easyleap-size-4" />
-                                </span>
-                              </div>
-
-                              <a
-                                href={`https://sepolia.voyager.online/tx/${getDestinationTxn(txn)?.txHash}`}
-                                target="_blank"
-                                className="easyleap-group easyleap-mt-2 easyleap-flex easyleap-cursor-pointer easyleap-flex-col easyleap-items-start easyleap-gap-1"
-                              >
-                                <p
-                                  className={cn(
-                                    "easyleap-flex easyleap-items-center easyleap-gap-2 easyleap-text-base easyleap-text-black",
-                                    {
-                                      "easyleap-font-bold easyleap-text-black":
-                                        getDestinationTxn(txn)?.status ===
-                                        "confirmed"
-                                    }
-                                  )}
-                                >
-                                  Deposited
-                                </p>
-                              </a>
-                            </div>
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
+                          </AccordionContent>
+                        </AccordionItem>
+                      </div>
                     ))}
 
                     {sharedState.sourceTransactions.length === 0 && (
@@ -688,7 +697,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
         </div>
 
         <DialogContent
-          className="easyleap-max-h-[100vh] easyleap-max-w-[300px] easyleap-bg-white easyleap-p-2 easyleap-font-dmSans md:easyleap-p-6 lg:easyleap-max-h-none"
+          className="easyleap-max-h-[100vh] easyleap-bg-white easyleap-p-2 easyleap-font-dmSans md:easyleap-p-6 lg:easyleap-max-h-none"
           closeClassName="easyleap-text-[#B9AFF1]"
         >
           <DialogHeader>
@@ -800,6 +809,7 @@ export const ButtonDialog: React.FC<ConnectButtonProps> = ({
                     <X
                       className="easyleap-size-4 inner-theme-text"
                       onClick={() => {
+                        sharedState.setMode(InteractionMode.Starknet);
                         disconnectWagmi();
                         onDisconnectEVM?.();
                       }}

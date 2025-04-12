@@ -1,5 +1,5 @@
 import { Address, UseSendTransactionProps, UseSendTransactionResult, useSendTransaction as useSendTransactionSN } from "@starknet-react/core";
-import React, { useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { Call, hash, num } from "starknet";
 import { encodeFunctionData } from "viem";
 import {
@@ -20,16 +20,37 @@ import { useAccount } from "./useAccount";
 import { useMode } from "./useMode";
 import { mergeSortArrays } from "./useTransactionHistory";
 import { SourceBridgeInfo, useSourceBridgeInfo } from "./useSourceBridgeInfo";
+import { useAmountOut } from "./useAmountOut";
+import { toast } from "./use-toast";
+import { logger } from "@lib/utils/logger";
 
+
+interface BridgeConfig {
+  /**
+   * The address of the L2 token in hexadecimal format.
+   * Must be a string prefixed with `0x`.
+   */
+  l2_token_address: `0x${string}`;
+
+  /**
+   * The amount input by the user.
+   * Represented as a bigint.
+   */
+  userInputAmount: bigint;
+
+  /**
+   * The amount remaining after fees have been deducted.
+   * Represented as a bigint. (Output of useAmountOut(userInputAmount))
+   * - Its required to ensure the consumer app is building calls on correct amount
+   */
+  postFeeAmount: bigint;
+}
 
 /**
  * Interface for the arguments required by the `useSendTransaction` hook.
  */
 export interface EUseSendTransactionArgs_EasyLeap extends UseSendTransactionProps {
-  bridgeConfig: {
-    l2_token_address: `0x${string}`; // The L2 token address in hexadecimal format.
-    amount: bigint; // The amount to be transferred.
-  };
+  bridgeConfig: BridgeConfig;
 }
 
 /**
@@ -52,13 +73,13 @@ function getFees() {
  */
 function calculateEthValue(
   sourceTokenInfo: SourceBridgeInfo,
-  bridgeConfig: { amount: bigint },
+  bridgeConfig: BridgeConfig,
 ) {
   const { sourceFee, msgFee } = getFees();
 
   // If the token is ETH (ZERO_ADDRESS_EVM), include the transfer amount in the total.
   if (sourceTokenInfo && sourceTokenInfo.l1_token_address === ZERO_ADDRESS_EVM) {
-    return bridgeConfig.amount + sourceFee + msgFee;
+    return bridgeConfig.userInputAmount + sourceFee + msgFee;
   }
 
   // Otherwise, only include the fees.
@@ -76,7 +97,7 @@ function calculateEthValue(
  */
 function generateCalldata(
   calls: Call[],
-  bridgeConfig: { l2_token_address: `0x${string}`; amount: bigint },
+  bridgeConfig: BridgeConfig,
   addressDestination: Address,
   sourceTokenInfo: SourceBridgeInfo
 ) {
@@ -94,7 +115,7 @@ function generateCalldata(
   const fullCalldata = [
     0n, // Some ID (placeholder)
     BigInt(num.getDecimalString(bridgeConfig.l2_token_address.toString())), // L2 token address
-    bridgeConfig.amount, // Amount to transfer
+    bridgeConfig.userInputAmount, // Amount to transfer
     BigInt(num.getDecimalString(addressDestination || "0")), // L2 user address (destination)
     BigInt(flat_calls_final.length.toString()) + 1n, // Total calldata length
     BigInt(calls?.length.toString() || 0), // Number of calls
@@ -134,7 +155,7 @@ function generateCalldata(
         ), // L2 token address
         bridge_address: sourceTokenInfo.l1_bridge_address, // Bridge address
       },
-      bridgeConfig.amount, // Amount to transfer
+      bridgeConfig.userInputAmount, // Amount to transfer
       fullCalldata // Full calldata array
     ]
   });
@@ -147,6 +168,8 @@ function getSendTransactionCallback(
   evmOutput: UseSendTransactionReturnType<Config, unknown>,
   sourceAmount: bigint,
   sourceCalldata: `0x${string}`,
+  isValidAmountProps: boolean,
+  _calls: Call[] | undefined,
   hookProps: PreTxHookProps
 ) {
   return async function openReviewModal(
@@ -155,7 +178,27 @@ function getSendTransactionCallback(
     destinationDapp: DestinationDapp,
     calls?: Call[],
   ): Promise<void> {
+    logger.verbose("EL::useSendTransaction::send1");
+    if (!isValidAmountProps) {
+      logger.verbose("EL::useSendTransaction::send2");
+      toast({
+        title: "Invalid bridge amounts",
+        variant: "destructive",
+        duration: 5000,
+      })
+      return;
+    }
+    if ((!_calls || !_calls.length) && (!calls || !calls.length)) {
+      logger.verbose("EL::useSendTransaction::send21");
+      toast({
+        title: "No calldata received",
+        variant: "destructive",
+        duration: 5000,
+      })
+      return;
+    }
     if (mode == InteractionMode.Bridge) {
+      logger.verbose("EL::useSendTransaction::send3");
       context.setReviewModalProps({
         isOpen: true,
         tokensIn,
@@ -175,7 +218,14 @@ function getSendTransactionCallback(
         },
       });
     } else {
-      await snOutput.sendAsync(calls);
+      logger.verbose("EL::useSendTransaction::send4", calls?.length);
+      try {
+        await snOutput.sendAsync();
+        logger.verbose("EL::useSendTransaction::send5");
+      } catch (e) {
+        logger.verbose("EL::useSendTransaction::send6", e);
+        console.error("EL::useSendTransaction::send7", e);
+      }
     }
   }
 };
@@ -248,6 +298,16 @@ export function useSendTransaction(
     l2TokenAddress: props.bridgeConfig.l2_token_address
   }); // Fetch information about the source token.
 
+  // sanity check on amounts
+  const postFeeAmount = useAmountOut(props.bridgeConfig.userInputAmount);
+  const isValidAmountProps = useMemo(() => {
+    // if loading, wait sometime to valid, till then, its not valid
+    if (postFeeAmount.isLoading) return false;
+    if (!(postFeeAmount.fee > 0) && mode == InteractionMode.Bridge) return false;
+    // if computation is done, check if the amount is valid
+    return postFeeAmount.amountOut == props.bridgeConfig.postFeeAmount;
+  }, [postFeeAmount.isLoading, postFeeAmount.amountOut, props.bridgeConfig.postFeeAmount]);
+
   // Check if the current mode is Bridge mode.
   const isBridgeMode = useMemo(() => {
     return mode == InteractionMode.Bridge;
@@ -280,13 +340,13 @@ export function useSendTransaction(
 
   // Update the shared state with the source transaction details when in Bridge mode.
   useEffect(() => {
-    if (!isBridgeMode || !evmOutput || !evmOutput.isSuccess) {
+    if (!isBridgeMode || !evmOutput.isSuccess) {
       return;
     }
     context.setSourceTransactions(
       mergeSortArrays(context.sourceTransactions, [
         {
-          amount_raw: props.bridgeConfig.amount.toString(),
+          amount_raw: props.bridgeConfig.userInputAmount.toString(),
           receiver: addressDestination,
           block_number: 0,
           chain: "ethereum",
@@ -303,31 +363,35 @@ export function useSendTransaction(
       ])
     );
   }, [
-    evmOutput, isBridgeMode
+    evmOutput.isSuccess, evmOutput.data, isBridgeMode, addressSource, addressDestination, props.bridgeConfig.l2_token_address
   ]);
 
   // Create the callback function for sending transactions.
-  const sendCallback = useMemo(() => {
-    return getSendTransactionCallback(
+  const sendCallback = useCallback(getSendTransactionCallback(
       mode,
       context,
       snOutput,
       evmOutput,
       sourceAmount,
       sourceCalldata,
+      isValidAmountProps,
+      props.calls,
       {
         sourceTokenInfo,
-        amount: props.bridgeConfig.amount,
+        amount: props.bridgeConfig.userInputAmount,
         address: addressSource || '0x0'
       }
-    );
-  }, [mode, sourceTokenInfo, context, snOutput, evmOutput, props.bridgeConfig.amount, addressSource]);
+    ), [mode, sourceTokenInfo, context, snOutput, evmOutput, props.bridgeConfig.userInputAmount, addressSource]);
 
+  useEffect(() => {
+    logger.verbose("EL::useSendTransaction", {snOutput, evmOutput})
+  }, [snOutput, evmOutput]);
+  
   // Return the transaction-related state and functions.
   return {
     send: sendCallback, // Function to send the transaction.
     sendAsync: sendCallback, // Alias for the send function.
-    isPaused: isBridgeMode ? evmOutput.isPaused : snOutput.isPaused, // Indicates if the transaction is paused.
+    isPaused: !isValidAmountProps ? true : isBridgeMode ? evmOutput.isPaused : snOutput.isPaused, // Indicates if the transaction is paused.
     isSuccess: isBridgeMode ? evmOutput.isSuccess : snOutput.isSuccess, // Indicates if the transaction was successful.
     isError: isBridgeMode ? evmOutput.isError : snOutput.isError, // Indicates if there was an error.
     error: isBridgeMode ? evmOutput.error : snOutput.error, // The error object, if any.

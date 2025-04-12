@@ -78,7 +78,7 @@ export function ReviewModal() {
       <DialogTrigger className=""></DialogTrigger>
 
       <DialogContent
-        className="easyleap-max-h-[100vh] easyleap-overflow-y-auto easyleap-overflow-x-hidden easyleap-border easyleap-border-[#675E99] easyleap-bg-white easyleap-font-dmSans easyleap-sm:easyleap-max-w-screen easyleap-lg:easyleap-max-h-none"
+        className="easyleap-max-h-[100vh] easyleap-border easyleap-border-[#675E99] easyleap-bg-white easyleap-font-dmSans easyleap-sm:easyleap-max-w-screen easyleap-lg:easyleap-max-h-none"
         closeClassName="text-[#B9AFF1]"
         onClickClose={() => {
           context.setReviewModalProps({
@@ -95,7 +95,7 @@ export function ReviewModal() {
         <p className="easyleap-mt-[-2px] easyleap-text-center easyleap-text-sm easyleap-font-normal easyleap-text-black">
           You are about to perform the deposit with bridge mode.{" "}
           <br className="hidden md:block" /> Funds are automatically bridged
-          from L1 to Starknet and sent to <br className="hidden md:block" />{" "}
+          from L1 to Starknet and sent to {" "}
           <b>{context.reviewModalProps.destinationDapp.name}</b> on your behalf.
         </p>
 

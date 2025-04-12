@@ -20,7 +20,6 @@ export default defineConfig(({ command, mode }) => {
         rollupTypes: true
       }) // export types on build
     ],
-
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src")
@@ -35,8 +34,10 @@ export default defineConfig(({ command, mode }) => {
           lib: {
             entry: resolve(__dirname, "src/main.tsx"),
             name: "easyleap",
-            fileName: "easyleap"
+            formats: ['es', 'cjs'],
+            fileName: (format) => `easyleap.${format}.js`,
           },
+          sourcemap: true,
           rollupOptions: {
             external: [
               "react",
