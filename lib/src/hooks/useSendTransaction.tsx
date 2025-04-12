@@ -302,7 +302,7 @@ export function useSendTransaction(
   const postFeeAmount = useAmountOut(props.bridgeConfig.userInputAmount);
   const isValidAmountProps = useMemo(() => {
     // if loading, wait sometime to valid, till then, its not valid
-    if (postFeeAmount.isLoading) return false;
+    if (postFeeAmount.isLoading || postFeeAmount.isError) return false;
     if (!(postFeeAmount.fee > 0) && mode == InteractionMode.Bridge) return false;
     // if computation is done, check if the amount is valid
     return postFeeAmount.amountOut == props.bridgeConfig.postFeeAmount;

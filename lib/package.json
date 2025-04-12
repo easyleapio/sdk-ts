@@ -1,6 +1,6 @@
 {
   "name": "@easyleap/sdk",
-  "version": "0.0.6-beta.23",
+  "version": "0.0.6-beta.25",
   "type": "module",
   "main": "dist/easyleap.es.js",
   "module": "dist/easyleap.es.js",
